@@ -14,6 +14,7 @@
      Write-Host "6: Press '6' to remove scale hosts from vDS"
      Write-Host "7: Press '7' to remove scale hosts from vCenter"
      Write-Host "8: Press '8' to shutdown scale hosts"
+     Write-Host "9: Press '9' to perform storage volume, extent and target creation in the FREENAS Servers"
 
      Write-Host "Q: Press 'Q' to quit."
 }

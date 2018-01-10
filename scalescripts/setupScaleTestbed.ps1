@@ -91,7 +91,27 @@ do
                 $end = read-host "Please enter the end esx scale host number"
                 $ScriptToRun= $ScriptPath+"shutdownScaleHosts.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
-           } 'q' {
+           } '9' {
+                
+                'You chose option #9'
+                write-Host "There are 4 FREENAS Servers with the following index-IP mapping,`n 1-192.168.110.61, 2-192.168.110.62, 3-192.168.110.63, 4-192.168.110.64"
+                $start = read-host "Please enter the start FREENAS Server index"
+                $end = read-host "Please enter the end FREENAS Server index"
+                [int]$index=0
+                for($index=$start; $index -le $end ; $index++)
+                {
+                    try
+                    {
+                        $ScriptToRun= $ScriptPath+"freeNASRestClient.ps1 -index $index"
+                        Invoke-Expression $ScriptToRun
+                    }
+                    catch
+                    {
+                        write $_
+                    }
+                }
+                
+           }'q' {
                 return
            }
      }

@@ -11,7 +11,7 @@ $sUser = 'vmware'
 $secpasswd = ConvertTo-SecureString "VMware1!" -AsPlainText -Force
 $mycreds = New-Object System.Management.Automation.PSCredential ($sUser, $secpasswd)
 
-
+$clusterName = 'PerfCluster'
 
 Function connectToVC([string] $vc, [string] $username, [string] $password) {
 connect-viserver -server $vc -User $username -Password $password
@@ -272,7 +272,6 @@ Function Select-Choice() {
          switch ($input)
          {
                '1' {
-                  [string]$clusterName = Read-Host -Prompt "Enter Name of The Performance Cluster"  
                   prepareInfra $clusterName
                } '2' {
                   readyPerfInfra
@@ -319,7 +318,7 @@ Function Select-Choice() {
                   deleteLinuxVMs $start $end
                } 
                '11' {
-                  clearInfraConfig
+                  clearInfraConfig $clusterName
                   
                }
 
@@ -352,14 +351,44 @@ Function checkDataStores([string] $esxHost, [string] $datastore, [Ref]$results) 
    
 }
 
+
+Function addClusterToVC ([string] $LocationName,  [string] $clusterName) {
+   
+    #for debug
+    #Write-Host "addClusterToVC: Location [$LocationName] Cluster [$clusterName]"
+
+    $clusterInfo = New-Cluster -Location $LocationName -Name $clusterName -DRSEnabled -DrsAutomationLevel  Manual -ErrorAction Stop
+
+    if($clusterInfo -eq $null) {
+        Write-Host -ForegroundColor DarkYellow "ERROR: Cluster [$clusterName] not added"
+        return
+    }
+    
+    Write-Host -ForegroundColor GREEN " Added Cluster[$clusterName] to vCenter"
+}
+
+
+Function deleteClusterFromVC ([string] $clusterName) {
+   
+    #for debug
+    #Write-Host "deleteClusterFromVC: Cluster [$clusterName]"
+
+    $clusterInfo = Remove-Cluster $clusterName -Confirm:$false -ErrorAction SilentlyContinue
+
+    Write-Host -ForegroundColor GREEN " Deleted Cluster[$clusterName] from vCenter"
+}
+
+
 Function prepareInfra([string] $perfClusterName) {
 
-    #
-    # add esx-perf to vCenter
-        addHostToVC 'esx-perf.corp.local' $perfClusterName 'root' 'VMware1!' '4N20N-QYN9Q-L8F8T-0RAU4-0TN05'
-     
+
         $dataCenter = 'Cert-DC'
-   
+    # add cluster
+        addClusterToVC $dataCenter $perfClusterName
+
+    # add esx-perf to vCenter
+        addHostToVC 'esx-perf.corp.local' $perfClusterName 'root' 'VMware1!' '4N20N-QYN9Q-L8F8T-0RAU4-0TN05'    
+
     #
     # Create VDS for Performance and PG
         $vdsname = 'VDS_Performance'
@@ -523,7 +552,7 @@ Function shutDownLinuxVMs([int]$start, [int]$end) {
 
 }
 
-Function clearInfraConfig() {
+Function clearInfraConfig([string] $perfClusterName) {
 
   Get-VDSwitch -Name 'VDS_vertical_scale' | Remove-VDSwitch -Confirm:$false
   Get-VDSwitch -Name 'VDS_Performance' | Remove-VDSwitch -Confirm:$false
@@ -534,6 +563,9 @@ Function clearInfraConfig() {
   # remove from vCenter
   Remove-VMHost esx-perf.corp.local -Confirm:$false
  
+  # remove cluster
+  deleteClusterFromVC $perfClusterName
+
   Write-Host -ForegroundColor GREEN "Removed ESXi host esx-perf.corp.local from vCenter"
 
 }

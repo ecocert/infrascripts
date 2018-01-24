@@ -1,7 +1,7 @@
 ﻿param($start,$end) 
 Add-PSSnapin vmware.vimautomation.core
 
-
+########################################
 
 #Amount of time to wait (in seconds) between each start list of VMs
 $FinalWaitTime = "300"

@@ -4,6 +4,8 @@ Add-PSSnapin vmware.vimautomation.core
 Import-Module VMware.VimAutomation.Vds
 
 connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Password VMware1!
+$time = Get-Date
+write-Host "Begin time $time"
 
 #Input vDS name and vDS port group
 $vDS_name = "vDS_Data"
@@ -28,12 +30,13 @@ $VDSwitch | Add-VDSwitchPhysicalNetworkAdapter -VMHostNetworkAdapter $vmhostadap
 # Migrate Linux Guest VMs from "VM Network" to "vDC_VM_pg"
 For($num=$start;$num -le $end;$num++) {
     
-    $vm="Linux-VM$num"
+    $vm="Tiny-Linux-VM-$num"
     Get-NetworkAdapter $vm | %{
     Write-Host "Setting Network portgroup to" $vDS_pg on $vm
     $_ | Set-NetworkAdapter -PortGroup (Get-VDPortGroup -Name $vDS_pg -VDSwitch $vDS_name) -Confirm:$false
     
     }
 }
-
+$time = Get-Date
+Write-Host "End time $time"
 Disconnect-VIServer -server vcsa-02a.corp.local -confirm:$false

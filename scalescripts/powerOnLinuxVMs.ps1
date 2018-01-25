@@ -23,9 +23,12 @@ for($num=$start; $num -le $end; $num++) {
 
    for($num=$start; $num -le $end; $num++) {
       $vm_ = Get-VM "Tiny-Linux-VM-$num"
-      $ques_ = Get-VMQuestion $vm_
+     
+      $ques_ = $vm_ | Get-VMQuestion
+     
       if($ques_) {
         #Get-VM "Linux-VM$num" | Get-VMQuestion | Set-VMQuestion -Option "button.uuid.copiedTheVM" -Confirm:$false
-        Get-VM "Linux-VM$num" | Get-VMQuestion | Set-VMQuestion -DefaultOption -Confirm:$false
+        $ques_ | Set-VMQuestion -DefaultOption -Confirm:$false
+        write-host "Answered question to the VM $vm_"
       }
    }

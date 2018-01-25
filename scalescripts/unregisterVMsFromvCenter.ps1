@@ -17,10 +17,8 @@ Function unregistervm([int] $StartNumOfVM, [int] $endNumOfVM)
     Write-Host -ForegroundColor GREEN "Unregistering VM: $vm"
  }
 }
- $time = Get-Date
- write-Host "Begin time $time"
+
  unregistervm  $start $end
- $time = Get-Date
- Write-Host "End time $time"
+
 
 Disconnect-VIServer -server vcsa-02a.corp.local -confirm:$false

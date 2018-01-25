@@ -44,8 +44,12 @@ do
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"poweronScaleHosts.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
                 #&$ScriptToRun
            } '3' {
                 
@@ -53,30 +57,44 @@ do
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"addScaleHostsIntovCenter.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } '4' {
                 
                 'You chose option #4'
                 write-Host "There are 1..256 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"registerScaleVMsIntovCenter.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            }'5' {
                 
                 'You chose option #5'
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"addScaleHostsToVDS.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } '6' {
                 
                 'You chose option #6'
                 write-Host "There are 4 FREENAS Servers with the following index-IP mapping,`n 1-192.168.110.61, 2-192.168.110.62, 3-192.168.110.63, 4-192.168.110.64"
                 $start = read-host "Please enter the start FREENAS Server index"
                 $end = read-host "Please enter the end FREENAS Server index"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 [int]$index=0
                 for($index=$start; $index -le $end ; $index++)
                 {
@@ -90,6 +108,8 @@ do
                         write $_
                     }
                 }
+                $time = Get-Date
+                Write-Host "End time $time"
                 
            }'7' {
                 
@@ -97,8 +117,12 @@ do
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"storageScanOnScaleHosts.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            
            } '8' {
                 
@@ -106,48 +130,72 @@ do
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"removeScaleHostsFromVDS.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            }'9' {
                 
                 'You chose option #9'
                 write-Host "There are 1..256 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"unregisterVMsFromvCenter.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } '10' {
                 
                 'You chose option #10'
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"removeScaleHostsFromvCenter.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } '11' {
                 
                 'You chose option #11'
                 write-Host "There are 1..256 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"shutdownScaleHosts.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } '12' {
                 
                 'You chose option #12'
                 write-Host "There are 1..256 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"powerOnLinuxVMs.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } '13' {
                 
                 'You chose option #13'
                 write-Host "There are 1..256 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
+                $time = Get-Date
+                write-Host "Begin time $time"
                 $ScriptToRun= $ScriptPath+"shutdownLinuxVMs.ps1 -start $start -end $end"
                 Invoke-Expression $ScriptToRun
+                $time = Get-Date
+                Write-Host "End time $time"
            } 'q' {
                 return
            }

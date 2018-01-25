@@ -18,8 +18,7 @@ connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Pas
     
     
 
-    $esxhost= Get-VMHost "esx-scale-$num.corp.local"
-
+   
    
         $VMXFile = "$VMXDataStore Tiny-Linux-VM-$num/Tiny-Linux-VM-$num.vmx"
         $ESXHost = "esx-scale-$num.corp.local"
@@ -34,9 +33,7 @@ connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Pas
 
 
 }
-$time = Get-Date
-write-Host "Begin time $time"
+
  registerLinuxVMs  '[VM-DataStore]' $start $end
-$time = Get-Date
-Write-Host "End time $time"
+
 Disconnect-VIServer -server vcsa-02a.corp.local -confirm:$false

@@ -10,8 +10,9 @@ connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Pas
 for($num=$start; $num -le $end; $num++) {
       $vm = "Tiny-Linux-VM-$num"
       $vmInfo = Get-VM -Name $vm
-      #Shutdown-VMGuest -VM $vmInfo -Confirm:$false -RunAsync
-      $vminfo | Shutdown-VMGuest -Confirm:$false
-      Write-Host -ForegroundColor GREEN " Shutdown $vm"
+      #Shutdown-VMGuest -VM $vmInfo -Confirm:$false
+      #$vminfo | Shutdown-VMGuest -Confirm:$false
+      $vminfo | Stop-VMGuest -COnfirm:$false
+      Write-Host -ForegroundColor GREEN " Shutdown $vm done"
 }
       

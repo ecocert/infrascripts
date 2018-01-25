@@ -4,8 +4,6 @@ Add-PSSnapin vmware.vimautomation.core
 Import-Module VMware.VimAutomation.Vds
 
 connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Password VMware1!
-$time = Get-Date
-write-Host "Begin time $time"
 
 #Input vDS name and vDS port group
 $vDS_name = "vDS_Data"
@@ -37,6 +35,5 @@ For($num=$start;$num -le $end;$num++) {
     
     }
 }
-$time = Get-Date
-Write-Host "End time $time"
+
 Disconnect-VIServer -server vcsa-02a.corp.local -confirm:$false

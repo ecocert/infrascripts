@@ -1,0 +1,23 @@
+    {
+        "vsmUuid": "null", 
+        "isUniversal": false, 
+        "name": "null", 
+        "objectId": "null", 
+        "description": "", 
+        "nodeId": "null", 
+        "value": "0.0.0.0", 
+        "universalRevision": 0, 
+        "inheritanceAllowed": false, 
+        "clientHandle": "", 
+        "scope": {
+            "objectTypeName": "GlobalRoot", 
+            "id": "globalroot-0", 
+            "name": "Global"
+        }, 
+        "objectTypeName": "IPSet", 
+        "type": {
+            "name": "IPSet"
+        }, 
+        "extendedAttributes": [], 
+        "revision": 1
+    }

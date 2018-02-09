@@ -1,0 +1,70 @@
+[
+    {
+        "vsmUuid": "42123C94-3F93-FD6C-4DC2-F8D3AD266ADA", 
+        "isUniversal": false, 
+        "name": "security_group0", 
+        "objectId": "securitygroup-159", 
+        "excludeMembers": [], 
+        "description": "\n      ", 
+        "nodeId": "32a41fea-3f63-4969-90dc-a75c023e94bb", 
+        "members": [
+            {
+                "vsmUuid": "42123C94-3F93-FD6C-4DC2-F8D3AD266ADA", 
+                "isUniversal": false, 
+                "name": "TEST",
+                "objectId": "vm-1164",
+                "extendedAttributes": [],
+                "nodeId": "32a41fea-3f63-4969-90dc-a75c023e94bb", 
+                "universalRevision": 0, 
+                "clientHandle": "", 
+                "scope": {
+                    "objectTypeName": "ClusterComputeResource", 
+                    "id": "domain-c13", 
+                    "name": "Cluster2"
+                }, 
+                "objectTypeName": "VirtualMachine", 
+                "type": {
+                    "name": "VirtualMachine"
+                }, 
+                "revision": 42
+            }
+        ], 
+        "universalRevision": 0, 
+        "inheritanceAllowed": false, 
+        "clientHandle": "", 
+        "scope": {
+            "objectTypeName": "GlobalRoot", 
+            "id": "globalroot-0", 
+            "name": "Global"
+        }, 
+        "objectTypeName": "SecurityGroup", 
+        "type": {
+            "name": "SecurityGroup"
+        }, 
+        "extendedAttributes": [], 
+        "revision": 4
+    }, 
+    {
+        "vsmUuid": "42123C94-3F93-FD6C-4DC2-F8D3AD266ADA", 
+        "isUniversal": false, 
+        "name": "Activity Monitoring Data Collection", 
+        "objectId": "securitygroup-1", 
+        "excludeMembers": [], 
+        "extendedAttributes": [], 
+        "nodeId": "32a41fea-3f63-4969-90dc-a75c023e94bb", 
+        "members": [], 
+        "universalRevision": 0, 
+        "inheritanceAllowed": false, 
+        "clientHandle": "", 
+        "scope": {
+            "objectTypeName": "GlobalRoot", 
+            "id": "globalroot-0", 
+            "name": "Global"
+        }, 
+        "objectTypeName": "SecurityGroup", 
+        "type": {
+            "name": "SecurityGroup"
+        }, 
+        "revision": 1
+    }
+]

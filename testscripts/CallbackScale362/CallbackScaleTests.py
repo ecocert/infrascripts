@@ -59,7 +59,7 @@ def menu():
         elif (menuid == str(17)):
             jobid = c.cb_scale_sec_policy_query()
         elif (menuid == str(18)):
-            jobid = c.cb_scale_sec_policy_create()
+            jobid = c.cb_scale_sec_policy_create_xml()
         elif (menuid == str(19)):
             jobid = c.cb_scale_sec_policy_delete()
         elif (menuid == str(20)):

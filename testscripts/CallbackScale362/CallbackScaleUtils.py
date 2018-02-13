@@ -10,14 +10,10 @@
 import constants
 import requests    #library used for making REST API calls
 import json
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import time
 import os
-#from itertools import izip
 import io
 import logging
-
 myheaders={'content-type':'application/json', 'accept':'application/json'}
 
 class CallbackScale:
@@ -81,7 +77,7 @@ class CallbackScale:
                 if ip:
                     name = constants.IPSET_NAME_PREFIX+ str(constants.IPSET_COUNT_START + count)
                     count += 1
-                    #time.sleep(50.0/1000.0)
+                    time.sleep(50.0/1000.0)
                     jdata['name'] = name
                     jdata['value'] = ip
                     #print "["+ip+"]"
@@ -123,7 +119,7 @@ class CallbackScale:
         with open(ipset_obj_output_fname, "r") as outfile:
             for line in outfile:
                 ipset_obj_id = line.strip()
-                #time.sleep(50.0 / 1000.0)
+                time.sleep(50.0 / 1000.0)
 
                 myurl = nsx_url + ipset_obj_id.__str__() + '?force=false'
                 try:
@@ -211,7 +207,7 @@ class CallbackScale:
         sg_fail_cnt = 0
         while (sg_count < scale_count) :
             for ipset_id in ipset_obj_list:
-                #time.sleep(100.0 / 1000.0)
+                time.sleep(100.0 / 1000.0)
                 segroup['name'] = constants.SG_NAME_PREFIX + str(constants.SG_COUNT_START + sg_count)
                 ipset_id = ipset_id.strip()
                 sg_count += 1
@@ -261,7 +257,7 @@ class CallbackScale:
         with open(sg_obj_output_fname, "r") as outfile:
             for line in outfile:
                 sg_obj_id = line.strip()
-                #time.sleep(100.0 / 1000.0)
+                time.sleep(100.0 / 1000.0)
 
                 myurl = nsx_url + sg_obj_id.__str__() + '?force=false'
                 try:
@@ -274,7 +270,7 @@ class CallbackScale:
                     logging.info("DELETED SG " + sg_obj_id)
                 else:
                     #print "ERROR: DELETING SG " + sg_obj_id + " status code = "+ response.status_code
-                    logging("DELETING SG " + sg_obj_id + " status code = "+ str(response.status_code))
+                    logging.error("DELETING SG " + sg_obj_id + " status code = " + str(response.status_code))
 
         outfile.close()
 
@@ -305,23 +301,24 @@ class CallbackScale:
         logging.debug("EXIT")
 
         return True
-
-
-    def cb_scale_sec_policy_create(self):
+    def cb_scale_sec_policy_create_xml(self):
         logging.debug("ENTER")
+
+        # use the sample SP for generating XML input
+        self.cb_scale_sec_policy_query()
 
         api_path = 'api/2.0/services/policy/securitypolicy'
         nsx_url = constants.NSX_URL + api_path
         sp_count = constants.SP_COUNT_START
-        onesp_filename = constants.INPUT_PATH + constants.SP_IN_JSON_FILENAME
+        onesp_filename = constants.OUTPUT_PATH + constants.SP_OUT_JSON_FILENAME
         with open(onesp_filename) as datafile:
             jdata = json.load(datafile)
-            #TODO : replay this for all sp policy file
             sepolicy = jdata['policies'][0]
-            #sepolicy = jdata
         datafile.close()
-        #print sepolicy
-        #print sepolicy['name']
+        serviceprofile_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceProfile']['objectId']
+        service_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceId']
+        #print ("serviceprofile_obj_id = "+serviceprofile_obj_id)
+        #print("service_obj_id ="+service_obj_id)
 
         sg_obj_output_fname = constants.OUTPUT_PATH+constants.SG_OUT_OBJECTID_FILENAME
         if not os.path.isfile(sg_obj_output_fname):
@@ -329,17 +326,8 @@ class CallbackScale:
             print ("SGs might be already deleted. Hence returning.")
             return False
 
-
         sp_obj_output_fname = constants.OUTPUT_PATH+constants.SP_OUT_OBJECTID_FILENAME
         sp_create_time_fname = constants.OUTPUT_PATH + constants.CB_SP_CREATION_TIME_FILE
-
-        '''
-        # TODO: remove after testing
-        try:
-            os.remove(sp_obj_output_fname)
-        except OSError:
-            pass
-        '''
 
         if os.path.isfile(sp_obj_output_fname):
             print ("WARN : FILE EXISTS "+sp_obj_output_fname)
@@ -354,7 +342,388 @@ class CallbackScale:
         total_elapsed_time = 0
         with open(sg_obj_output_fname) as sg_obj_fd:
             for sg_id in sg_obj_fd:
-                #time.sleep(50.0 / 1000.0)
+                #Add delay
+                time.sleep(300.0 / 1000.0)
+                sepolicy_name = constants.SP_NAME_PREFIX + str(constants.SP_COUNT_START + sp_count)
+
+                sg_id = sg_id.strip()
+                sp_count += 1
+                sepolicy['name'] = sepolicy_name
+                sepolicy['precedence'] = constants.SP_PRECEDENCE_START+sp_count
+                sepolicy_pred = constants.SP_PRECEDENCE_START+sp_count
+                payload ='''
+<securityPolicy>
+    <name> ''' + sepolicy_name + ''' </name>
+    <description>Description from script</description>
+    <precedence>''' + str(sepolicy_pred) + '''</precedence>
+    <clientHandle></clientHandle>
+    <extendedAttributes/>
+    <isUniversal>false</isUniversal>
+    <universalRevision>0</universalRevision>
+    <inheritanceAllowed>false</inheritanceAllowed>
+    <actionsByCategory>
+        <category>endpoint</category>
+        <action class="endpointSecurityAction">
+            <name>EndPoint Rule</name>
+            <clientHandle></clientHandle>
+            <extendedAttributes/>
+            <isUniversal>false</isUniversal>
+            <universalRevision>0</universalRevision>
+            <category>endpoint</category>
+            <executionOrder>1</executionOrder>
+            <isEnabled>true</isEnabled>
+            <isActionEnforced>true</isActionEnforced>
+            <serviceId>'''+ service_obj_id + '''</serviceId>
+            <invalidServiceId>false</invalidServiceId>
+            <serviceProfile>
+                <objectId>'''+ serviceprofile_obj_id + '''</objectId>
+            </serviceProfile>
+            <invalidServiceProfile>false</invalidServiceProfile>
+        </action>
+    </actionsByCategory>
+<actionsByCategory>
+  <category>traffic_steering</category>
+  <action class="trafficSteeringSecurityAction">
+    <name>inbound</name>
+    <clientHandle></clientHandle>
+    <isUniversal>false</isUniversal>
+    <universalRevision>0</universalRevision>
+    <category>traffic_steering</category>
+    <executionOrder>1</executionOrder>
+    <isEnabled>true</isEnabled>
+    <isActionEnforced>false</isActionEnforced>
+    <logged>false</logged>
+    <serviceProfile>
+      <objectId>'''+ serviceprofile_obj_id + '''</objectId>
+    </serviceProfile>
+    <invalidServiceProfile>false</invalidServiceProfile>
+    <redirect>true</redirect>
+    <direction>outbound</direction>
+    <outsideSecondaryContainer>false</outsideSecondaryContainer>
+    <invalidSecondaryContainers>false</invalidSecondaryContainers>
+    <applications>
+      <application>
+        <objectId>application-103</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>ICMP Destination Unreachable</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>ICMP</applicationProtocol>
+          <value>destination-unreachable</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-105</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>ICMP Echo</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>ICMP</applicationProtocol>
+          <value>echo-request</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-185</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>Syslog (TCP)</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>TCP</applicationProtocol>
+          <value>514</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-226</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>ICMP Redirect</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>ICMP</applicationProtocol>
+          <value>redirect</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-250</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>Syslog (UDP)</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>UDP</applicationProtocol>
+          <value>514</value>
+        </element>
+      </application>
+    </applications>
+    <invalidApplications>false</invalidApplications>
+  </action>
+  <action class="trafficSteeringSecurityAction">
+    <name>outbound</name>
+    <clientHandle></clientHandle>
+    <isUniversal>false</isUniversal>
+    <universalRevision>0</universalRevision>
+    <category>traffic_steering</category>
+    <executionOrder>2</executionOrder>
+    <isEnabled>true</isEnabled>
+    <isActionEnforced>false</isActionEnforced>
+    <logged>false</logged>
+    <serviceProfile>
+      <objectId>'''+ serviceprofile_obj_id + '''</objectId>
+    </serviceProfile>
+    <invalidServiceProfile>false</invalidServiceProfile>
+    <redirect>true</redirect>
+    <direction>inbound</direction>
+    <outsideSecondaryContainer>false</outsideSecondaryContainer>
+    <invalidSecondaryContainers>false</invalidSecondaryContainers>
+    <applications>
+      <application>
+        <objectId>application-103</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>ICMP Destination Unreachable</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>ICMP</applicationProtocol>
+          <value>destination-unreachable</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-185</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>Syslog (TCP)</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>TCP</applicationProtocol>
+          <value>514</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-226</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>ICMP Redirect</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>ICMP</applicationProtocol>
+          <value>redirect</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-250</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>Syslog (UDP)</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>UDP</applicationProtocol>
+          <value>514</value>
+        </element>
+      </application>
+      <application>
+        <objectId>application-57</objectId>
+        <objectTypeName>Application</objectTypeName>
+        <revision>1</revision>
+        <type>
+          <typeName>Application</typeName>
+        </type>
+        <name>ICMP Echo Reply</name>
+        <scope>
+          <id>globalroot-0</id>
+          <objectTypeName>GlobalRoot</objectTypeName>
+          <name>Global</name>
+        </scope>
+        <clientHandle></clientHandle>
+        <extendedAttributes/>
+        <isUniversal>false</isUniversal>
+        <universalRevision>0</universalRevision>
+        <inheritanceAllowed>true</inheritanceAllowed>
+        <element>
+          <applicationProtocol>ICMP</applicationProtocol>
+          <value>echo-reply</value>
+        </element>
+      </application>
+    </applications>
+    <invalidApplications>false</invalidApplications>
+  </action>
+</actionsByCategory>
+</securityPolicy>'''
+                #print(payload)
+                myxmlheaders = {'content-type': 'application/xml'}
+                start = time.clock()
+                try:
+                    response = requests.post(nsx_url, data=payload, headers=myxmlheaders,
+                                             auth=(constants.USERNAME, constants.PASSWORD), verify=False)
+                except requests.exceptions.ConnectionError as e:
+                    print ("Connection error!")
+                end = time.clock()
+                elapsed_time = end - start
+                timefile.write(str(sp_count) + ',' + str(elapsed_time) + '\n')
+                total_elapsed_time += elapsed_time
+
+                if (response.status_code == 201):
+                    sp_obj_id = response.text
+                    outfile.write(sp_obj_id)
+                    outfile.write("\n")
+                    sp_success_cnt +=1
+                    #print "CREATED SP " + sepolicy_name + " object-id = " + sp_obj_id
+                    logging.info("CREATED SP " + sepolicy_name + " object-id = " + sp_obj_id)
+                else:
+                    #print "ERROR: CREATING SP " + sepolicy_name  + " status code = " + str(response.status_code)
+                    logging.error("CREATING SP " + sepolicy_name  + " status code = " + str(response.status_code))
+                    sp_fail_cnt +=1
+
+        print ("SP CREATION : success_count=" + str(sp_success_cnt) + " failure_count="+ str(sp_fail_cnt))
+        print ("TOTAL SP CREATION time is : " + str(total_elapsed_time) + " seconds ...")
+        logging.info("SP CREATION : success_count=" + str(sp_success_cnt) + " failure_count="+ str(sp_fail_cnt))
+        logging.info("TOTAL SP CREATION time is : " + str(total_elapsed_time) + " seconds ...")
+
+        outfile.close()
+        timefile.close()
+        sg_obj_fd.close()
+
+        logging.debug("EXIT")
+        return True
+
+
+    def cb_scale_sec_policy_create(self):
+        logging.debug("ENTER")
+
+        api_path = 'api/2.0/services/policy/securitypolicy'
+        nsx_url = constants.NSX_URL + api_path
+        sp_count = constants.SP_COUNT_START
+        onesp_filename = constants.INPUT_PATH + constants.SP_IN_JSON_FILENAME
+        with open(onesp_filename) as datafile:
+            jdata = json.load(datafile)
+            sepolicy = jdata['policies'][0]
+        datafile.close()
+
+        sg_obj_output_fname = constants.OUTPUT_PATH+constants.SG_OUT_OBJECTID_FILENAME
+        if not os.path.isfile(sg_obj_output_fname):
+            print ("WARN : FILE DOES NOT EXISTS "+sg_obj_output_fname)
+            print ("SGs might be already deleted. Hence returning.")
+            return False
+
+
+        sp_obj_output_fname = constants.OUTPUT_PATH+constants.SP_OUT_OBJECTID_FILENAME
+        sp_create_time_fname = constants.OUTPUT_PATH + constants.CB_SP_CREATION_TIME_FILE
+
+        if os.path.isfile(sp_obj_output_fname):
+            print ("WARN : FILE EXISTS "+sp_obj_output_fname)
+            print ("SP OBJECT-IDs might be already created. Hence returning.")
+            return False
+
+        outfile = open(sp_obj_output_fname, "w")
+        timefile = open(sp_create_time_fname, "w")
+        sp_success_cnt = 0
+        sp_fail_cnt = 0
+        sp_count = 0
+        total_elapsed_time = 0
+        with open(sg_obj_output_fname) as sg_obj_fd:
+            for sg_id in sg_obj_fd:
+                time.sleep(300.0 / 1000.0)
                 sepolicy_name = constants.SP_NAME_PREFIX + str(constants.SP_COUNT_START + sp_count)
                 sg_id = sg_id.strip()
                 sp_count += 1
@@ -417,7 +786,7 @@ class CallbackScale:
         with open(sp_obj_output_fname, "r") as outfile:
             for line in outfile:
                 sp_obj_id = line.strip()
-                #time.sleep(50.0 / 1000.0)
+                time.sleep(200.0 / 1000.0)
 
                 myurl = nsx_url + sp_obj_id.__str__() + '?force=false'
                 try:
@@ -456,6 +825,12 @@ class CallbackScale:
             print ("Connection error!")
 
         data = response.json()
+        '''
+        print(response.content)
+        rootxml = ElementTree.fromstring(response.content)
+        indent(rootxml)
+        ElementTree.dump(rootxml)
+        '''
         sp_output_fname = constants.OUTPUT_PATH+constants.SP_OUT_JSON_FILENAME
         with open(sp_output_fname, "w") as outfile:
             json.dump(data, outfile, indent=4)
@@ -500,7 +875,8 @@ class CallbackScale:
             sg_obj_id = sg_line.rstrip()
             sp_obj_id = sp_line.rstrip()
             #print "%s\t%s" % (sg_obj_id, sp_obj_id)
-            #time.sleep(50.0 / 1000.0)
+            #Add delay
+            time.sleep(200.0 / 1000.0)
             sp_count += 1
             myurl = nsx_url + sp_obj_id.__str__() + '/sgbinding/' + sg_obj_id.__str__()
             #print myurl
@@ -542,7 +918,7 @@ class CallbackScale:
         if ret != True:
             print ("ERROR: SE Group Create")
 
-        ret = self.cb_scale_sec_policy_create()
+        ret = self.cb_scale_sec_policy_create_xml()
         if ret != True:
             print ("ERROR: SE Policy Create")
 

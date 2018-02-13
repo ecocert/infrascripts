@@ -14,7 +14,7 @@ CB_LOG_FILE = "cb_script.log"
 CB_SP_CREATION_TIME_FILE = "sp_creation_time.csv"
 CB_SP_APPLY_TIME_FILE = "sp_apply_time.csv"
 # keep _COUNT_TOTAL as multiple of GVMs (currently GVMS=4)
-SCALE_COUNT_TOTAL = 3
+SCALE_COUNT_TOTAL = 24
 
 #ip set inputs
 GVM_IP_ADDR_FNAME = "gvm_ip_addresses.txt"

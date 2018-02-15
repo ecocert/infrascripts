@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<securityPolicy>
+  <actionsByCategory>
+     <endpoint>
+        <action-1>
+           <isActionEnforced>true</isActionEnforced>
+           <isEnabled>true</isEnabled>
+           <name>GI-service</name>
+           <serviceId>service-12</serviceId>
+           <serviceName>Trend Micro Deep Security</serviceName>
+           <serviceProfile>
+              <clientHandle />
+              <description>The default Deep Security profile configuration used for EBTs.</description>
+              <extendedAttributes />
+              <isUniversal>false</isUniversal>
+              <name>Default (EBT)</name>
+              <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+              <objectId>serviceprofile-22</objectId>
+              <objectTypeName>ServiceProfile</objectTypeName>
+              <priority>1</priority>
+              <profileAttributes>
+                 <attributes>
+                    <element>
+                       <id>1455</id>
+                       <key>failOpen</key>
+                       <name>Failure Policy</name>
+                       <revision>0</revision>
+                       <value>true</value>
+                    </element>
+                 </attributes>
+                 <id>1454</id>
+                 <revision>1</revision>
+              </profileAttributes>
+              <revision>9</revision>
+              <runtime>
+                 <nonCompliantDvpg />
+                 <nonCompliantVwire />
+              </runtime>
+              <service>
+                 <clientHandle />
+                 <description>Advanced security for virtual servers and desktops - Provides Agentless Anti-Malware, Web Reputation, Intrusion Prevention, Integrity Monitoring and Firewall.</description>
+                 <extendedAttributes />
+                 <isUniversal>false</isUniversal>
+                 <name>Trend Micro Deep Security</name>
+                 <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                 <objectId>service-12</objectId>
+                 <objectTypeName>Service</objectTypeName>
+                 <revision>5</revision>
+                 <type>
+                    <name>Service</name>
+                 </type>
+                 <universalRevision>0</universalRevision>
+                 <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+              </service>
+              <serviceInstance>
+                 <clientHandle />
+                 <extendedAttributes />
+                 <isUniversal>false</isUniversal>
+                 <name>Trend Micro Deep Security-GlobalInstance</name>
+                 <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                 <objectId>serviceinstance-6</objectId>
+                 <objectTypeName>ServiceInstance</objectTypeName>
+                 <revision>1</revision>
+                 <type>
+                    <name>ServiceInstance</name>
+                 </type>
+                 <universalRevision>0</universalRevision>
+                 <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+              </serviceInstance>
+              <serviceProfileBinding>
+                 <distributedVirtualPortGroups />
+                 <excludedVnics />
+                 <securityGroups />
+                 <virtualServers />
+                 <virtualWires />
+              </serviceProfileBinding>
+              <status>IN_SERVICE</status>
+              <type>
+                 <name>ServiceProfile</name>
+              </type>
+              <universalRevision>0</universalRevision>
+              <vendorAttributes>
+                 <attributes />
+                 <id>1456</id>
+                 <revision>0</revision>
+              </vendorAttributes>
+              <vendorSections />
+              <vendorTables />
+              <vendorTemplate>
+                 <description>The default Deep Security profile configuration used for EBTs.</description>
+                 <functionalities>
+                    <element>
+                       <revision>0</revision>
+                       <type>ANTI_VIRUS</type>
+                    </element>
+                    <element>
+                       <revision>0</revision>
+                       <type>FIM</type>
+                    </element>
+                    <element>
+                       <revision>0</revision>
+                       <type>IDS_IPS</type>
+                    </element>
+                 </functionalities>
+                 <id>1448</id>
+                 <idFromVendor>1</idFromVendor>
+                 <name>Default (EBT)</name>
+                 <revision>1</revision>
+              </vendorTemplate>
+              <vendorTypedAttributes>
+                 <id>1457</id>
+                 <revision>0</revision>
+                 <typedAttributes />
+              </vendorTypedAttributes>
+              <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+           </serviceProfile>
+           <type>EndpointPolicyAction</type>
+           <vendorTemplateId>1448</vendorTemplateId>
+           <vendorTemplateName>Default (EBT)</vendorTemplateName>
+        </action-1>
+     </endpoint>
+  </actionsByCategory>
+  <description />
+  <name>SP22</name>
+  <precedence>4350</precedence>
+   <children />
+   <clientHandle />
+   <description />
+   <executionOrderCategoryToActionsList>
+      <element>
+         <actionList>
+            <element>
+               <actionEnforced>true</actionEnforced>
+               <auditableMap>
+                  <isActionEnforced>true</isActionEnforced>
+                  <isEnabled>true</isEnabled>
+                  <name>GI-service</name>
+                  <serviceId>service-12</serviceId>
+                  <serviceName>Trend Micro Deep Security</serviceName>
+                  <serviceProfile>
+                     <clientHandle />
+                     <description>The default Deep Security profile configuration used for EBTs.</description>
+                     <extendedAttributes />
+                     <isUniversal>false</isUniversal>
+                     <name>Default (EBT)</name>
+                     <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                     <objectId>serviceprofile-22</objectId>
+                     <objectTypeName>ServiceProfile</objectTypeName>
+                     <priority>1</priority>
+                     <profileAttributes>
+                        <attributes>
+                           <element>
+                              <id>1455</id>
+                              <key>failOpen</key>
+                              <name>Failure Policy</name>
+                              <revision>0</revision>
+                              <value>true</value>
+                           </element>
+                        </attributes>
+                        <id>1454</id>
+                        <revision>1</revision>
+                     </profileAttributes>
+                     <revision>9</revision>
+                     <runtime>
+                        <nonCompliantDvpg />
+                        <nonCompliantVwire />
+                     </runtime>
+                     <service>
+                        <clientHandle />
+                        <description>Advanced security for virtual servers and desktops - Provides Agentless Anti-Malware, Web Reputation, Intrusion Prevention, Integrity Monitoring and Firewall.</description>
+                        <extendedAttributes />
+                        <isUniversal>false</isUniversal>
+                        <name>Trend Micro Deep Security</name>
+                        <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                        <objectId>service-12</objectId>
+                        <objectTypeName>Service</objectTypeName>
+                        <revision>5</revision>
+                        <type>
+                           <name>Service</name>
+                        </type>
+                        <universalRevision>0</universalRevision>
+                        <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                     </service>
+                     <serviceInstance>
+                        <clientHandle />
+                        <extendedAttributes />
+                        <isUniversal>false</isUniversal>
+                        <name>Trend Micro Deep Security-GlobalInstance</name>
+                        <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                        <objectId>serviceinstance-6</objectId>
+                        <objectTypeName>ServiceInstance</objectTypeName>
+                        <revision>1</revision>
+                        <type>
+                           <name>ServiceInstance</name>
+                        </type>
+                        <universalRevision>0</universalRevision>
+                        <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                     </serviceInstance>
+                     <serviceProfileBinding>
+                        <distributedVirtualPortGroups />
+                        <excludedVnics />
+                        <securityGroups />
+                        <virtualServers />
+                        <virtualWires />
+                     </serviceProfileBinding>
+                     <status>IN_SERVICE</status>
+                     <type>
+                        <name>ServiceProfile</name>
+                     </type>
+                     <universalRevision>0</universalRevision>
+                     <vendorAttributes>
+                        <attributes />
+                        <id>1456</id>
+                        <revision>0</revision>
+                     </vendorAttributes>
+                     <vendorSections />
+                     <vendorTables />
+                     <vendorTemplate>
+                        <description>The default Deep Security profile configuration used for EBTs.</description>
+                        <functionalities>
+                           <element>
+                              <revision>0</revision>
+                              <type>ANTI_VIRUS</type>
+                           </element>
+                           <element>
+                              <revision>0</revision>
+                              <type>FIM</type>
+                           </element>
+                           <element>
+                              <revision>0</revision>
+                              <type>IDS_IPS</type>
+                           </element>
+                        </functionalities>
+                        <id>1448</id>
+                        <idFromVendor>1</idFromVendor>
+                        <name>Default (EBT)</name>
+                        <revision>1</revision>
+                     </vendorTemplate>
+                     <vendorTypedAttributes>
+                        <id>1457</id>
+                        <revision>0</revision>
+                        <typedAttributes />
+                     </vendorTypedAttributes>
+                     <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                  </serviceProfile>
+                  <type>EndpointPolicyAction</type>
+                  <vendorTemplateId>1448</vendorTemplateId>
+                  <vendorTemplateName>Default (EBT)</vendorTemplateName>
+               </auditableMap>
+               <clientHandle />
+               <enabled>true</enabled>
+               <executionOrder>1</executionOrder>
+               <executionOrderCategory>endpoint</executionOrderCategory>
+               <extendedAttributes />
+               <invalidServiceId>false</invalidServiceId>
+               <invalidServiceProfile>false</invalidServiceProfile>
+               <invalidVendorTemplateId>false</invalidVendorTemplateId>
+               <isActionEnforced>true</isActionEnforced>
+               <isEnabled>true</isEnabled>
+               <isUniversal>false</isUniversal>
+               <name>GI-service</name>
+               <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+               <objectId>endpointpolicyaction-3</objectId>
+               <objectTypeName>EndpointPolicyAction</objectTypeName>
+               <revision>3</revision>
+               <scope>
+                  <id>globalroot-0</id>
+                  <name>Global</name>
+                  <objectTypeName>GlobalRoot</objectTypeName>
+               </scope>
+               <serviceId>service-12</serviceId>
+               <serviceName>Trend Micro Deep Security</serviceName>
+               <serviceProfile>
+                  <clientHandle />
+                  <description>The default Deep Security profile configuration used for EBTs.</description>
+                  <extendedAttributes />
+                  <isUniversal>false</isUniversal>
+                  <name>Default (EBT)</name>
+                  <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                  <objectId>serviceprofile-22</objectId>
+                  <objectTypeName>ServiceProfile</objectTypeName>
+                  <priority>1</priority>
+                  <profileAttributes>
+                     <attributes>
+                        <element>
+                           <id>1455</id>
+                           <key>failOpen</key>
+                           <name>Failure Policy</name>
+                           <revision>0</revision>
+                           <value>true</value>
+                        </element>
+                     </attributes>
+                     <id>1454</id>
+                     <revision>1</revision>
+                  </profileAttributes>
+                  <revision>9</revision>
+                  <runtime>
+                     <nonCompliantDvpg />
+                     <nonCompliantVwire />
+                  </runtime>
+                  <service>
+                     <clientHandle />
+                     <description>Advanced security for virtual servers and desktops - Provides Agentless Anti-Malware, Web Reputation, Intrusion Prevention, Integrity Monitoring and Firewall.</description>
+                     <extendedAttributes />
+                     <isUniversal>false</isUniversal>
+                     <name>Trend Micro Deep Security</name>
+                     <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                     <objectId>service-12</objectId>
+                     <objectTypeName>Service</objectTypeName>
+                     <revision>5</revision>
+                     <type>
+                        <name>Service</name>
+                     </type>
+                     <universalRevision>0</universalRevision>
+                     <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                  </service>
+                  <serviceInstance>
+                     <clientHandle />
+                     <extendedAttributes />
+                     <isUniversal>false</isUniversal>
+                     <name>Trend Micro Deep Security-GlobalInstance</name>
+                     <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                     <objectId>serviceinstance-6</objectId>
+                     <objectTypeName>ServiceInstance</objectTypeName>
+                     <revision>1</revision>
+                     <type>
+                        <name>ServiceInstance</name>
+                     </type>
+                     <universalRevision>0</universalRevision>
+                     <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                  </serviceInstance>
+                  <serviceProfileBinding>
+                     <distributedVirtualPortGroups />
+                     <excludedVnics />
+                     <securityGroups />
+                     <virtualServers />
+                     <virtualWires />
+                  </serviceProfileBinding>
+                  <status>IN_SERVICE</status>
+                  <type>
+                     <name>ServiceProfile</name>
+                  </type>
+                  <universalRevision>0</universalRevision>
+                  <vendorAttributes>
+                     <attributes />
+                     <id>1456</id>
+                     <revision>0</revision>
+                  </vendorAttributes>
+                  <vendorSections />
+                  <vendorTables />
+                  <vendorTemplate>
+                     <description>The default Deep Security profile configuration used for EBTs.</description>
+                     <functionalities>
+                        <element>
+                           <revision>0</revision>
+                           <type>ANTI_VIRUS</type>
+                        </element>
+                        <element>
+                           <revision>0</revision>
+                           <type>FIM</type>
+                        </element>
+                        <element>
+                           <revision>0</revision>
+                           <type>IDS_IPS</type>
+                        </element>
+                     </functionalities>
+                     <id>1448</id>
+                     <idFromVendor>1</idFromVendor>
+                     <name>Default (EBT)</name>
+                     <revision>1</revision>
+                  </vendorTemplate>
+                  <vendorTypedAttributes>
+                     <id>1457</id>
+                     <revision>0</revision>
+                     <typedAttributes />
+                  </vendorTypedAttributes>
+                  <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+               </serviceProfile>
+               <type>
+                  <name>EndpointPolicyAction</name>
+               </type>
+               <universalRevision>0</universalRevision>
+               <vendorTemplateId>1448</vendorTemplateId>
+               <vendorTemplateName>Default (EBT)</vendorTemplateName>
+               <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+            </element>
+         </actionList>
+         <auditableMap>
+            <action-1>
+               <isActionEnforced>true</isActionEnforced>
+               <isEnabled>true</isEnabled>
+               <name>GI-service</name>
+               <serviceId>service-12</serviceId>
+               <serviceName>Trend Micro Deep Security</serviceName>
+               <serviceProfile>
+                  <clientHandle />
+                  <description>The default Deep Security profile configuration used for EBTs.</description>
+                  <extendedAttributes />
+                  <isUniversal>false</isUniversal>
+                  <name>Default (EBT)</name>
+                  <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                  <objectId>serviceprofile-22</objectId>
+                  <objectTypeName>ServiceProfile</objectTypeName>
+                  <priority>1</priority>
+                  <profileAttributes>
+                     <attributes>
+                        <element>
+                           <id>1455</id>
+                           <key>failOpen</key>
+                           <name>Failure Policy</name>
+                           <revision>0</revision>
+                           <value>true</value>
+                        </element>
+                     </attributes>
+                     <id>1454</id>
+                     <revision>1</revision>
+                  </profileAttributes>
+                  <revision>9</revision>
+                  <runtime>
+                     <nonCompliantDvpg />
+                     <nonCompliantVwire />
+                  </runtime>
+                  <service>
+                     <clientHandle />
+                     <description>Advanced security for virtual servers and desktops - Provides Agentless Anti-Malware, Web Reputation, Intrusion Prevention, Integrity Monitoring and Firewall.</description>
+                     <extendedAttributes />
+                     <isUniversal>false</isUniversal>
+                     <name>Trend Micro Deep Security</name>
+                     <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                     <objectId>service-12</objectId>
+                     <objectTypeName>Service</objectTypeName>
+                     <revision>5</revision>
+                     <type>
+                        <name>Service</name>
+                     </type>
+                     <universalRevision>0</universalRevision>
+                     <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                  </service>
+                  <serviceInstance>
+                     <clientHandle />
+                     <extendedAttributes />
+                     <isUniversal>false</isUniversal>
+                     <name>Trend Micro Deep Security-GlobalInstance</name>
+                     <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+                     <objectId>serviceinstance-6</objectId>
+                     <objectTypeName>ServiceInstance</objectTypeName>
+                     <revision>1</revision>
+                     <type>
+                        <name>ServiceInstance</name>
+                     </type>
+                     <universalRevision>0</universalRevision>
+                     <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+                  </serviceInstance>
+                  <serviceProfileBinding>
+                     <distributedVirtualPortGroups />
+                     <excludedVnics />
+                     <securityGroups />
+                     <virtualServers />
+                     <virtualWires />
+                  </serviceProfileBinding>
+                  <status>IN_SERVICE</status>
+                  <type>
+                     <name>ServiceProfile</name>
+                  </type>
+                  <universalRevision>0</universalRevision>
+                  <vendorAttributes>
+                     <attributes />
+                     <id>1456</id>
+                     <revision>0</revision>
+                  </vendorAttributes>
+                  <vendorSections />
+                  <vendorTables />
+                  <vendorTemplate>
+                     <description>The default Deep Security profile configuration used for EBTs.</description>
+                     <functionalities>
+                        <element>
+                           <revision>0</revision>
+                           <type>ANTI_VIRUS</type>
+                        </element>
+                        <element>
+                           <revision>0</revision>
+                           <type>FIM</type>
+                        </element>
+                        <element>
+                           <revision>0</revision>
+                           <type>IDS_IPS</type>
+                        </element>
+                     </functionalities>
+                     <id>1448</id>
+                     <idFromVendor>1</idFromVendor>
+                     <name>Default (EBT)</name>
+                     <revision>1</revision>
+                  </vendorTemplate>
+                  <vendorTypedAttributes>
+                     <id>1457</id>
+                     <revision>0</revision>
+                     <typedAttributes />
+                  </vendorTypedAttributes>
+                  <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+               </serviceProfile>
+               <type>EndpointPolicyAction</type>
+               <vendorTemplateId>1448</vendorTemplateId>
+               <vendorTemplateName>Default (EBT)</vendorTemplateName>
+            </action-1>
+         </auditableMap>
+         <executionOrderCategory>endpoint</executionOrderCategory>
+      </element>
+   </executionOrderCategoryToActionsList>
+   <executionOrderCategoryToStatusList>
+      <element>
+         <executionOrderCategory>endpoint</executionOrderCategory>
+         <status>in_sync</status>
+      </element>
+   </executionOrderCategoryToStatusList>
+   <extendedAttributes />
+   <inheritanceAllowed>false</inheritanceAllowed>
+   <isUniversal>false</isUniversal>
+   <name>SP22</name>
+   <nodeId>ec4763e5-50d6-4bb7-97a8-7e1e5c980d32</nodeId>
+   <objectId>policy-387</objectId>
+   <objectTypeName>Policy</objectTypeName>
+   <precedence>4350</precedence>
+   <revision>9</revision>
+   <scope>
+      <id>globalroot-0</id>
+      <name>Global</name>
+      <objectTypeName>GlobalRoot</objectTypeName>
+   </scope>
+   <securityGroupBindings />
+   <statusSummary>in_sync</statusSummary>
+   <type>
+      <name>Policy</name>
+   </type>
+   <universalRevision>0</universalRevision>
+   <vsmUuid>421280E1-87A9-A40E-493E-04BDB3D0B489</vsmUuid>
+</securityPolicy>

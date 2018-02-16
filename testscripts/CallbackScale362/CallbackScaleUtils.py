@@ -343,7 +343,7 @@ class CallbackScale:
         with open(sg_obj_output_fname) as sg_obj_fd:
             for sg_id in sg_obj_fd:
                 #Add delay
-                time.sleep(300.0 / 1000.0)
+                time.sleep(100.0 / 1000.0)
                 sepolicy_name = constants.SP_NAME_PREFIX + str(constants.SP_COUNT_START + sp_count)
 
                 sg_id = sg_id.strip()
@@ -723,7 +723,7 @@ class CallbackScale:
         total_elapsed_time = 0
         with open(sg_obj_output_fname) as sg_obj_fd:
             for sg_id in sg_obj_fd:
-                time.sleep(300.0 / 1000.0)
+                time.sleep(100.0 / 1000.0)
                 sepolicy_name = constants.SP_NAME_PREFIX + str(constants.SP_COUNT_START + sp_count)
                 sg_id = sg_id.strip()
                 sp_count += 1
@@ -786,7 +786,7 @@ class CallbackScale:
         with open(sp_obj_output_fname, "r") as outfile:
             for line in outfile:
                 sp_obj_id = line.strip()
-                time.sleep(200.0 / 1000.0)
+                time.sleep(100.0 / 1000.0)
 
                 myurl = nsx_url + sp_obj_id.__str__() + '?force=false'
                 try:
@@ -855,15 +855,15 @@ class CallbackScale:
             print ("ERROR : FILE DOES NOT EXISTS " + sp_obj_output_fname)
             print ("SPs might be already deleted. Hence returning.")
             # nothing to do, just continue hence return True
-            return True
+            return False
 
         sg_obj_output_fname = constants.OUTPUT_PATH+constants.SG_OUT_OBJECTID_FILENAME
 
         if not os.path.isfile(sg_obj_output_fname):
             print ("ERROR : FILE DOES NOT EXISTS "+sg_obj_output_fname)
             print ("SGs might be already deleted. Hence returning.")
-            # nothing to do, just continue hence return True
-            return True
+            # nothing to do, just continue
+            return False
 
         sg_outfile = open(sg_obj_output_fname)
         sp_outfile = open(sp_obj_output_fname)
@@ -876,7 +876,7 @@ class CallbackScale:
             sp_obj_id = sp_line.rstrip()
             #print "%s\t%s" % (sg_obj_id, sp_obj_id)
             #Add delay
-            time.sleep(200.0 / 1000.0)
+            time.sleep(100.0 / 1000.0)
             sp_count += 1
             myurl = nsx_url + sp_obj_id.__str__() + '/sgbinding/' + sg_obj_id.__str__()
             #print myurl
@@ -907,7 +907,7 @@ class CallbackScale:
         return True
 
     def cb_scale_config_setup(self, input_fname, scale_count):
-        print ("Started Callback Scale Infra Setup...")
+        print ("Started Callback Scale Setup...")
         logging.debug("ENTER")
 
         ret = self.cb_scale_ipset_create(input_fname)
@@ -926,13 +926,13 @@ class CallbackScale:
         if ret != True:
             print ("ERROR: SE Policy Apply")
 
-        print ("Completed Callback Scale Infra Setup. Done")
+        print ("Completed Callback Scale Setup. Done")
         logging.debug("EXIT")
 
         return True
 
     def cb_scale_config_cleanup(self):
-        print ("Started Callback Scale Infra Cleanup...")
+        print ("Started Callback Scale Cleanup...")
         logging.debug("ENTER")
 
         ret = self.cb_scale_sec_policy_delete()
@@ -947,7 +947,7 @@ class CallbackScale:
         if ret != True:
             print ("ERROR: IPSET Delete")
 
-        print ("Completed Callback Scale Infra Cleanup. Done")
+        print ("Completed Callback Scale Cleanup. Done")
         logging.debug("EXIT")
 
         return True

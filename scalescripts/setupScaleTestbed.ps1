@@ -19,7 +19,10 @@
      Write-Host "11: Press '11' to shutdown scale hosts"
      Write-Host "12: Press '12' to power on linux VMs"
      Write-Host "13: Press '13' to shutdown linux VMs"
-     
+     Write-Host "14: Press '14' to Prepare Host Clusters for NSX"
+     Write-Host "15: Press '15' to Deploy NSX Guest Introspection or Partner Service"
+     Write-Host "16: Press '16' to Monitor and Resolve alarms raised in Guest Introspection or Partner Service deployment"
+
      Write-Host "Q: Press 'Q' to quit."
 }
 
@@ -196,7 +199,86 @@ do
                 Invoke-Expression $ScriptToRun
                 $time = Get-Date
                 Write-Host "End time $time"
-           } 'q' {
+           } '14' {
+                
+                'You chose option #14'
+                write-Host "There are 4 clusters with the following index-IP mapping,`n 1-ScaleCluster1, 2-ScaleCluster2, 3-ScaleCluster3, 4-ScaleCluster4"
+                $start = read-host "Please enter the start ScaleCluster index"
+                $end = read-host "Please enter the end ScaleCluster index"
+                $time = Get-Date
+                write-Host "Begin time $time"
+                [int]$index=0
+                for($index=$start; $index -le $end ; $index++)
+                {
+                    try
+                    {
+                        $ScriptToRun= $ScriptPath+"NSXHostPreparationInstallation.ps1 -index $index"
+                        Invoke-Expression $ScriptToRun
+                        sleep 10
+                        $ScriptToRun= $ScriptPath+"NSXHostPreparationStatus.ps1 -index $index"
+                        Invoke-Expression $ScriptToRun
+                    }
+                    catch
+                    {
+                        write $_
+                    }
+                }
+               
+                $time = Get-Date
+                Write-Host "End time $time"
+           }'15' {
+                
+                'You chose option #15'
+                write-Host "There are 4 clusters with the following index-IP mapping,`n 1-ScaleCluster1, 2-ScaleCluster2, 3-ScaleCluster3, 4-ScaleCluster4"
+                $start = read-host "Please enter the start ScaleCluster index"
+                $end = read-host "Please enter the end ScaleCluster index"
+                $servicename = read-host 'Please enter the service name to be deployed with in quotes, for guest introspection type "Guest Introspection"'
+                $time = Get-Date
+                write-Host "Begin time $time"
+                [int]$index=0
+                for($index=$start; $index -le $end ; $index++)
+                {
+                    try
+                    {
+                        $ScriptToRun= $ScriptPath+"NSXServiceDeployment.ps1 -index $index -servicename $servicename"
+                        Invoke-Expression $ScriptToRun
+                        sleep 15
+                        $ScriptToRun= $ScriptPath+"NSXServiceDeploymentStatus.ps1 -index $index -servicename $servicename"
+                        Invoke-Expression $ScriptToRun
+                    }
+                    catch
+                    {
+                        write $_
+                    }
+                }
+               
+                $time = Get-Date
+                Write-Host "End time $time"
+           }'16' {
+                
+                'You chose option #16'
+                write-Host "There are 4 clusters with the following index-IP mapping,`n 1-ScaleCluster1, 2-ScaleCluster2, 3-ScaleCluster3, 4-ScaleCluster4"
+                $start = read-host "Please enter the start ScaleCluster index"
+                $end = read-host "Please enter the end ScaleCluster index"
+                $servicename = read-host 'Please enter the service name to be monitored with in quotes, for guest introspection type "Guest Introspection"'
+                $time = Get-Date
+                write-Host "Begin time $time"
+                [int]$index=0
+                for($index=$start; $index -le $end ; $index++)
+                {
+                    try
+                    {
+                        $ScriptToRun= $ScriptPath+"NSXServiceDeploymentStatus.ps1 -index $index -servicename $servicename"
+                        Invoke-Expression $ScriptToRun
+                    }
+                    catch
+                    {
+                        write $_
+                    }
+                }
+                $time = Get-Date
+                Write-Host "End time $time"
+           }'q' {
                 return
            }
      }

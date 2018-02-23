@@ -13,7 +13,7 @@ OUTPUT_PATH = ".\output\\"
 CB_LOG_FILE = "cb_script.log"
 CB_SP_CREATION_TIME_FILE = "sp_creation_time.csv"
 CB_SP_APPLY_TIME_FILE = "sp_apply_time.csv"
-SCALE_COUNT_TOTAL = 128
+SCALE_COUNT_TOTAL = 5
 NUM_RETRIES = 3
 WAIT_IN_SEC = (100.0/1000.0)
 

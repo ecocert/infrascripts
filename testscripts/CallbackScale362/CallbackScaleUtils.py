@@ -159,13 +159,20 @@ class CallbackScale:
         jdata = response.json()
         sepolicy = jdata['policies'][0]
 
+        #print(json.dumps(jdata, indent=1))
+
         #create new policies
         api_path = 'api/2.0/services/policy/securitypolicy'
         nsx_url = constants.NSX_URL + api_path
         sp_count = constants.SP_COUNT_START
 
-        serviceprofile_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceProfile']['objectId']
-        service_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceId']
+        #for EPSEC
+        #serviceprofile_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceProfile']['objectId']
+        #service_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceId']
+
+        #for NETX
+        serviceprofile_obj_id = sepolicy['executionOrderCategoryToActionsList'][0]['actionList'][0]['serviceProfile']['objectId']
+
         #print ("serviceprofile_obj_id = "+serviceprofile_obj_id)
         #print("service_obj_id ="+service_obj_id)
 

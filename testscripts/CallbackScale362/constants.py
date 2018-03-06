@@ -5,7 +5,7 @@
 # Version: 1.0
 # Date: 08/FEB/2018
 #
-NSX_URL = "https://192.168.10.91/"
+NSX_URL = "https://172.17.11.11/"
 USERNAME = "admin"
 PASSWORD = "VMware1!"
 INPUT_PATH = ".\input\\"

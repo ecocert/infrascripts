@@ -9,7 +9,8 @@
 
 Import-module VMware.VimAutomation.Core
 
-$VcenterIpAddess = "192.168.110.90"
+#$VcenterIpAddess = "192.168.110.90"
+$VcenterIpAddess = "172.17.11.10"
 $Username = "administrator@corp.local"
 $Password = "VMware1!"
 $GVMFilename = ".\input\gvm_object_ids.txt"

@@ -116,7 +116,7 @@ class CallbackScale:
             if (sg_name.startswith(constants.SG_NAME_PREFIX)):
                 sg_obj_id = segroup['objectId']
                 #print(sg_name + " " + sg_obj_id)
-                myurl = nsx_url + sg_obj_id.__str__() + '?force=false'
+                myurl = nsx_url + sg_obj_id.__str__() + '?force=true'
                 #print(myurl)
                 try_more = True
                 try_count = 0
@@ -539,7 +539,7 @@ class CallbackScale:
             if (sp_name.startswith(constants.SP_NAME_PREFIX)):
                 sp_obj_id = sepolicy['objectId']
                 #print(sp_name + " " + sp_obj_id)
-                myurl = nsx_url + sp_obj_id.__str__() + '?force=false'
+                myurl = nsx_url + sp_obj_id.__str__() + '?force=true'
                 try_more = True
                 try_count = 0
                 while (try_more and try_count < constants.NUM_RETRIES):

@@ -616,6 +616,8 @@ class CallbackScale:
 
             #print(sg_obj_id, sp_obj_id)
             #Add delay
+            if (sp_count >= constants.SG_BINDING_COUNT):
+                break;
             time.sleep(constants.WAIT_IN_SEC)
             sp_count += 1
             myurl = nsx_url + sp_obj_id.__str__() + '/sgbinding/' + sg_obj_id.__str__()

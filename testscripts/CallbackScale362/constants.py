@@ -13,7 +13,9 @@ OUTPUT_PATH = ".\output\\"
 CB_LOG_FILE = "cb_script.log"
 CB_SP_CREATION_TIME_FILE = "sp_creation_time.csv"
 CB_SP_APPLY_TIME_FILE = "sp_apply_time.csv"
-SCALE_COUNT_TOTAL = 5
+SCALE_COUNT_TOTAL = 1000
+# Set SG_BINDING_COUNT less than 128
+SG_BINDING_COUNT = 64
 NUM_RETRIES = 3
 WAIT_IN_SEC = (100.0/1000.0)
 

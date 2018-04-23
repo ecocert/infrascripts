@@ -1,0 +1,28 @@
+{
+   "IXIA":
+       {
+         "user_name" : "Tissa",
+         "cert_name" : "netx_6.3"
+       },
+
+   "ClusterName": "PerfCluster",
+
+   "PerformanceTest" :
+        {
+           "url"        : "http://10.148.254.1:8080/devops/webapi",
+           "username"   : "vmware",
+           "password"   : "VMware1!",
+           "VDSwithName": "VDS_vertical_scale"
+        },
+
+   "VerticalScaleTest" :
+        {
+           "url"         : "http://10.148.254.1:8080/devops/webapi",
+           "username"    : "vmware",
+           "password"    : "VMware1!",
+           "VDSwithName" : "VDS_vertical_scale",
+           "numOfVM"     : 8,
+           "numOfIntf"   : 4
+        }
+
+}

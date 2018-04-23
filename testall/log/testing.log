@@ -1,0 +1,220 @@
+2018-04-23 15:19:39,203 [INFO]: performanceTest.py setUpClass():13 >> set up the fixture for Performance Test
+2018-04-23 15:19:39,203 [INFO]: certConfig.py preTestValidation():70 >> PreTestValidation
+2018-04-23 15:19:39,203 [INFO]: certConfig.py configure():74 >> Configuration
+2018-04-23 15:19:39,204 [INFO]: performanceTest.py tearDownClass():21 >> tear down the fixture for Performance Test
+2018-04-23 15:19:39,204 [INFO]: certConfig.py postTestValidation():88 >> postTestValidation
+2018-04-23 15:19:39,204 [INFO]: certConfig.py saveLog():92 >> Save Log file
+2018-04-23 15:19:39,204 [INFO]: verticalScaleTest.py setUpClass():16 >> set up the fixture for Vertical Scale Test
+2018-04-23 15:19:39,204 [INFO]: certConfig.py preTestValidation():70 >> PreTestValidation
+2018-04-23 15:19:39,205 [INFO]: certConfig.py configure():74 >> Configuration
+2018-04-23 15:19:39,205 [INFO]: verticalScaleTest.py setUpClass():21 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; prepareInfra -$perfClusterName "PerfCluster"; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-04-23 15:19:54,064 [INFO]: util.py execPSCommand():20 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+ Added Cluster[-] to vCenter
+esx-perf.corp.local not added , either it is already there or non reachable
+
+LinkDiscoveryProtocol          : CDP
+LinkDiscoveryProtocolOperation : Listen
+VlanConfiguration              : 
+Name                           : VDS_Performance
+ExtensionData                  : VMware.Vim.VmwareDistributedVirtualSwitch
+NumPorts                       : 0
+Key                            : 50 33 83 26 63 cd 68 8b-6c e6 1c d4 65 b0 10 7d
+Mtu                            : 9000
+Notes                          : 
+Datacenter                     : Cert-DC
+NumUplinkPorts                 : 4
+ContactName                    : 
+ContactDetails                 : 
+Version                        : 6.5.0
+Vendor                         : VMware, Inc.
+Folder                         : network
+MaxPorts                       : 2147483647
+Id                             : VmwareDistributedVirtualSwitch-dvs-7351
+Uid                            : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Distrib
+                                 utedSwitch=VmwareDistributedVirtualSwitch-dvs-7351/
+Client                         : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+
+WARNING: PowerCLI scripts should not use the 'VirtualSwitch' property of VmwareVDPortgroup type. 
+The property will be removed in a future release.
+
+VlanConfiguration : 
+Name              : VDS_Performance_pg
+ExtensionData     : VMware.Vim.DistributedVirtualPortgroup
+Key               : dvportgroup-7353
+Notes             : 
+Datacenter        : Cert-DC
+PortBinding       : Static
+NumPorts          : 12
+VDSwitch          : VDS_Performance
+IsUplink          : False
+Id                : DistributedVirtualPortgroup-dvportgroup-7353
+Uid               : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/DistributedPortgroup
+                    =DistributedVirtualPortgroup-dvportgroup-7353/
+Client            : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+VirtualSwitch     : VDS_Performance
+
+Added PG VDS_Performance_pg in to VDS VDS_Performance
+Add-VDSwitchVMHost : 4/23/2018 3:19:51 PM	Add-VDSwitchVMHost		Could not find VMHost with name 
+'esx-perf.corp.local'.	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:72 char:18
++     $VDSwitch |  Add-VDSwitchVMHost -VMHost $esxHost -Confirm:$false
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (esx-perf.corp.local:String) [Add-VDSwitchVMHost], V 
+   imException
+    + FullyQualifiedErrorId : Core_ObnSelector_SelectObjectByNameCore_ObjectNotFound,VMware.VimAut 
+   omation.Vds.Commands.Cmdlets.AddVDSwitchVMHost
+ 
+Add-VDSwitchVMHost : Value cannot be found for the mandatory parameter VMHost
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:72 char:18
++     $VDSwitch |  Add-VDSwitchVMHost -VMHost $esxHost -Confirm:$false
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Add-VDSwitchVMHost], ParameterBindingException
+    + FullyQualifiedErrorId : RuntimeException,VMware.VimAutomation.Vds.Commands.Cmdlets.AddVDSwit 
+   chVMHost
+ 
+ Added esx-perf.corp.local to vDS: VDS_Performance
+
+LinkDiscoveryProtocol          : CDP
+LinkDiscoveryProtocolOperation : Listen
+VlanConfiguration              : 
+Name                           : VDS_vertical_scale
+ExtensionData                  : VMware.Vim.VmwareDistributedVirtualSwitch
+NumPorts                       : 0
+Key                            : 50 33 ce 70 28 6f c0 85-15 36 0f 45 7c 50 d9 7a
+Mtu                            : 8128
+Notes                          : 
+Datacenter                     : Cert-DC
+NumUplinkPorts                 : 1
+ContactName                    : 
+ContactDetails                 : 
+Version                        : 6.5.0
+Vendor                         : VMware, Inc.
+Folder                         : network
+MaxPorts                       : 2147483647
+Id                             : VmwareDistributedVirtualSwitch-dvs-7354
+Uid                            : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Distrib
+                                 utedSwitch=VmwareDistributedVirtualSwitch-dvs-7354/
+Client                         : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+
+
+VlanConfiguration : 
+Name              : VDS_vertical_scale_pg
+ExtensionData     : VMware.Vim.DistributedVirtualPortgroup
+Key               : dvportgroup-7356
+Notes             : 
+Datacenter        : Cert-DC
+PortBinding       : Static
+NumPorts          : 128
+VDSwitch          : VDS_vertical_scale
+IsUplink          : False
+Id                : DistributedVirtualPortgroup-dvportgroup-7356
+Uid               : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/DistributedPortgroup
+                    =DistributedVirtualPortgroup-dvportgroup-7356/
+Client            : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+VirtualSwitch     : VDS_vertical_scale
+
+Added PG VDS_vertical_scale_pg in to VDS VDS_vertical_scale
+Add-VDSwitchVMHost : 4/23/2018 3:19:53 PM	Add-VDSwitchVMHost		Could not find VMHost with name 
+'esx-perf.corp.local'.	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:72 char:18
++     $VDSwitch |  Add-VDSwitchVMHost -VMHost $esxHost -Confirm:$false
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (esx-perf.corp.local:String) [Add-VDSwitchVMHost], V 
+   imException
+    + FullyQualifiedErrorId : Core_ObnSelector_SelectObjectByNameCore_ObjectNotFound,VMware.VimAut 
+   omation.Vds.Commands.Cmdlets.AddVDSwitchVMHost
+ 
+Add-VDSwitchVMHost : Value cannot be found for the mandatory parameter VMHost
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:72 char:18
++     $VDSwitch |  Add-VDSwitchVMHost -VMHost $esxHost -Confirm:$false
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Add-VDSwitchVMHost], ParameterBindingException
+    + FullyQualifiedErrorId : RuntimeException,VMware.VimAutomation.Vds.Commands.Cmdlets.AddVDSwit 
+   chVMHost
+ 
+ Added esx-perf.corp.local to vDS: VDS_vertical_scale
+Get-VMHost : 4/23/2018 3:19:53 PM	Get-VMHost		VMHost with name 'esx-perf.corp.local' was not found 
+using the specified filter(s).	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:85 char:18
++     $VMHostObj = Get-VMHost $esxHost
++                  ~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (:) [Get-VMHost], VimException
+    + FullyQualifiedErrorId : Core_OutputHelper_WriteNotFoundError,VMware.VimAutomation.ViCore.Cmd 
+   lets.Commands.GetVMHost
+ 
+Get-VMHostNetworkAdapter : 4/23/2018 3:19:53 PM	Get-VMHostNetworkAdapter		VMHostNetworkAdapter 
+with name 'vmnic1' was not found using the specified filter(s).	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:86 char:35
++ ... dapter = $VMHostObj | Get-VMHostNetworkAdapter -Physical -Name $vmnic
++                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (:) [Get-VMHostNetworkAdapter], VimException
+    + FullyQualifiedErrorId : Core_OutputHelper_WriteNotFoundError,VMware.VimAutomation.ViCore.Cmd 
+   lets.Commands.Host.GetVMHostNetworkAdapter
+ 
+Add-VDSwitchPhysicalNetworkAdapter : Cannot validate argument on parameter 'VMHostPhysicalNic'. 
+The argument is null or empty. Provide an argument that is not null or empty, and then try the 
+command again.
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:88 char:74
++ ... chPhysicalNetworkAdapter -VMHostNetworkAdapter $vmhostadapter -Confir ...
++                                                    ~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (:) [Add-VDSwitchPhysicalNetworkAdapter], ParameterBind 
+   ingValidationException
+    + FullyQualifiedErrorId : ParameterArgumentValidationError,VMware.VimAutomation.Vds.Commands.C 
+   mdlets.AddVDSwitchPhysicalNetworkAdapter
+ 
+ Added vmnic1 on esx-perf.corp.local to vDS: VDS_vertical_scale
+ esx-perf.corp.local ESX HOST is not present in the inventory
+ esx-perf.corp.local ESX HOST is not present in the inventory
+Unable to Find DataStore VM-DataStore
+ esx-perf.corp.local ESX HOST is not present in the inventory
+Unable to Find DataStore datastore1
+Data store validation passed on esx-perf.corp.local 
+Performance and Vertical State Infrastructure preperation DONE
+Check messages for errors or warnings
+
+
+
+2018-04-23 15:19:54,066 [INFO]: verticalScaleTest.py tearDownClass():26 >> tear down the fixture for Vertical Scale Test
+2018-04-23 15:19:54,066 [INFO]: verticalScaleTest.py tearDownClass():29 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; clearInfraConfig -$perfClusterName "PerfCluster"; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-04-23 15:20:01,472 [INFO]: util.py execPSCommand():20 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+Get-VMHost : 4/23/2018 3:20:00 PM	Get-VMHost		VMHost with name 'esx-perf.corp.local' was not found 
+using the specified filter(s).	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:561 char:3
++   Get-VMHost -Name esx-perf.corp.local | Set-VMHost -State Maintenanc ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (:) [Get-VMHost], VimException
+    + FullyQualifiedErrorId : Core_OutputHelper_WriteNotFoundError,VMware.VimAutomation.ViCore.Cmd 
+   lets.Commands.GetVMHost
+ 
+Remove-VMHost : 4/23/2018 3:20:00 PM	Remove-VMHost		Could not find VMHost with name 
+'esx-perf.corp.local'.	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:564 char:3
++   Remove-VMHost esx-perf.corp.local -Confirm:$false
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (esx-perf.corp.local:String) [Remove-VMHost], VimExc 
+   eption
+    + FullyQualifiedErrorId : Core_ObnSelector_SelectObjectByNameCore_ObjectNotFound,VMware.VimAut 
+   omation.ViCore.Cmdlets.Commands.RemoveVMHost
+ 
+Remove-VMHost : 4/23/2018 3:20:00 PM	Remove-VMHost		Value cannot be found for the mandatory 
+parameter VMHost	
+At F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1:564 char:3
++   Remove-VMHost esx-perf.corp.local -Confirm:$false
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Remove-VMHost], VimException
+    + FullyQualifiedErrorId : Core_BaseCmdlet_UnknownError,VMware.VimAutomation.ViCore.Cmdlets.Com 
+   mands.RemoveVMHost
+ 
+ Deleted Cluster[-] from vCenter
+Removed ESXi host esx-perf.corp.local from vCenter
+
+
+
+2018-04-23 15:20:01,472 [INFO]: certConfig.py postTestValidation():88 >> postTestValidation
+2018-04-23 15:20:01,472 [INFO]: certConfig.py saveLog():92 >> Save Log file

@@ -9,12 +9,14 @@
 
 Import-module VMware.VimAutomation.Core
 
-$VcenterIpAddess = "192.168.110.90"
+#$VcenterIpAddess = "192.168.110.90"
+$VcenterIpAddess = "172.17.11.10"
 $Username = "administrator@corp.local"
 $Password = "VMware1!"
-$GVMFilename = ".\input\gvm_ip_addresses.txt"
-$LogFilename = ".\output\ps_gvm_ip_addrs.log"
+$GVMFilename = ".\input\gvm_object_ids.txt"
+$LogFilename = ".\output\ps_gvm_objects.log"
 $VMPrefix = "Linux-VM*"
+#$VMPrefix = "Trend*"
 
 $SecPassword = $Password | ConvertTo-SecureString -AsPlainText -Force
 $Credential = New-Object -TypeName pscredential -ArgumentList $Username,$SecPassword
@@ -22,8 +24,12 @@ $Credential = New-Object -TypeName pscredential -ArgumentList $Username,$SecPass
 $EServer = Connect-VIServer $VcenterIpAddess -Protocol https -Credential $Credential
 
 Remove-item $GVMFilename -ErrorAction SilentlyContinue
-#first ip addr is IPV4 Get only one ip-addr
-Get-VM -name $VMPrefix| Select Name, @{N="IP";E={@($_.guest.IPaddress[0])}} | Set-Content -Encoding ASCII $LogFilename
-Get-VM -name $VMPrefix| Select @{N="IP";E={@($_.guest.IPaddress[0])}} | foreach { if ($_.IP) { write-output ($_.IP) }} | Set-Content -Encoding ASCII $GVMFilename
+Remove-item $LogFilename -ErrorAction SilentlyContinue
 
+$allVMs = Get-VM -name $VMPrefix
+ ForEach ($VM in $allVMs) {  
+    #Write-Host $VM.extensiondata.Moref.Value
+    Out-File -FilePath $GVMFilename -InputObject $VM.extensiondata.Moref.Value -Encoding ASCII -Append
+ } 
+Get-VM -name $VMPrefix| Select Name, @{N="ID";E={@($_.extensiondata.Moref.Value)}} | Set-Content -Encoding ASCII $LogFilename
 Disconnect-VIServer -Server $EServer -Confirm:$false

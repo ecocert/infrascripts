@@ -8,6 +8,7 @@
 #
 from CallbackScaleUtils import CallbackScale
 import constants
+import os
 
 import requests    #library used for making REST API calls
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -19,56 +20,24 @@ def menu():
     while(True):
         print("1. CB Scale Config Setup")
         print("2. CB Scale Config Cleanup")
-
-        print("11. IpSet Query")
-        print("12. IpSet Create")
-        print("13. IpSet Delete")
-
-        print("14. Security Group Query")
-        print("15. Security Group Create")
-        print("16. Security Group Delete")
-
-        print("17. Security Policy Query")
-        print("18. Security Policy Create")
-        print("19. Security Policy Delete")
-        print("20. Apply Security Policies")
-
         menuid = input("Enter Your Choice:  ")
-        jobid = -1
+        rc = False
         if(menuid == str(1)):
-            gvm_ip_file = constants.INPUT_PATH + constants.GVM_IP_ADDR_FNAME
+            in_fname = constants.INPUT_PATH + constants.GVM_INPUT_FNAME
+            if not os.path.isfile(in_fname):
+                print("WARN : FILE DOES NOT EXISTS " + in_fname)
+                return False
             cb_scale_count = constants.SCALE_COUNT_TOTAL
-            jobid = c.cb_scale_config_setup(gvm_ip_file, cb_scale_count)
+            rc = c.cb_scale_config_setup(in_fname, cb_scale_count)
         elif (menuid == str(2)):
-            jobid = c.cb_scale_config_cleanup()
-            #delete object
-            #del c
-        elif(menuid == str(11)):
-            jobid = c.cb_scale_ipset_query()
-        elif (menuid == str(12)):
-            gvm_ip_file = constants.INPUT_PATH + constants.GVM_IP_ADDR_FNAME
-            jobid = c.cb_scale_ipset_create(gvm_ip_file)
-        elif (menuid == str(13)):
-            jobid = c.cb_scale_ipset_delete()
-        elif (menuid == str(14)):
-            jobid = c.cb_scale_sec_group_query()
-        elif (menuid == str(15)):
-            jobid = c.cb_scale_sec_group_create(constants.SCALE_COUNT_TOTAL)
-        elif (menuid == str(16)):
-            jobid = c.cb_scale_sec_group_delete()
-        elif (menuid == str(17)):
-            jobid = c.cb_scale_sec_policy_query()
-        elif (menuid == str(18)):
-            jobid = c.cb_scale_sec_policy_create_xml()
-        elif (menuid == str(19)):
-            jobid = c.cb_scale_sec_policy_delete()
-        elif (menuid == str(20)):
-            jobid = c.cb_scale_sec_policy_apply()
+            rc = c.cb_scale_config_cleanup()
+        elif (menuid == str(3)):
+            rc = c.cb_scale_sec_policy_create_xml()
         else:
             print (" -------------------")
             print("invalid choice try again \n")
-        if(jobid != -1):
-            print("jobID is {0}".format(jobid))
+        if(rc == False):
+            print("rc is False")
 
 if __name__ == '__main__':
     menu()

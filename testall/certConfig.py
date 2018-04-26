@@ -6,6 +6,7 @@ import util
 import time
 import sys
 from collections import OrderedDict
+from functools import partial
 
 sys.path.insert(0, r'.\CertClient')
 from CertClient import CertClient
@@ -13,6 +14,15 @@ from CertClient import CertClient
 logger = util.getLogger('certTest')
 user_name = "Tissa"
 cert_name = "netx_6.3"
+
+
+class CertError(Exception):
+    def __init__(self, value=0, message="Default CertError"):
+        self.value = value
+        self.message = message
+
+    def __str__(self):
+        return self.message
 
 
 class CertTestConfig:
@@ -31,11 +41,14 @@ class CertTestConfig:
 
 
 class Resource:
+    resourceTracker = list()
     cfg = CertTestConfig()
     c = CertClient()
 
     @classmethod
-    def __IXIA(cls, action="STATUS"):
+    def _IXIA(cls, action="STATUS"):
+        logger.info("_IXIA: "+action)
+        """
         assert action == "ADD" or action == "REMOVE"
         test_bed_ip = cls.c.getipaddress()
 
@@ -43,7 +56,8 @@ class Resource:
             cls.cfg.json["IXIA"]["user_name"], action,
             cls.cfg.json["IXIA"]["cert_name"], test_bed_ip)
 
-        assert (jobid == 0, "IXIA resource allocation job id is {}.  Dispacher crashed".format(jobid))
+        if jobid == 0:
+            raise CertError(1, "IXIA resource allocation job id is 0.  Dispatcher crashed?")
 
         logger.info("IXIA resource allocation job id is {}".format(jobid))
         time.sleep(1)
@@ -64,28 +78,38 @@ class Resource:
                 logger.error("IXIA not available for ADD or REMOVE ")
         except (TypeError, ValueError) as e:
             logger.error("IXIA allocation error: ", e)
+        """
+        # cls.resourceTracker.append(partial(Resource._IXIA, "REMOVE"))
+
+    @classmethod
+    def _VM(cls, action, num_vm, num_intf):
+        logger.info("_VM: "+action)
 
     @classmethod
     def preTestValidation(cls):
         logger.info("PreTestValidation")
 
     @classmethod
+    def postTestValidation(cls):
+        logger.info("postTestValidation")
+
+    @classmethod
     def configure(cls):
         logger.info("Configuration")
 
     @classmethod
+    def unconfigure(cls):
+        logger.info("Un-Configuration")
+
+    @classmethod
     def deploy(cls):
         logger.info("Resource Deploy")
-        cls.__IXIA("ADD")
+        cls._IXIA("ADD")
 
     @classmethod
     def undeploy(cls):
         logger.info("Resource Undeploy")
-        cls.__IXIA("REMOVE")
-
-    @classmethod
-    def postTestValidation(cls):
-        logger.info("postTestValidation")
+        cls._IXIA("REMOVE")
 
     @classmethod
     def saveLog(cls):

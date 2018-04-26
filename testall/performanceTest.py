@@ -10,16 +10,17 @@ logger = util.getLogger('certTest')
 class PerformanceTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        logger.info("---------------------------------------")
         logger.info("set up the fixture for Performance Test")
-        # assert False, "set up fail"
         Resource.preTestValidation()
         Resource.configure()
-        # Resource.deploy()
+        Resource.deploy()
 
     @classmethod
     def tearDownClass(cls):
         logger.info("tear down the fixture for Performance Test")
-        # Resource.undeploy()
+        Resource.undeploy()
+        Resource.unconfigure()
         Resource.postTestValidation()
         Resource.saveLog()
 

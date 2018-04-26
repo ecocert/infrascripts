@@ -13,13 +13,14 @@ class VerticalScaleTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        logger.info("------------------------------------------")
         logger.info("set up the fixture for Vertical Scale Test")
         Resource.preTestValidation()
         Resource.configure()
-        # Resource.deploy()
+        Resource.deploy()
         psCmd = util.CmdTemplate.format("prepareInfra -$perfClusterName \"{}\"".format(cls.config.json["ClusterName"]))
         logger.info(psCmd)
-        util.execPSCommand(psCmd)
+        #util.execPSCommand(psCmd)
 
     @classmethod
     def tearDownClass(cls):
@@ -27,8 +28,9 @@ class VerticalScaleTest(unittest.TestCase):
         psCmd = util.CmdTemplate.format(
             "clearInfraConfig -$perfClusterName \"{}\"".format(cls.config.json["ClusterName"]))
         logger.info(psCmd)
-        util.execPSCommand(psCmd)
-        # Resource.undeploy()
+        #util.execPSCommand(psCmd)
+        Resource.undeploy()
+        Resource.unconfigure()
         Resource.postTestValidation()
         Resource.saveLog()
 

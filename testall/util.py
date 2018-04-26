@@ -10,7 +10,6 @@ CmdTemplate = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe " 
 
 
 def execPSCommand(command):
-    logger = getLogger('certTest')
     try:
         output = subprocess.check_output(
             command,
@@ -49,7 +48,11 @@ def getLogger(name):
     consoleHandler.setFormatter(logFormatter)
     if (logger.hasHandlers()):
         logger.handlers.clear()
-
     logger.addHandler(consoleHandler)
 
     return logger
+
+def certExecptionHandler():
+    logger.info("certExceptionHander()")
+
+logger = getLogger('certTest')

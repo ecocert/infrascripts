@@ -1,26 +1,16 @@
-2018-04-25 17:14:33,956 [INFO]: performanceTest.py setUpClass():13 >> ---------------------------------------
-2018-04-25 17:14:33,956 [INFO]: performanceTest.py setUpClass():14 >> set up the fixture for Performance Test
-2018-04-25 17:14:33,956 [INFO]: certConfig.py preTestValidation():90 >> PreTestValidation
-2018-04-25 17:14:33,956 [INFO]: certConfig.py configure():98 >> Configuration
-2018-04-25 17:14:33,956 [INFO]: certConfig.py deploy():106 >> Resource Deploy
-2018-04-25 17:14:33,957 [INFO]: certConfig.py _IXIA():50 >> _IXIA: ADD
-2018-04-25 17:14:33,957 [INFO]: performanceTest.py tearDownClass():21 >> tear down the fixture for Performance Test
-2018-04-25 17:14:33,957 [INFO]: certConfig.py undeploy():111 >> Resource Undeploy
-2018-04-25 17:14:33,958 [INFO]: certConfig.py _IXIA():50 >> _IXIA: REMOVE
-2018-04-25 17:14:33,958 [INFO]: certConfig.py unconfigure():102 >> Un-Configuration
-2018-04-25 17:14:33,958 [INFO]: certConfig.py postTestValidation():94 >> postTestValidation
-2018-04-25 17:14:33,958 [INFO]: certConfig.py saveLog():116 >> Save Log file
-2018-04-25 17:14:33,958 [INFO]: verticalScaleTest.py setUpClass():16 >> ------------------------------------------
-2018-04-25 17:14:33,958 [INFO]: verticalScaleTest.py setUpClass():17 >> set up the fixture for Vertical Scale Test
-2018-04-25 17:14:33,958 [INFO]: certConfig.py preTestValidation():90 >> PreTestValidation
-2018-04-25 17:14:33,959 [INFO]: certConfig.py configure():98 >> Configuration
-2018-04-25 17:14:33,959 [INFO]: certConfig.py deploy():106 >> Resource Deploy
-2018-04-25 17:14:33,959 [INFO]: certConfig.py _IXIA():50 >> _IXIA: ADD
-2018-04-25 17:14:33,959 [INFO]: verticalScaleTest.py setUpClass():22 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; prepareInfra -$perfClusterName "PerfCluster"; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
-2018-04-25 17:14:33,960 [INFO]: verticalScaleTest.py tearDownClass():27 >> tear down the fixture for Vertical Scale Test
-2018-04-25 17:14:33,960 [INFO]: verticalScaleTest.py tearDownClass():30 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; clearInfraConfig -$perfClusterName "PerfCluster"; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
-2018-04-25 17:14:33,960 [INFO]: certConfig.py undeploy():111 >> Resource Undeploy
-2018-04-25 17:14:33,960 [INFO]: certConfig.py _IXIA():50 >> _IXIA: REMOVE
-2018-04-25 17:14:33,960 [INFO]: certConfig.py unconfigure():102 >> Un-Configuration
-2018-04-25 17:14:33,960 [INFO]: certConfig.py postTestValidation():94 >> postTestValidation
-2018-04-25 17:14:33,960 [INFO]: certConfig.py saveLog():116 >> Save Log file
+2018-05-02 19:10:48,581 [INFO]: certTestAll.py main():50 >> [<class 'performanceTest.PerformanceTest'>]
+2018-05-02 19:10:48,582 [INFO]: performanceTest.py setUpClass():14 >> ---------------------------------------
+2018-05-02 19:10:48,583 [INFO]: performanceTest.py setUpClass():15 >> set up the fixture for Performance Test
+2018-05-02 19:10:48,583 [INFO]: certConfig.py preTestValidation():121 >> PreTestValidation
+2018-05-02 19:10:48,584 [INFO]: certConfig.py configure():128 >> Configuration
+2018-05-02 19:10:48,585 [INFO]: certConfig.py _IXIA():50 >> _IXIA: ADD
+2018-05-02 19:10:48,589 [DEBUG]: connectionpool.py _new_conn():208 >> Starting new HTTP connection (1): 10.148.172.7
+2018-05-02 19:10:48,595 [DEBUG]: connectionpool.py _make_request():396 >> http://10.148.172.7:80 "GET /hermes/show-ip.php HTTP/1.1" 200 12
+2018-05-02 19:10:48,597 [DEBUG]: connectionpool.py _new_conn():208 >> Starting new HTTP connection (1): 10.148.254.1
+2018-05-02 19:10:48,617 [DEBUG]: connectionpool.py _make_request():396 >> http://10.148.254.1:8080 "POST /devops/webapi/jobs HTTP/1.1" 202 252
+2018-05-02 19:10:58,620 [DEBUG]: connectionpool.py _new_conn():208 >> Starting new HTTP connection (1): 10.148.254.1
+2018-05-02 19:10:58,627 [DEBUG]: connectionpool.py _make_request():396 >> http://10.148.254.1:8080 "GET /devops/webapi/jobs/649 HTTP/1.1" 302 214
+2018-05-02 19:10:58,628 [INFO]: certConfig.py _IXIA():64 >> The job 649 status is CANCELED.
+2018-05-02 19:10:58,630 [INFO]: certConfig.py unconfigure():132 >> Un-Configuration
+2018-05-02 19:10:58,631 [INFO]: certConfig.py postTestValidation():125 >> postTestValidation
+2018-05-02 19:10:58,632 [INFO]: certConfig.py saveLog():157 >> Save Log file

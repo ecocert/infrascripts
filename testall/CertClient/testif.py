@@ -51,8 +51,6 @@ def menu():
             except (TypeError, ValueError) as e:
                 print("invalid entry has to be an integer", e)
 
-
-
         elif (menuid == str(7)):
             return
         else:

@@ -8,18 +8,19 @@ from certConfig import CertTestConfig
 logger = util.getLogger('certTest')
 
 
-class VerticalScaleTest(unittest.TestCase):
+class HorizontalScaleTest(unittest.TestCase):
     res = Resource()
+
     @classmethod
     def setUpClass(cls):
-        logger.info("------------------------------------------")
-        logger.info("set up the fixture for Vertical Scale Test")
+        logger.info("--------------------------------------------")
+        logger.info("set up the fixture for Horizontal Scale Test")
         cls.res.preTestValidation()
         cls.res.configure()
 
     @classmethod
     def tearDownClass(cls):
-        logger.info("tear down the fixture for Vertical Scale Test")
+        logger.info("tear down the fixture for Horizontal Scale Test")
         cls.res.undeployAll()
         cls.res.saveLog()
 

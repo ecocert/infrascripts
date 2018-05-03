@@ -16,6 +16,8 @@ def execPSCommand(command):
             stderr=subprocess.STDOUT,
             shell=True,
             universal_newlines=True)
+        if output.find("non-zero exit status") != -1:
+            raise Exception("PowerShell command exit status error: "+output)
         logger.info("PowerShell command output: " + output)
     except subprocess.CalledProcessError as e:
         logger.error("PowerShell Command Error")
@@ -23,8 +25,8 @@ def execPSCommand(command):
 
 
 def getLogger(name):
-    ## xinthose (Jun 22, 2016). How to implement a Global Python Logger?
-    ## Retrieved from https://stackoverflow.com/questions/37958568/how-to-implement-a-global-python-logger
+    # xinthose (Jun 22, 2016). How to implement a Global Python Logger?
+    # Retrieved from https://stackoverflow.com/questions/37958568/how-to-implement-a-global-python-logger
     # logger settings
     log_file = "log/testing.log"
     log_file_max_size = 1024 * 1024 * 20  # megabytes
@@ -52,7 +54,7 @@ def getLogger(name):
 
     return logger
 
-def certExecptionHandler():
-    logger.info("certExceptionHander()")
+
+
 
 logger = getLogger('certTest')

@@ -1,31 +1,48 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import unittest
 import util
+import subprocess
 from certConfig import Resource
 
 logger = util.getLogger('certTest')
 
-
 class PerformanceTest(unittest.TestCase):
+    res = Resource()
     @classmethod
     def setUpClass(cls):
         logger.info("---------------------------------------")
         logger.info("set up the fixture for Performance Test")
-        Resource.preTestValidation()
-        Resource.configure()
-        Resource.deploy()
+        cls.res.preTestValidation()
+        cls.res.configure()
+        cls.res.deployIxia()
+        cls.res.deployInfrastucture()
+        cls.res.powerOnIXIA()
 
     @classmethod
     def tearDownClass(cls):
         logger.info("tear down the fixture for Performance Test")
-        Resource.undeploy()
-        Resource.unconfigure()
-        Resource.postTestValidation()
-        Resource.saveLog()
+        # unwind all using ExitStatck
+        cls.res.undeployAll()
+        cls.res.saveLog()
 
-    def testCase1(self):
+    def test_loadQuickTest(self):
         self.assertTrue(True, "assertTrue")
+        command = "F:\\programs\\python.exe " \
+                  "C:/Users/Administrator/PycharmProjects/performance/loadQuickTestRestApi.py " \
+                  "windowsConnectionMgr"
+        try:
+            output = subprocess.check_output(
+                command,
+                stderr=subprocess.STDOUT,
+                shell=True,
+                universal_newlines=True,
+                timeout=60
+            )
+            logger.info("command output: " + output)
+
+        except subprocess.CalledProcessError as e:
+            logger.error(e)
 
     def testCase2(self):
         self.assertTrue(False, "assertFalse")

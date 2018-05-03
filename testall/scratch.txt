@@ -1,0 +1,15 @@
+How to run:
+    1.  Make a directory and clone the repo in your lab environment.
+    2.  Go to the subdirectory “testall”.
+    3.  Run the script certTestAll.py
+        3.1 To run all tests, simply invoke the script like this:
+            shell> .\certTestAll.py
+
+        3.2 To stop on the 1st test failure, please add the option '-f':
+            shell> .\certTestAll.py -f
+
+        3.3 Top run one particular test case, please specify it in this format as follows:
+            shell> .\certTestAll.py TestClassName.TestCaseName
+
+            For example:
+            shell> .\certTestAll.py PerformanceTest.testCase1

@@ -1,5 +1,5 @@
 ﻿param($index)
-. ".\HttpRest.ps1" 
+(Get-Location).Path+"\HttpRest.ps1" 
 Add-PSSnapin vmware.vimautomation.core
 ## Enter your vCenter here
 connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Password VMware1!

@@ -1,5 +1,5 @@
 ﻿param($index,$servicename)
-. ".\HttpRest.ps1"
+(Get-Location).Path+"\HttpRest.ps1"
 Add-PSSnapin vmware.vimautomation.core
 ## Enter your vCenter here
 connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Password VMware1!
@@ -8,7 +8,7 @@ connect-viserver -server vcsa-02a.corp.local -User administrator@corp.local -Pas
 $cluster = "ScaleCluster"+$index
 $dataStore= "SVM-DataStore-$index"
 $dvportgroup = "vDS_VM_pg"
-$ippoolname = "SVM_IP_POOL"
+$ippoolname = "SVM_IP_POOL"+$index
 
 <#-----FUNCTION TO DEPLOY SERVICE-----#>
 Function deployService([string] $clusterID, [string] $datastoreID, [string] $serviceID, [string] $dvportgroupID, [string] $ippoolID)

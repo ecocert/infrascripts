@@ -1,9 +1,12 @@
 import logging
 import logging.handlers
 import subprocess
+import paramiko
+# from paramiko import client
+
 
 CmdTemplate = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe " \
-              "\". F:\scriptRepo\infrascripts\perfscripts\perf_vert_scale.ps1; " \
+              "\". F:\\scriptRepo\\infrascripts\\testall\\perf_vert_scale.ps1; " \
               "connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; " \
               "{}; " \
               "disconnectFromVC -vc  'vcsa-02a.corp.local' \" "
@@ -18,7 +21,7 @@ def execPSCommand(command):
             universal_newlines=True)
         if output.find("non-zero exit status") != -1:
             raise Exception("PowerShell command exit status error: "+output)
-        logger.info("PowerShell command output: " + output)
+        logger.warning("PowerShell command output: " + output)
     except subprocess.CalledProcessError as e:
         logger.error("PowerShell Command Error")
         logger.error(e)
@@ -54,7 +57,73 @@ def getLogger(name):
 
     return logger
 
+class ssh:
+    # Daan Lenaets (01/02/2016) Python and SSH: sending commands over SSH using Paramiko
+    # Retrieved from: https://daanlenaerts.com/blog/2016/01/02/python-and-ssh-sending-commands-over-ssh-using-paramiko/
+    client = None
 
+    def __init__(self, address, username, password):
+        logger.info("Connecting to server.")
+        self.client = paramiko.client.SSHClient()
+        self.client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
+        self.client.connect(address, username=username, password=password, look_for_keys=False)
 
+    def sendCommand(self, command):
+        if(self.client):
+            stdin, stdout, stderr = self.client.exec_command(command)
+            while not stdout.channel.exit_status_ready():
+                # Print data when available
+                if stdout.channel.recv_ready():
+                    alldata = stdout.channel.recv(1024)
+                    prevdata = b"1"
+                    while prevdata:
+                        prevdata = stdout.channel.recv(1024)
+                        alldata += prevdata
+                    return str(alldata, "utf8")
+        else:
+            logger.error("Connection not opened.")
+
+class Server():
+    # implement scp/sftp on Windows
+    # Ryan Ginstrom, 2009,  Easy SFTP uploading with paramiko
+    # Retrieved from: http://ginstrom.com/scribbles/2009/09/14/easy-sftp-uploading-with-paramiko/
+    def __init__(self, username, password, host, port=22):
+
+        self.transport = paramiko.Transport((host, port))
+        self.transport.connect(username=username, password=password)
+        self.sftp = paramiko.SFTPClient.from_transport(self.transport)
+
+    def upload(self, local, remote):
+        self.sftp.put(local, remote)
+
+    def download(self, remote, local):
+        self.sftp.get(remote, local)
+
+    def close(self):
+        """
+        Close the connection if it's active
+        """
+
+        if self.transport.is_active():
+            self.sftp.close()
+            self.transport.close()
+
+    # with-statement support
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.close()
+
+#
+# Remove the last 3 lines in the PowerShell script,
+# because they are the code to start the script.
+#
+def preProcessScript(filename="../perfscripts/perf_vert_scale.ps1"):
+    with open(filename, "r") as fr:
+        content_r = fr.readlines()
+        content_w = content_r[:-3]
+        with open("./perf_vert_scale.ps1", "w") as fw:
+            fw.write("".join(content_w))
 
 logger = getLogger('certTest')

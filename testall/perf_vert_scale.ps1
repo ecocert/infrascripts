@@ -825,6 +825,3 @@ Function HistoricalTests() {
 
     #AddInterfacesToLinuxVM 1 2 4 'VDS_vertical_scale_pg'
 }
-connectToVC 'vcsa-02a.corp.local' 'administrator@corp.local' 'VMware1!'
-Select-Choice
-disconnectFromVC('vcsa-02a.corp.local')

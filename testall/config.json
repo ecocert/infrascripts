@@ -12,7 +12,7 @@
            "url"        : "http://10.148.254.1:8080/devops/webapi",
            "username"   : "vmware",
            "password"   : "VMware1!",
-           "VDSwithName": "VDS_vertical_scale"
+           "VDSwithName": "VDS_Performance_pg"
         },
 
    "VerticalScaleTest" :
@@ -20,9 +20,21 @@
            "url"         : "http://10.148.254.1:8080/devops/webapi",
            "username"    : "vmware",
            "password"    : "VMware1!",
-           "VDSwithName" : "VDS_vertical_scale",
-           "numOfVM"     : 8,
-           "numOfIntf"   : 4
-        }
+           "VDSwithName" : "VDS_vertical_scale_pg",
+           "startvm"     : 1,
+           "endvm"       : 3,
+           "numOfIntf"   : 2,
+           "vmIPPrefix"  : "172.16.10."
+        },
 
+     "CallbackScaleTest" :
+        {
+           "url"         : "http://10.148.254.1:8080/devops/webapi",
+           "username"    : "vmware",
+           "password"    : "VMware1!",
+           "VDSwithName" : "VDS_vertical_scale_pg",
+           "startvm"     : 1,
+           "endvm"       : 4,
+           "vmIPPrefix"  : "172.16.10."
+        }
 }

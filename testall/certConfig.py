@@ -19,6 +19,7 @@ cert_name = "netx_6.3"
 class CertException(Exception):
     pass
 
+
 class CertTestConfig:
     ## TODO: it should be revised to a Singleton?
     def __init__(self, configFile='config.json'):
@@ -35,19 +36,23 @@ class CertTestConfig:
 
 
 class Resource(object):
+    """
     _instance = None  # Singleton
-    def __new__(cls, *args, **kwargs):
+
+    def __new__(cls, testName, *args, **kwargs):
         if not cls._instance:
             cls._instance = super(Resource, cls).__new__(cls, *args, **kwargs)
         return cls._instance
+    """
 
-    def __init__(self):
+    def __init__(self, testName):
         self.cleaner = contextlib.ExitStack()
         self.cfg = CertTestConfig()
         self.c = CertClient()
+        self.testName = testName
 
     def _IXIA(self, action="STATUS"):
-        logger.info("_IXIA: "+action)
+        logger.info("_IXIA: " + action)
         # return (action, "WAITING")
 
         test_bed_ip = self.c.getipaddress()
@@ -82,7 +87,7 @@ class Resource(object):
                 raise CertException("IXIA not available for {}".format(action))
             else:
                 raise CertException("Unknown return status")
-                
+
         except (TypeError, ValueError) as e:
             raise CertException("IXIA allocation error: ")
 
@@ -95,14 +100,13 @@ class Resource(object):
             raise CertException("action = " + action)
         logger.info(psCmd)
         util.execPSCommand(psCmd)
-
-    def powerOnIXIA(self):
-        self._powerIXIA("ON")
-        self.cleaner.callback(self._powerIXIA, "OFF")
+        if action == "OFF":
+            psCmd = util.CmdTemplate.format("deleteIxia")
+            logger.info(psCmd)
+            util.execPSCommand(psCmd)
 
     def _Infrastructure(self, action):
         logger.info("{} Infrastructure".format(action))
-
         if action == "SETUP":
             psCmd = util.CmdTemplate.format(
                 "prepareInfra -perfClusterName \"{}\"".format(self.cfg.json["ClusterName"]))
@@ -110,12 +114,75 @@ class Resource(object):
             psCmd = util.CmdTemplate.format(
                 "clearInfraConfig -perfClusterName \"{}\"".format(self.cfg.json["ClusterName"]))
         else:
-            raise CertException("action = "+action)
+            raise CertException("action = " + action)
         logger.info(psCmd)
         util.execPSCommand(psCmd)
 
-    def _VM(self, action, num_vm, num_intf):
-        logger.info("_VM: "+action)
+    def _VM(self, action):
+        logger.info("_VM: " + action)
+        if action == "ADD":
+            psCmd = util.CmdTemplate.format(
+                "prepareVerticalScale -start {} -end {}".format(
+                    self.cfg.json[self.testName]["startvm"],
+                    self.cfg.json[self.testName]["endvm"]))
+        elif action == "DELETE":
+            psCmd = util.CmdTemplate.format(
+                "deleteLinuxVMs -start {} -end {}".format(
+                    self.cfg.json[self.testName]["startvm"],
+                    self.cfg.json[self.testName]["endvm"]))
+        else:
+            raise CertException("action = " + action)
+        logger.info(psCmd)
+        util.execPSCommand(psCmd)
+
+    def _addInterfaceToVM(self):
+        logger.info("addInterfaceToVM")
+        print(self.testName)
+        psCmd = util.CmdTemplate.format(
+            "AddInterfacesToLinuxVM -start {} -end {} -numOfInf {} {}".format(
+                self.cfg.json[self.testName]["startvm"],
+                self.cfg.json[self.testName]["endvm"],
+                self.cfg.json[self.testName]["numOfIntf"],
+                self.cfg.json[self.testName]["VDSwithName"]))
+        logger.info(psCmd)
+        util.execPSCommand(psCmd)
+
+    def _removeInterfaceFromVM(self):
+        logger.info("removeInterfaceFromVM")
+        psCmd = util.CmdTemplate.format(
+            "removeInterfacesFromLinuxVM -start {} -end {} -numOfInf {} {}".format(
+                self.cfg.json[self.testName]["startvm"],
+                self.cfg.json[self.testName]["endvm"],
+                self.cfg.json[self.testName]["numOfIntf"],
+                self.cfg.json[self.testName]["VDSwithName"]))
+        logger.info(psCmd)
+        util.execPSCommand(psCmd)
+
+    def configureIPAddr(self):
+        logger.info("configureIPAddr")
+        psCmd = util.CmdTemplate.format(
+            "connectAndAddIP -start {} -end {}".format(
+                self.cfg.json[self.testName]["startvm"],
+                self.cfg.json[self.testName]["endvm"]))
+        logger.info(psCmd)
+        util.execPSCommand(psCmd)
+
+    def _powerVM(self, action):
+        logger.info("_powerVM: " + action)
+        if action == "ON":
+            psCmd = util.CmdTemplate.format(
+                "powerOnLinuxVM -start {} -end {}".format(
+                    self.cfg.json[self.testName]["startvm"],
+                    self.cfg.json[self.testName]["endvm"]))
+        elif action == "OFF":
+            psCmd = util.CmdTemplate.format(
+                "shutDownLinuxVMs -start {} -end {}".format(
+                    self.cfg.json[self.testName]["startvm"],
+                    self.cfg.json[self.testName]["endvm"]))
+        else:
+            raise CertException("action = " + action)
+        logger.info(psCmd)
+        util.execPSCommand(psCmd)
 
     def preTestValidation(self):
         logger.info("PreTestValidation")
@@ -132,22 +199,29 @@ class Resource(object):
         logger.info("Un-Configuration")
 
     def deployIxia(self):
-        try:
-            action, status = self._IXIA("ADD")
-            if action == "ADD" and status == "WAITING":
-                self.cleaner.callback(self._IXIA, "REMOVE")
-        except:
-            self.cleaner.pop_all().close()
-            self.saveLog()
-            raise
+        action, status = self._IXIA("ADD")
+        if action == "ADD" and status == "WAITING":
+            self.cleaner.callback(self._IXIA, "REMOVE")
+
+    def powerOnIXIA(self):
+        self._powerIXIA("ON")
+        self.cleaner.callback(self._powerIXIA, "OFF")
 
     def deployInfrastucture(self):
         self._Infrastructure("SETUP")
-        self.cleaner.callback(self._Infrastructure,"CLEAR")
+        self.cleaner.callback(self._Infrastructure, "CLEAR")
 
     def deployVM(self):
-        self._VM("ADD", 4, 4)
-        self.cleaner.callback(self._VM, "REMOVE", 4, 4)
+        self._VM("ADD")
+        self.cleaner.callback(self._VM, "DELETE")
+
+    def powerVM(self):
+        self._powerVM("ON")
+        self.cleaner.callback(self._powerVM, "OFF")
+
+    def addIfToVM(self):
+        self._addInterfaceToVM()
+        self.cleaner.callback(self._removeInterfaceFromVM)
 
     def undeployAll(self):
         logger.info("Resource Undeploy")

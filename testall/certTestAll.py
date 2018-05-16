@@ -8,13 +8,13 @@ from callbackScaleTest import *
 from certConfig import *
 from util import *
 
-
 logger = util.getLogger('certTest')
+
 
 def keyboardInterruptHandler(signalnum, frame):
     "Handle Ctrl+C/SIGINT signal "
     logger.info("keyboardInterruptHandler")
-    Resource.undeploy()
+    ## Resource.undeploy()
     raise KeyboardInterrupt
 
 
@@ -44,6 +44,7 @@ def buildTestList():
 def main():
     # Add CTRL+C handler.  It is experiential feature
     signal.signal(signal.SIGINT, keyboardInterruptHandler)
+    util.preProcessScript()
 
     testList = buildTestList()
     testSuite = unittest.TestSuite()
@@ -52,7 +53,6 @@ def main():
     for t in testList:
         testSuite.addTest(unittest.makeSuite(t))
 
-
     # Stop on the 1st test case failure
     if '-f' in sys.argv:
         runner = unittest.TextTestRunner(verbosity=2, failfast=True)
@@ -60,7 +60,7 @@ def main():
     elif len(sys.argv) == 1:
         runner = unittest.TextTestRunner(verbosity=2)
     # Run only on a test case specified by user
-    elif sys.argv[1].find('.') != -1 :
+    elif sys.argv[1].find('.') != -1:
         logger.info(sys.argv[1].find('.'))
         logger.info(sys.argv[1])
         testClass, test_method = sys.argv[1].split('.')
@@ -76,4 +76,4 @@ def main():
 if __name__ == "__main__":
     start = time.time()
     main()
-    print("Elapsed time: "+time.strftime("%H:%M:%S", time.gmtime(time.time()-start)))
+    print("Elapsed time: " + time.strftime("%H:%M:%S", time.gmtime(time.time() - start)))

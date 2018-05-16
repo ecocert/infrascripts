@@ -9,14 +9,19 @@ logger = util.getLogger('certTest')
 
 
 class HorizontalScaleTest(unittest.TestCase):
-    res = Resource()
+    res = Resource("HorizontalScaleTest")
 
     @classmethod
     def setUpClass(cls):
         logger.info("--------------------------------------------")
         logger.info("set up the fixture for Horizontal Scale Test")
-        cls.res.preTestValidation()
-        cls.res.configure()
+        try:
+            cls.res.preTestValidation()
+            cls.res.configure()
+        except:
+            cls.res.cleaner.pop_all().close()
+            cls.res.saveLog()
+            raise
 
     @classmethod
     def tearDownClass(cls):

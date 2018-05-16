@@ -4,20 +4,31 @@ import unittest
 import util
 import subprocess
 from certConfig import Resource
+import time
 
 logger = util.getLogger('certTest')
 
+
 class PerformanceTest(unittest.TestCase):
-    res = Resource()
+    res = Resource("PerformanceTest")
+
     @classmethod
     def setUpClass(cls):
-        logger.info("---------------------------------------")
-        logger.info("set up the fixture for Performance Test")
-        cls.res.preTestValidation()
-        cls.res.configure()
-        cls.res.deployIxia()
-        cls.res.deployInfrastucture()
-        cls.res.powerOnIXIA()
+        try:
+            logger.info("---------------------------------------")
+            logger.info("set up the fixture for Performance Test")
+            cls.res.preTestValidation()
+            cls.res.configure()
+            cls.res.deployIxia()
+            time.sleep(15)
+            cls.res.deployInfrastucture()
+            cls.res.powerOnIXIA()
+            logger.info("Press ENTER to continue...")
+            input()
+        except:
+            cls.res.cleaner.pop_all().close()
+            cls.res.saveLog()
+            raise
 
     @classmethod
     def tearDownClass(cls):

@@ -7,21 +7,26 @@ import time
 import sys
 import contextlib
 import util
+import os
+import multiprocessing
 
 sys.path.insert(0, r'.\CertClient')
+sys.path.insert(0, r'.\CallbackScale362')
 from CertClient import CertClient
+from CallbackScaleUtils import CallbackScale
 
 logger = util.getLogger('certTest')
-user_name = "Tissa"
-cert_name = "netx_6.3"
+
+
+# user_name = "Tissa"
+# cert_name = "netx_6.3"
 
 
 class CertException(Exception):
     pass
 
 
-class CertTestConfig:
-    ## TODO: it should be revised to a Singleton?
+class CertJsonConfig:
     def __init__(self, configFile='config.json'):
         self.configFile = configFile
         with open(self.configFile) as f:
@@ -35,19 +40,11 @@ class CertTestConfig:
         return pp.pformat(self.json)
 
 
-class Resource(object):
-    """
-    _instance = None  # Singleton
-
-    def __new__(cls, testName, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(Resource, cls).__new__(cls, *args, **kwargs)
-        return cls._instance
-    """
-
+class Resource():
     def __init__(self, testName):
+        self.cb = CallbackScale()
         self.cleaner = contextlib.ExitStack()
-        self.cfg = CertTestConfig()
+        self.cfg = CertJsonConfig()
         self.c = CertClient()
         self.testName = testName
 
@@ -158,6 +155,27 @@ class Resource(object):
         logger.info(psCmd)
         util.execPSCommand(psCmd)
 
+    def _cbScaleSetup(self):
+        logger.info("Callback Scale Setup")
+        rc = False
+        in_fname = os.getcwd() + "\\CallbackScale362\\" + self.cfg.json[self.testName]["INPUT_PATH"] + \
+                   self.cfg.json[self.testName]["GVM_INPUT_FNAME"]
+        if not os.path.isfile(in_fname):
+            print("WARN : FILE DOES NOT EXISTS " + in_fname)
+            return False
+
+        cb_scale_count = self.cfg.json[self.testName]["SCALE_COUNT_TOTAL"]
+        rc = self.cb.cb_scale_config_setup(in_fname, cb_scale_count)
+        if rc == False:
+            logger.error("Callback Scale Setup error")
+
+    def _cbScaleCleanup(self):
+        logger.info("Callback Scale Cleanup")
+        rc = False
+        rc = self.cb.cb_scale_config_cleanup()
+        if rc == False:
+            logger.error("Callback Scale Cleanup error")
+
     def configureIPAddr(self):
         logger.info("configureIPAddr")
         psCmd = util.CmdTemplate.format(
@@ -183,6 +201,18 @@ class Resource(object):
             raise CertException("action = " + action)
         logger.info(psCmd)
         util.execPSCommand(psCmd)
+
+    """    
+    def _tailDispatcher(self, action):
+        logger.info("_tailfDispatcher: " + action)
+        if action == "ON":
+            p = multiprocessing.Process(target=util.tail_dispatcher(), args=())
+            p.start()
+        elif action == "OFF":
+            p.terminate()
+        else:
+            raise CertException("action = " + action)
+    """
 
     def preTestValidation(self):
         logger.info("PreTestValidation")
@@ -222,6 +252,13 @@ class Resource(object):
     def addIfToVM(self):
         self._addInterfaceToVM()
         self.cleaner.callback(self._removeInterfaceFromVM)
+
+    def cbScaleSetup(self):
+        cmd = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe " \
+              " -F .\\CallbackScale362\\GetAllVM_IPAddr.ps1 "
+        util.execPSCommand(cmd)
+        self._cbScaleSetup()
+        self.cleaner.callback(self._cbScaleCleanup)
 
     def undeployAll(self):
         logger.info("Resource Undeploy")

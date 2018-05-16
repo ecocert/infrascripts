@@ -29,12 +29,38 @@
 
      "CallbackScaleTest" :
         {
-           "url"         : "http://10.148.254.1:8080/devops/webapi",
-           "username"    : "vmware",
-           "password"    : "VMware1!",
-           "VDSwithName" : "VDS_vertical_scale_pg",
-           "startvm"     : 1,
-           "endvm"       : 4,
-           "vmIPPrefix"  : "172.16.10."
+            "url"         : "http://10.148.254.1:8080/devops/webapi",
+            "username"    : "vmware",
+            "password"    : "VMware1!",
+            "VDSwithName" : "VDS_vertical_scale_pg",
+            "startvm"     : 1,
+            "endvm"       : 4,
+            "vmIPPrefix"  : "172.16.10.",
+            "NSX_URL"     : "https://172.17.11.11/",
+            "USERNAME"    : "admin",
+            "PASSWORD"    : "VMware1!",
+            "INPUT_PATH"  : "./input/",
+            "OUTPUT_PATH" : "./output/",
+            "CB_LOG_FILE" : "cb_script.log",
+            "CB_SP_CREATION_TIME_FILE " : "sp_creation_time.csv",
+            "CB_SP_APPLY_TIME_FILE"     : "sp_apply_time.csv",
+            "SCALE_COUNT_TOTAL"         : 10,
+
+            "_comment1"        : "# Set SG_BINDING_COUNT less than 128",
+            "SG_BINDING_COUNT" : 3,
+            "NUM_RETRIES"      : 3,
+            "WAIT_IN_SEC"      : 0.1,
+            "GVM_INPUT_FNAME"  : "gvm_object_ids.txt",
+
+            "_comment2"        : "#security groups inputs",
+            "SG_NAME_PREFIX"   : "Security_Group_",
+            "SG_COUNT_START"   : 5001,
+            "SG_IN_JSON_FILENAME" : "SampleSG_All.json",
+
+            "_comment3"        : "#security policy inputs",
+            "SP_NAME_PREFIX"   : "Security_Policy_",
+            "SP_COUNT_START"   : 9001,
+            "SP_PRECEDENCE_START" : 5000,
+            "SP_POLICY_PAYLOAD_NI_FILENAME" : "se_policy_payload_ni.xml"
         }
 }

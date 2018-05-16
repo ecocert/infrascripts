@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import signal
 import time
-from performanceTest import *
-from verticalScaleTest import *
-from horizontalScaleTest import *
-from callbackScaleTest import *
+import unittest
+from performanceTest import PerformanceTest
+from verticalScaleTest import VerticalScaleTest
+from horizontalScaleTest import HorizontalScaleTest
+from callbackScaleTest import CallbackScaleTest
 from certConfig import *
 from util import *
 

@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 import unittest
 import util
-import subprocess
 from certConfig import Resource
-from certConfig import CertTestConfig
 
 logger = util.getLogger('certTest')
 
@@ -33,7 +31,7 @@ class HorizontalScaleTest(unittest.TestCase):
         self.assertTrue(True, "assertTrue")
 
     def testCase2(self):
-        self.assertTrue(False, "assertFalse")
+        self.assertTrue(True, "assertFalse")
 
     def testCase3(self):
         self.assertTrue(True, "assertTrue")

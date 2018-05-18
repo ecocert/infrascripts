@@ -48,18 +48,26 @@ class Resource():
         self.c = CertClient()
         self.testName = testName
 
-    def _IXIA(self, action="STATUS"):
-        logger.info("_IXIA: " + action)
+    #  resource = "IXIA" or "ESX"
+    #  action = "ADD", "REMOVE" or "STATUS"
+    def _resourceAllocDispatcher(self, resource, action="STATUS"):
+        logger.info("_resourceAllocDispatcher {} {}".format(resource, action))
         # return (action, "WAITING")
 
         test_bed_ip = self.c.getipaddress()
-        jobid = self.c.requestIxia(
-            self.cfg.json["IXIA"]["user_name"], action,
-            self.cfg.json["IXIA"]["cert_name"], test_bed_ip)
+        if resource == "IXIA":
+            jobid = self.c.requestIxia(
+                self.cfg.json["Dispatcher"]["user_name"], action,
+                self.cfg.json["Dispatcher"]["cert_name"], test_bed_ip)
+        elif resource == "ESX":
+            jobid = self.c.requestScale(
+                self.cfg.json["Dispatcher"]["user_name"], action,
+                self.cfg.json["Dispatcher"]["cert_name"], test_bed_ip)
+        else:
+            raise CertException("param error: action={}".format(action))
 
         if jobid == 0:
-            raise CertException("IXIA resource allocation job id is 0.  Dispatcher crashed?")
-        time.sleep(10)
+            raise CertException("resource allocation job id is 0.  Dispatcher crashed?")
 
         try:
             resp = self.c.getJob(jobid)
@@ -75,18 +83,17 @@ class Resource():
                         # This is a hack, the state would change to 'CANCLED' for unknown reason
                         resp = self.c.getJob(jobid)
                         if resp and 'state' in resp and resp['state'] == 'CANCELED':
-                            raise CertException("IXIA not available for {}".format(action))
+                            raise CertException("{} not available for {}".format(resource, action))
                         print('.', end='', flush=True)
                         time.sleep(30)
 
                 return (action, "WAITING")
             elif (resp and 'state' in resp and resp['state'] == 'CANCELED'):
-                raise CertException("IXIA not available for {}".format(action))
+                raise CertException("{} not available for {}".format(resource, action))
             else:
                 raise CertException("Unknown return status")
-
         except (TypeError, ValueError) as e:
-            raise CertException("IXIA allocation error: ")
+            raise CertException("{} {} error.".format(resource, action))
 
     def _powerIXIA(self, action):
         if action == "ON":
@@ -202,18 +209,6 @@ class Resource():
         logger.info(psCmd)
         util.execPSCommand(psCmd)
 
-    """    
-    def _tailDispatcher(self, action):
-        logger.info("_tailfDispatcher: " + action)
-        if action == "ON":
-            p = multiprocessing.Process(target=util.tail_dispatcher(), args=())
-            p.start()
-        elif action == "OFF":
-            p.terminate()
-        else:
-            raise CertException("action = " + action)
-    """
-
     def preTestValidation(self):
         logger.info("PreTestValidation")
         self.cleaner.callback(self.postTestValidation)
@@ -229,9 +224,14 @@ class Resource():
         logger.info("Un-Configuration")
 
     def deployIxia(self):
-        action, status = self._IXIA("ADD")
+        action, status = self._resourceAllocDispatcher("IXIA", "ADD")
         if action == "ADD" and status == "WAITING":
-            self.cleaner.callback(self._IXIA, "REMOVE")
+            self.cleaner.callback(self._resourceAllocDispatcher, "REMOVE")
+
+    def deployESX(self):
+        action, status = self._resourceAllocDispatcher("ESX", "ADD")
+        if action == "ADD" and status == "WAITING":
+            self.cleaner.callback(self._resourceAllocDispatcher, "REMOVE")
 
     def powerOnIXIA(self):
         self._powerIXIA("ON")
@@ -254,11 +254,77 @@ class Resource():
         self.cleaner.callback(self._removeInterfaceFromVM)
 
     def cbScaleSetup(self):
-        cmd = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe " \
-              " -F .\\CallbackScale362\\GetAllVM_IPAddr.ps1 "
+        cmd = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
+              " -F ./CallbackScale362/GetAllVM_IPAddr.ps1 "
         util.execPSCommand(cmd)
         self._cbScaleSetup()
         self.cleaner.callback(self._cbScaleCleanup)
+
+    def horizontalSetup(self):
+        startesx = self.cfg.json["horizontalScaleTest"]["startesx"]
+        endesx   = self.cfg.json["horizontalScaleTest"]["endesx"]
+        startvm  = self.cfg.json["horizontalScaleTest"]["startvm"]
+        endvm    = self.cfg.json["horizontalScaleTest"]["endvm"]
+        startnas = self.cfg.json["horizontalScaleTest"]["startnas"]
+        endnas   = self.cfg.json["horizontalScaleTest"]["endnas"]
+
+        """
+        PSScripts = [
+            "pingHorizontalHosts.ps1",
+            "poweronScaleHosts.ps1 -start {} -end {}".format(startesx, endesx),
+            "addScaleHostsIntovCenter.ps1 -start {} -end {}".format(startesx, endesx),
+            "registerScaleVMsIntovCenter.ps1 -start {} -end {}".format(startvm, endvm),
+            "addScaleHostsToVDS.ps1 -start {} -end {}".format(startesx, endesx),
+            "freeNASRestClient.ps1 -index $index".format(startnas, endnas)
+
+        ]
+        """
+        cmd_pfx = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
+              " -F ../scalescripts/"
+
+        # TODO: add verification
+        cmd = cmd_pfx + "pingHorizontalHosts.ps1"
+        util.execPSCommand(cmd)
+
+        cmd = cmd_pfx + "poweronScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "shutdownScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
+        self.cleaner.callback(util.execPSCommand(cmd))
+
+        cmd = cmd_pfx + "addScaleHostsIntovCenter.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "removeScaleHostsFromvCenter.ps1 -start {} -end {}".format(startesx, endesx)
+        self.cleaner.callback(util.execPSCommand(cmd))
+
+        cmd = cmd_pfx + "registerScaleVMsIntovCenter.ps1 -start {} -end {}".format(startvm, endvm)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "unregisterVMsFromvCenter.ps1 -start {} -end {}".format(startvm, endvm)
+        self.cleaner.callback(util.execPSCommand(cmd))
+
+        cmd = cmd_pfx + "addScaleHostsToVDS.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "removeScaleHostsFromVDS.ps1 -start {} -end {}".format(startesx, endesx)
+        self.cleaner.callback(util.execPSCommand(cmd))
+
+        for nas in range(startnas, endnas):
+            cmd = cmd_pfx + "freeNASRestClient.ps1 -index {}".format(nas)
+            util.execPSCommand(cmd)
+
+        cmd = cmd_pfx + "storageScanOnScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+
+        cmd = cmd_pfx + "powerOnLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "shutdownLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
+        self.cleaner.callback(util.execPSCommand(cmd))
+
+
+
+
+
+
+
+
 
     def undeployAll(self):
         logger.info("Resource Undeploy")

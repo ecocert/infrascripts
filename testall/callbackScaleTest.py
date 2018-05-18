@@ -23,8 +23,8 @@ class CallbackScaleTest(unittest.TestCase):
             cls.res.deployVM()
             cls.res.powerVM()
             cls.res.cbScaleSetup()
-            #logger.info("Press ENTER to continue...")
-            #input()
+            # logger.info("Press ENTER to continue...")
+            # input()
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()

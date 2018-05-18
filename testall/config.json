@@ -1,5 +1,5 @@
 {
-   "IXIA":
+   "Dispatcher":
        {
          "user_name" : "Tissa",
          "cert_name" : "netx_6.3"
@@ -62,5 +62,16 @@
             "SP_COUNT_START"   : 9001,
             "SP_PRECEDENCE_START" : 5000,
             "SP_POLICY_PAYLOAD_NI_FILENAME" : "se_policy_payload_ni.xml"
-        }
+        },
+      "HorizontalScaleTest":
+      {
+        "startesx" : 1,
+        "endesx"   : 32,
+        "startvm"  : 1,
+        "endvm"    : 32,
+        "startnas" : 1,
+        "endnas"   : 4,
+        "startcluster" : 1,
+        "endcluster"   : 4
+      }
 }

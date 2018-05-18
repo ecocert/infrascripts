@@ -26,8 +26,8 @@ class VerticalScaleTest(unittest.TestCase):
             cls.res.addIfToVM()
             cls.res.powerVM()
             cls.res.configureIPAddr()
-            #logger.info("Setup for Vertical Scale Test is ready. Press ENTER to continue...")
-            #input()
+            # logger.info("Setup for Vertical Scale Test is ready. Press ENTER to continue...")
+            # input()
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()
@@ -44,13 +44,12 @@ class VerticalScaleTest(unittest.TestCase):
         ipAddr = '172.16.11.1'
         sshClient = util.ssh(ipAddr, "vmware", "VMware1!")
         output = sshClient.sendCommand("/home/vmware/ping_linux_vm.sh")
-        logger.info('-'*20)
+        logger.info('-' * 20)
         logger.info(output)
         # add assertion on ouput
+
     def testCase2(self):
         self.assertTrue(True, "assertFalse")
 
     def testCase3(self):
         self.assertTrue(True, "assertTrue")
-
-

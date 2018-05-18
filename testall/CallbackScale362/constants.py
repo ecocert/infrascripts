@@ -17,27 +17,26 @@ SCALE_COUNT_TOTAL = 10
 # Set SG_BINDING_COUNT less than 128
 SG_BINDING_COUNT = 3
 NUM_RETRIES = 3
-WAIT_IN_SEC = (100.0/1000.0)
+WAIT_IN_SEC = (100.0 / 1000.0)
 
 GVM_INPUT_FNAME = "gvm_object_ids.txt"
 
-#security groups inputs
+# security groups inputs
 SG_NAME_PREFIX = "Security_Group_"
 SG_COUNT_START = 5001
 SG_IN_JSON_FILENAME = "SampleSG_All.json"
 
-
-#security policy inputs
+# security policy inputs
 SP_NAME_PREFIX = "Security_Policy_"
 SP_COUNT_START = 9001
 SP_PRECEDENCE_START = 5000
-SP_POLICY_PAYLOAD_NI_FILENAME ="se_policy_payload_ni.xml"
+SP_POLICY_PAYLOAD_NI_FILENAME = "se_policy_payload_ni.xml"
 
 #
 # Set the value from json
 #
-#import sys, os
-#sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# import sys, os
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 """
 import certConfig
 config = certConfig.CertJsonConfig()
@@ -63,4 +62,3 @@ SP_COUNT_START = cfg["SP_COUNT_START"]
 SP_PRECEDENCE_START = cfg["SP_PRECEDENCE_START"]
 SP_POLICY_PAYLOAD_NI_FILENAME = cfg["SP_POLICY_PAYLOAD_NI_FILENAME"]
 """
-

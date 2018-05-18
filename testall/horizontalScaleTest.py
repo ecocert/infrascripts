@@ -16,6 +16,8 @@ class HorizontalScaleTest(unittest.TestCase):
         try:
             cls.res.preTestValidation()
             cls.res.configure()
+            cls.res.deployESX()
+
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()

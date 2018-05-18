@@ -25,8 +25,8 @@ class PerformanceTest(unittest.TestCase):
             cls.res.deployInfrastucture()
             cls.res.powerOnIXIA()
             time.sleep(30)
-            #logger.info("Press ENTER to continue...")
-            #input()
+            # logger.info("Press ENTER to continue...")
+            # input()
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()

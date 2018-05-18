@@ -6,8 +6,8 @@ import paramiko
 # from paramiko import client
 
 
-CmdTemplate = "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe " \
-              "\". F:\\scriptRepo\\infrascripts\\testall\\perf_vert_scale.ps1; " \
+CmdTemplate = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
+              "\". F:/scriptRepo/infrascripts/testall/perf_vert_scale.ps1; " \
               "connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; " \
               "{}; " \
               "disconnectFromVC -vc  'vcsa-02a.corp.local' \" "

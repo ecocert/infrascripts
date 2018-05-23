@@ -35,30 +35,27 @@ SP_POLICY_PAYLOAD_NI_FILENAME = "se_policy_payload_ni.xml"
 #
 # Set the value from json
 #
-# import sys, os
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-"""
-import certConfig
-config = certConfig.CertJsonConfig()
-cfg = config.json["CallbackScaleTest"]
-NSX_URL = cfg["NSX_URL"]
-USERNAME = cfg["USERNAME"]
-PASSWORD = cfg["PASSWORD"]
-INPUT_PATH = cfg["INPUT_PATH"]
-OUTPUT_PATH = cfg["OUTPUT_PATH"]
-CB_LOG_FILE = cfg["CB_LOG_FILE"]
-CB_SP_CREATION_TIME_FILE = cfg["CB_SP_CREATION_TIME_FILE"]
-CB_SP_APPLY_TIME_FILE = cfg["CB_SP_APPLY_TIME_FILE"]
-SCALE_COUNT_TOTAL = cfg["SCALE_COUNT_TOTAL"]
-SG_BINDING_COUNT = cfg["SG_BINDING_COUNT"]
-NUM_RETRIES = cfg["NUM_RETRIES"]
-WAIT_IN_SEC = cfg["WAIT_IN_SEC"]
-GVM_INPUT_FNAME = cfg["GVM_INPUT_FNAME"]
-SG_NAME_PREFIX = cfg["SG_NAME_PREFIX"]
-SG_COUNT_START = cfg["SG_COUNT_START"]
-SG_IN_JSON_FILENAME = cfg["SG_IN_JSON_FILENAME"]
-SP_NAME_PREFIX = cfg["SP_NAME_PREFIX"]
-SP_COUNT_START = cfg["SP_COUNT_START"]
-SP_PRECEDENCE_START = cfg["SP_PRECEDENCE_START"]
-SP_POLICY_PAYLOAD_NI_FILENAME = cfg["SP_POLICY_PAYLOAD_NI_FILENAME"]
-"""
+import json
+with open("config.json") as f:
+    jsonData = json.loads(f.read())
+    cfg = jsonData["CallbackScaleTest"]
+    NSX_URL = cfg["NSX_URL"]
+    USERNAME = cfg["USERNAME"]
+    PASSWORD = cfg["PASSWORD"]
+    INPUT_PATH = cfg["INPUT_PATH"]
+    OUTPUT_PATH = cfg["OUTPUT_PATH"]
+    CB_LOG_FILE = cfg["CB_LOG_FILE"]
+    CB_SP_CREATION_TIME_FILE = cfg["CB_SP_CREATION_TIME_FILE"]
+    CB_SP_APPLY_TIME_FILE = cfg["CB_SP_APPLY_TIME_FILE"]
+    SCALE_COUNT_TOTAL = cfg["SCALE_COUNT_TOTAL"]
+    SG_BINDING_COUNT = cfg["SG_BINDING_COUNT"]
+    NUM_RETRIES = cfg["NUM_RETRIES"]
+    WAIT_IN_SEC = cfg["WAIT_IN_SEC"]
+    GVM_INPUT_FNAME = cfg["GVM_INPUT_FNAME"]
+    SG_NAME_PREFIX = cfg["SG_NAME_PREFIX"]
+    SG_COUNT_START = cfg["SG_COUNT_START"]
+    SG_IN_JSON_FILENAME = cfg["SG_IN_JSON_FILENAME"]
+    SP_NAME_PREFIX = cfg["SP_NAME_PREFIX"]
+    SP_COUNT_START = cfg["SP_COUNT_START"]
+    SP_PRECEDENCE_START = cfg["SP_PRECEDENCE_START"]
+    SP_POLICY_PAYLOAD_NI_FILENAME = cfg["SP_POLICY_PAYLOAD_NI_FILENAME"]

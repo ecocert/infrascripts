@@ -17,10 +17,8 @@ class VerticalScaleTest(unittest.TestCase):
         try:
             cls.res.preTestValidation()
             cls.res.configure()
-            cls.res.deployIxia()
             time.sleep(30)
             cls.res.deployInfrastucture()
-            cls.res.powerOnIXIA()
             time.sleep(30)
             cls.res.deployVM()
             cls.res.addIfToVM()

@@ -16,8 +16,8 @@ class HorizontalScaleTest(unittest.TestCase):
         try:
             cls.res.preTestValidation()
             cls.res.configure()
-            cls.res.deployESX()
-
+            #cls.res.deployESX()
+            cls.res.horizontalSetup()
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()
@@ -29,7 +29,8 @@ class HorizontalScaleTest(unittest.TestCase):
         cls.res.undeployAll()
         cls.res.saveLog()
 
-    def testCase1(self):
+    def testConnectivy(self):
+        logger.info("testConnectivity")
         self.assertTrue(True, "assertTrue")
 
     def testCase2(self):

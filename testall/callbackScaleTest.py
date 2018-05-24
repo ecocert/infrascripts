@@ -49,3 +49,4 @@ class CallbackScaleTest(unittest.TestCase):
 
     def testCase3(self):
         self.assertTrue(True, "assertTrue")
+

@@ -73,6 +73,7 @@
         "startnas" : 1,
         "endnas"   : 4,
         "startcluster" : 1,
-        "endcluster"   : 4
+        "endcluster"   : 4,
+        "servicename"  : "Guest Introspection"
     }
 }

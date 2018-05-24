@@ -15,7 +15,7 @@ logger = util.getLogger('certTest')
 def keyboardInterruptHandler(signalnum, frame):
     "Handle Ctrl+C/SIGINT signal "
     logger.info("keyboardInterruptHandler")
-    ## Resource.undeploy()
+    Resource.undeployAll()
     raise KeyboardInterrupt
 
 
@@ -45,6 +45,7 @@ def buildTestList():
 def main():
     # Add CTRL+C handler.  It is experiential feature
     signal.signal(signal.SIGINT, keyboardInterruptHandler)
+    # pre-process Powser Shell scripts
     util.preProcessScript()
 
     testList = buildTestList()

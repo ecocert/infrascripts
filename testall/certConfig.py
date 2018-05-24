@@ -165,13 +165,13 @@ class Resource():
     def _cbScaleSetup(self):
         logger.info("Callback Scale Setup")
         rc = False
-        in_fname = os.getcwd() + "\\CallbackScale362\\" + self.cfg.json[self.testName]["INPUT_PATH"] + \
-                   self.cfg.json[self.testName]["GVM_INPUT_FNAME"]
+        in_fname = os.getcwd() + "\\CallbackScale362\\" + self.cfg.json["CallbackScaleTest"]["INPUT_PATH"] + \
+                   self.cfg.json["CallbackScaleTest"]["GVM_INPUT_FNAME"]
         if not os.path.isfile(in_fname):
             print("WARN : FILE DOES NOT EXISTS " + in_fname)
             return False
 
-        cb_scale_count = self.cfg.json[self.testName]["SCALE_COUNT_TOTAL"]
+        cb_scale_count = self.cfg.json["CallbackScaleTest"]["SCALE_COUNT_TOTAL"]
         rc = self.cb.cb_scale_config_setup(in_fname, cb_scale_count)
         if rc == False:
             logger.error("Callback Scale Setup error")
@@ -260,25 +260,20 @@ class Resource():
         self._cbScaleSetup()
         self.cleaner.callback(self._cbScaleCleanup)
 
+    def _horizontalPing(self):
+        logger.info("_horizontalPing")
+
     def horizontalSetup(self):
-        startesx = self.cfg.json["horizontalScaleTest"]["startesx"]
-        endesx   = self.cfg.json["horizontalScaleTest"]["endesx"]
-        startvm  = self.cfg.json["horizontalScaleTest"]["startvm"]
-        endvm    = self.cfg.json["horizontalScaleTest"]["endvm"]
-        startnas = self.cfg.json["horizontalScaleTest"]["startnas"]
-        endnas   = self.cfg.json["horizontalScaleTest"]["endnas"]
+        startesx = self.cfg.json["HorizontalScaleTest"]["startesx"]
+        endesx   = self.cfg.json["HorizontalScaleTest"]["endesx"]
+        startvm  = self.cfg.json["HorizontalScaleTest"]["startvm"]
+        endvm    = self.cfg.json["HorizontalScaleTest"]["endvm"]
+        startnas = self.cfg.json["HorizontalScaleTest"]["startnas"]
+        endnas   = self.cfg.json["HorizontalScaleTest"]["endnas"]
+        startcluster = self.cfg.json["HorizontalScaleTest"]["startcluster"]
+        endcluster   = self.cfg.json["HorizontalScaleTest"]["endcluster"]
 
-        """
-        PSScripts = [
-            "pingHorizontalHosts.ps1",
-            "poweronScaleHosts.ps1 -start {} -end {}".format(startesx, endesx),
-            "addScaleHostsIntovCenter.ps1 -start {} -end {}".format(startesx, endesx),
-            "registerScaleVMsIntovCenter.ps1 -start {} -end {}".format(startvm, endvm),
-            "addScaleHostsToVDS.ps1 -start {} -end {}".format(startesx, endesx),
-            "freeNASRestClient.ps1 -index $index".format(startnas, endnas)
 
-        ]
-        """
         cmd_pfx = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
               " -F ../scalescripts/"
 
@@ -286,45 +281,69 @@ class Resource():
         cmd = cmd_pfx + "pingHorizontalHosts.ps1"
         util.execPSCommand(cmd)
 
+        # Step 2
         cmd = cmd_pfx + "poweronScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "shutdownScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
-        self.cleaner.callback(util.execPSCommand(cmd))
+        self.cleaner.callback(util.execPSCommand, cmd)
 
+        # Step 3
         cmd = cmd_pfx + "addScaleHostsIntovCenter.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "removeScaleHostsFromvCenter.ps1 -start {} -end {}".format(startesx, endesx)
-        self.cleaner.callback(util.execPSCommand(cmd))
+        self.cleaner.callback(util.execPSCommand, cmd)
 
+        # Step 4
         cmd = cmd_pfx + "registerScaleVMsIntovCenter.ps1 -start {} -end {}".format(startvm, endvm)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "unregisterVMsFromvCenter.ps1 -start {} -end {}".format(startvm, endvm)
-        self.cleaner.callback(util.execPSCommand(cmd))
+        self.cleaner.callback(util.execPSCommand, cmd)
 
+        # Step 5
         cmd = cmd_pfx + "addScaleHostsToVDS.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "removeScaleHostsFromVDS.ps1 -start {} -end {}".format(startesx, endesx)
-        self.cleaner.callback(util.execPSCommand(cmd))
+        self.cleaner.callback(util.execPSCommand, cmd)
 
-        for nas in range(startnas, endnas):
+        # Step 6
+        for nas in range(startnas, endnas+1):
             cmd = cmd_pfx + "freeNASRestClient.ps1 -index {}".format(nas)
             util.execPSCommand(cmd)
+            cmd = cmd_pfx + "reverse-freeNASRestClient.ps1 -index {}".format(nas)
+            self.cleaner.callback(util.execPSCommand, cmd)
 
+        # Step 7
         cmd = cmd_pfx + "storageScanOnScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
 
+        # Step 12
         cmd = cmd_pfx + "powerOnLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "shutdownLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
-        self.cleaner.callback(util.execPSCommand(cmd))
+        self.cleaner.callback(util.execPSCommand, cmd)
 
+        # Step 14
+        for i in range(startcluster, endcluster+1):
+            cmd = cmd_pfx + "NSXHostPreparationInstallation.ps1 -index {}".format(i)
+            util.execPSCommand(cmd)
+            time.sleep(1)
+            #cmd = cmd_pfx + "NSXHostPreparationStatus.ps1 -index {}".format(i)
+            #util.execPSCommand(cmd)
+            cmd = cmd_pfx + "Un-NSXHostPreparationInstallation.ps1 -index {}".format(i)
+            self.cleaner.callback(util.execPSCommand, cmd)
 
+        # Step 15
+        for i in range(startcluster, endcluster + 1):
+            cmd = cmd_pfx + "NSXServiceDeployment.ps1 -index {}".format(i)
+            util.execPSCommand(cmd)
+            time.sleep(1)
+            #cmd = cmd_pfx + "NSXServiceDeploymentStatus.ps1 -index {}".format(i)
+            #util.execPSCommand(cmd)
+            cmd = cmd_pfx + "Un-NSXServiceDeployment.ps1 -index {}".format(i)
+            self.cleaner.callback(util.execPSCommand, cmd)
 
-
-
-
-
-
+        # Create security group and security policies
+        self.cbScaleSetup()
 
     def undeployAll(self):
         logger.info("Resource Undeploy")

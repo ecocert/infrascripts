@@ -275,17 +275,18 @@ class Resource():
 
 
         cmd_pfx = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
-              " -F ../scalescripts/"
+              " -F ./scalescripts/"
 
-        # TODO: add verification
-        cmd = cmd_pfx + "pingHorizontalHosts.ps1"
-        util.execPSCommand(cmd)
+
+        #cmd = cmd_pfx + "pingHorizontalHosts.ps1"
+        #util.execPSCommand(cmd)
 
         # Step 2
         cmd = cmd_pfx + "poweronScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "shutdownScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
         self.cleaner.callback(util.execPSCommand, cmd)
+        time.sleep(240)
 
         # Step 3
         cmd = cmd_pfx + "addScaleHostsIntovCenter.ps1 -start {} -end {}".format(startesx, endesx)
@@ -298,52 +299,64 @@ class Resource():
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "unregisterVMsFromvCenter.ps1 -start {} -end {}".format(startvm, endvm)
         self.cleaner.callback(util.execPSCommand, cmd)
+        time.sleep(30)
 
         # Step 5
         cmd = cmd_pfx + "addScaleHostsToVDS.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "removeScaleHostsFromVDS.ps1 -start {} -end {}".format(startesx, endesx)
         self.cleaner.callback(util.execPSCommand, cmd)
+        time.sleep(15)
+
+        logger.info("Press ENTER to continue...")
+        input()
 
         # Step 6
+        """
         for nas in range(startnas, endnas+1):
-            cmd = cmd_pfx + "freeNASRestClient.ps1 -index {}".format(nas)
+            cmd = cmd_pfx + "freeNASRestClient.ps1 -index {} -action {}".format(nas, 1)
             util.execPSCommand(cmd)
-            cmd = cmd_pfx + "reverse-freeNASRestClient.ps1 -index {}".format(nas)
+            cmd = cmd_pfx + "freeNASRestClient.ps1 -index {} -action {}".format(nas, 2)
             self.cleaner.callback(util.execPSCommand, cmd)
+        
 
         # Step 7
         cmd = cmd_pfx + "storageScanOnScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
         util.execPSCommand(cmd)
+        """
 
+        """
         # Step 12
         cmd = cmd_pfx + "powerOnLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
         util.execPSCommand(cmd)
         cmd = cmd_pfx + "shutdownLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
         self.cleaner.callback(util.execPSCommand, cmd)
+        """
 
         # Step 14
         for i in range(startcluster, endcluster+1):
-            cmd = cmd_pfx + "NSXHostPreparationInstallation.ps1 -index {}".format(i)
+            cmd = cmd_pfx + "NSXHostPreparationInstallation.ps1 -index {} -method \"POST\" ".format(i)
             util.execPSCommand(cmd)
-            time.sleep(1)
-            #cmd = cmd_pfx + "NSXHostPreparationStatus.ps1 -index {}".format(i)
-            #util.execPSCommand(cmd)
-            cmd = cmd_pfx + "Un-NSXHostPreparationInstallation.ps1 -index {}".format(i)
+            cmd = cmd_pfx + "NSXHostPreparationInstallation.ps1 -index {} -method \"DELETE\" ".format(i)
             self.cleaner.callback(util.execPSCommand, cmd)
+            time.sleep(1)
 
         # Step 15
         for i in range(startcluster, endcluster + 1):
-            cmd = cmd_pfx + "NSXServiceDeployment.ps1 -index {}".format(i)
+            cmd = cmd_pfx + "NSXServiceDeployment.ps1 -index {} -method \"POST\" ".format(i)
             util.execPSCommand(cmd)
-            time.sleep(1)
-            #cmd = cmd_pfx + "NSXServiceDeploymentStatus.ps1 -index {}".format(i)
-            #util.execPSCommand(cmd)
-            cmd = cmd_pfx + "Un-NSXServiceDeployment.ps1 -index {}".format(i)
+            cmd = cmd_pfx + "NSXServiceDeployment.ps1 -index {} -method \"DELETE\" ".format(i)
             self.cleaner.callback(util.execPSCommand, cmd)
+            time.sleep(1)
+
+        # Step 16
+        for i in range(startcluster, endcluster + 1):
+            cmd = cmd_pfx + "NSXServiceDeploymentStatus.ps1 -index {} -servicename \"Guest Introspection\" ".format(i)
+            util.execPSCommand(cmd)
 
         # Create security group and security policies
         self.cbScaleSetup()
+
 
     def undeployAll(self):
         logger.info("Resource Undeploy")

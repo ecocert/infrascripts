@@ -15,21 +15,22 @@ CmdTemplate = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
 
 def execPSCommand(command):
     logger.info(command)
-    return
-    """
+    #return
+
     try:
         output = subprocess.check_output(
             command,
             stderr=subprocess.STDOUT,
             shell=True,
             universal_newlines=True)
-        if output.find("non-zero exit status") != -1:
+        if output.find(" char:") != -1:
             raise Exception("PowerShell command exit status error: " + output)
         logger.info("PowerShell command output: " + output)
     except subprocess.CalledProcessError as e:
         logger.error("PowerShell Command Error")
         logger.error(e)
-     """
+        raise
+
 
 def getLogger(name):
     # xinthose (Jun 22, 2016). How to implement a Global Python Logger?
@@ -125,12 +126,14 @@ class Server():
 # Remove the last 3 lines in the PowerShell script,
 # because they are the code to start the script.
 #
+"""
 def preProcessScript(filename="../perfscripts/perf_vert_scale.ps1"):
     with open(filename, "r") as fr:
         content_r = fr.readlines()
         content_w = content_r[:-3]
         with open("./perf_vert_scale.ps1", "w") as fw:
             fw.write("".join(content_w))
+"""
 
 
 #

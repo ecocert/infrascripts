@@ -45,8 +45,6 @@ def buildTestList():
 def main():
     # Add CTRL+C handler.  It is experiential feature
     signal.signal(signal.SIGINT, keyboardInterruptHandler)
-    # pre-process Powser Shell scripts
-    util.preProcessScript()
 
     testList = buildTestList()
     testSuite = unittest.TestSuite()

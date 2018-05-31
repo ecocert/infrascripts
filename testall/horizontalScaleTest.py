@@ -18,6 +18,8 @@ class HorizontalScaleTest(unittest.TestCase):
             cls.res.configure()
             #cls.res.deployESX()
             cls.res.horizontalSetup()
+            logger.info("Press ENTER to continue...")
+            input()
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()

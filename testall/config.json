@@ -67,9 +67,9 @@
     "HorizontalScaleTest":
     {
         "startesx" : 1,
-        "endesx"   : 32,
+        "endesx"   : 8,
         "startvm"  : 1,
-        "endvm"    : 32,
+        "endvm"    : 8,
         "startnas" : 1,
         "endnas"   : 4,
         "startcluster" : 1,

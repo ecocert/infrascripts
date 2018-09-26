@@ -8,14 +8,14 @@
 NSX_URL = "https://172.17.11.11/"
 USERNAME = "admin"
 PASSWORD = "VMware1!"
-INPUT_PATH = ".\input\\"
-OUTPUT_PATH = ".\output\\"
+INPUT_PATH = ".\\input\\"
+OUTPUT_PATH = ".\\output\\"
 CB_LOG_FILE = "cb_script.log"
 CB_SP_CREATION_TIME_FILE = "sp_creation_time.csv"
 CB_SP_APPLY_TIME_FILE = "sp_apply_time.csv"
-SCALE_COUNT_TOTAL = 1000
+SCALE_COUNT_TOTAL = 10
 # Set SG_BINDING_COUNT less than 128
-SG_BINDING_COUNT = 64
+SG_BINDING_COUNT = 3
 NUM_RETRIES = 3
 WAIT_IN_SEC = (100.0/1000.0)
 

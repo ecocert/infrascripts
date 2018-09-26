@@ -8,18 +8,19 @@
 # Date: 08/FEB/2018
 #
 import constants
-import requests    #library used for making REST API calls
+import requests  # library used for making REST API calls
 import json
 import time
 import os
-import io
 import logging
-myheaders={'content-type':'application/json', 'accept':'application/json'}
 
-requests.packages.urllib3.disable_warnings()
+myheaders = {'content-type': 'application/json', 'accept': 'application/json'}
+import urllib3
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class CallbackScale:
-
     def __init__(self):
         logfile = constants.OUTPUT_PATH + constants.CB_LOG_FILE
         try:
@@ -32,22 +33,21 @@ class CallbackScale:
                             datefmt='%d-%m-%Y:%H:%M:%S',
                             level=logging.INFO)
 
-
     def __del__(self):
-        print ("destructor")
-        logging.info('entered destructor')
+        print("destructor")
+
+    #        logging.info('entered destructor')
 
 
     def cb_scale_sec_group_create(self, in_fname, scale_count):
         api_path = 'api/2.0/services/securitygroup/bulk/globalroot-0'
         nsx_url = constants.NSX_URL + api_path
 
-        onesg_filename = constants.INPUT_PATH + constants.SG_IN_JSON_FILENAME
+        onesg_filename = os.getcwd() + "\\CallbackScale362\\" + constants.INPUT_PATH + constants.SG_IN_JSON_FILENAME
         with open(onesg_filename) as datafile:
             jdata = json.load(datafile)
             segroup = jdata[0]
         datafile.close()
-
 
         obj_list = []
         with open(in_fname) as obj_fd:
@@ -60,7 +60,7 @@ class CallbackScale:
         loop_cond = True
         while (loop_cond):
             for id in obj_list:
-                if(sg_count >= scale_count):
+                if (sg_count >= scale_count):
                     loop_cond = False
                     break
                 segroup['name'] = constants.SG_NAME_PREFIX + str(constants.SG_COUNT_START + sg_count)
@@ -77,17 +77,17 @@ class CallbackScale:
 
                 if (response.status_code == 201):
                     sg_obj_id = response.text
-                    #print("SG-["+sg_obj_id+"]")
-                    sg_success_cnt +=1
-                    #print "CREATED SG " + segroup['name']  + " object-id = " + sg_obj_id
-                    logging.info("CREATED SG " + segroup['name']  + " object-id = " + sg_obj_id)
+                    # print("SG-["+sg_obj_id+"]")
+                    sg_success_cnt += 1
+                    # print "CREATED SG " + segroup['name']  + " object-id = " + sg_obj_id
+                    logging.info("CREATED SG " + segroup['name'] + " object-id = " + sg_obj_id)
                 else:
-                    #print "ERROR: CREATING SG " + segroup['name']  + " status code = " + str(response.status_code)
-                    logging.error("CREATING SG " + segroup['name']  + " status code = " + str(response.status_code))
-                    sg_fail_cnt +=1
+                    # print "ERROR: CREATING SG " + segroup['name']  + " status code = " + str(response.status_code)
+                    logging.error("CREATING SG " + segroup['name'] + " status code = " + str(response.status_code))
+                    sg_fail_cnt += 1
 
-        print("SG CREATION : success_count=" + str(sg_success_cnt) + " failure_count="+ str(sg_fail_cnt))
-        logging.info("SG CREATION : success_count=" + str(sg_success_cnt) + " failure_count="+ str(sg_fail_cnt))
+        print("SG CREATION : success_count=" + str(sg_success_cnt) + " failure_count=" + str(sg_fail_cnt))
+        logging.info("SG CREATION : success_count=" + str(sg_success_cnt) + " failure_count=" + str(sg_fail_cnt))
 
         logging.debug("EXIT")
 
@@ -96,19 +96,19 @@ class CallbackScale:
     def cb_scale_sec_group_query_and_delete_all(self):
         logging.debug("ENTER")
 
-        #Query and get all security-groups
+        # Query and get all security-groups
         api_path = 'api/2.0/services/securitygroup/scope/globalroot-0'
         nsx_url = constants.NSX_URL + api_path
-        #print(nsx_url)
+        # print(nsx_url)
         try:
             response = requests.get(nsx_url, headers=myheaders,
-                                     auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                    auth=(constants.USERNAME, constants.PASSWORD), verify=False)
         except requests.exceptions.ConnectionError as e:
-            print ("Connection error!")
+            print("Connection error!")
 
         jdata = response.json()
 
-        #Delete each object
+        # Delete each object
         api_path = 'api/2.0/services/securitygroup/'
         nsx_url = constants.NSX_URL + api_path
 
@@ -117,29 +117,29 @@ class CallbackScale:
             # print(sg_name)
             if (sg_name.startswith(constants.SG_NAME_PREFIX)):
                 sg_obj_id = segroup['objectId']
-                #print(sg_name + " " + sg_obj_id)
+                # print(sg_name + " " + sg_obj_id)
                 myurl = nsx_url + sg_obj_id.__str__() + '?force=true'
-                #print(myurl)
+                # print(myurl)
                 try_more = True
                 try_count = 0
-                while (try_more and try_count <constants.NUM_RETRIES):
+                while (try_more and try_count < constants.NUM_RETRIES):
                     try_more = False
-                    try_count +=1
+                    try_count += 1
                     time.sleep(try_count * constants.WAIT_IN_SEC)
                     try:
                         response = requests.delete(myurl, headers=myheaders,
-                                                 auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                                   auth=(constants.USERNAME, constants.PASSWORD), verify=False)
                     except requests.exceptions.ConnectionError as e:
-                        print ("Connection error!")
+                        print("Connection error!")
                     if (response.status_code == 200):
-                        #print "DELETED SG " + sg_obj_id
+                        # print "DELETED SG " + sg_obj_id
                         logging.info("DELETED SG " + sg_obj_id)
                     elif (response.status_code == 500):
-                        #print "DELETED SG " + sg_obj_id
+                        # print "DELETED SG " + sg_obj_id
                         logging.info("RE-TRY DELETING SG " + sg_obj_id)
                         try_more = True
                     else:
-                        #print "ERROR: DELETING SG " + sg_obj_id + " status code = "+ response.status_code
+                        # print "ERROR: DELETING SG " + sg_obj_id + " status code = "+ response.status_code
                         logging.error("DELETING SG " + sg_obj_id + " status code = " + str(response.status_code))
 
         logging.debug("EXIT")
@@ -148,35 +148,36 @@ class CallbackScale:
     def cb_scale_sec_policy_create_xml(self):
         logging.debug("ENTER")
 
-        #query manually created policy
+        # query manually created policy
         api_path = 'api/2.0/services/policy/securitypolicy/all'
         nsx_url = constants.NSX_URL + api_path
         try:
             response = requests.get(nsx_url, headers=myheaders,
-                                     auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                    auth=(constants.USERNAME, constants.PASSWORD), verify=False)
         except requests.exceptions.ConnectionError as e:
-            print ("Connection error!")
+            print("Connection error!")
             return False
 
         jdata = response.json()
         sepolicy = jdata['policies'][0]
 
-        #print(json.dumps(jdata, indent=1))
+        # print(json.dumps(jdata, indent=1))
 
-        #create new policies
+        # create new policies
         api_path = 'api/2.0/services/policy/securitypolicy'
         nsx_url = constants.NSX_URL + api_path
         sp_count = constants.SP_COUNT_START
 
-        #for EPSEC
-        #serviceprofile_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceProfile']['objectId']
-        #service_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceId']
+        # for EPSEC
+        # serviceprofile_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceProfile']['objectId']
+        # service_obj_id = sepolicy['auditableMap']['actionsByCategory']['endpoint']['action-1']['serviceId']
 
-        #for NETX
-        serviceprofile_obj_id = sepolicy['executionOrderCategoryToActionsList'][0]['actionList'][0]['serviceProfile']['objectId']
+        # for NETX
+        serviceprofile_obj_id = sepolicy['executionOrderCategoryToActionsList'][0]['actionList'][0]['serviceProfile'][
+            'objectId']
 
-        #print ("serviceprofile_obj_id = "+serviceprofile_obj_id)
-        #print("service_obj_id ="+service_obj_id)
+        # print ("serviceprofile_obj_id = "+serviceprofile_obj_id)
+        # print("service_obj_id ="+service_obj_id)
 
         sp_create_time_fname = constants.OUTPUT_PATH + constants.CB_SP_CREATION_TIME_FILE
 
@@ -185,16 +186,16 @@ class CallbackScale:
         sp_fail_cnt = 0
         sp_count = 0
         total_elapsed_time = 0
-        while sp_count < constants.SCALE_COUNT_TOTAL :
-            #Add delay
+        while sp_count < constants.SCALE_COUNT_TOTAL:
+            # Add delay
             time.sleep(constants.WAIT_IN_SEC)
             sepolicy_name = constants.SP_NAME_PREFIX + str(constants.SP_COUNT_START + sp_count)
 
             sp_count += 1
             sepolicy['name'] = sepolicy_name
-            sepolicy['precedence'] = constants.SP_PRECEDENCE_START+sp_count
-            sepolicy_pred = constants.SP_PRECEDENCE_START+sp_count
-            payload_ni_only ='''
+            sepolicy['precedence'] = constants.SP_PRECEDENCE_START + sp_count
+            sepolicy_pred = constants.SP_PRECEDENCE_START + sp_count
+            payload_ni_only = '''
 <securityPolicy>
     <name> ''' + sepolicy_name + ''' </name>
     <description>Security Policy for Callback Scale</description>
@@ -217,7 +218,7 @@ class CallbackScale:
     <isActionEnforced>false</isActionEnforced>
     <logged>false</logged>
     <serviceProfile>
-      <objectId>'''+ serviceprofile_obj_id + '''</objectId>
+      <objectId>''' + serviceprofile_obj_id + '''</objectId>
     </serviceProfile>
     <invalidServiceProfile>false</invalidServiceProfile>
     <redirect>true</redirect>
@@ -349,7 +350,7 @@ class CallbackScale:
     <isActionEnforced>false</isActionEnforced>
     <logged>false</logged>
     <serviceProfile>
-      <objectId>'''+ serviceprofile_obj_id + '''</objectId>
+      <objectId>''' + serviceprofile_obj_id + '''</objectId>
     </serviceProfile>
     <invalidServiceProfile>false</invalidServiceProfile>
     <redirect>true</redirect>
@@ -474,7 +475,7 @@ class CallbackScale:
 </actionsByCategory>
 </securityPolicy>'''
 
-            #print(payload)
+            # print(payload)
             '''
             onesp_filename = constants.INPUT_PATH + constants.SP_POLICY_PAYLOAD_NI_FILENAME
             file = open(onesp_filename, 'r')
@@ -486,11 +487,11 @@ class CallbackScale:
             myxmlheaders = {'content-type': 'application/xml'}
             start = time.clock()
             try:
-                #change payload as appropriate
+                # change payload as appropriate
                 response = requests.post(nsx_url, data=payload_ni_only, headers=myxmlheaders,
                                          auth=(constants.USERNAME, constants.PASSWORD), verify=False)
             except requests.exceptions.ConnectionError as e:
-                print ("Connection error!")
+                print("Connection error!")
             end = time.clock()
             elapsed_time = end - start
             timefile.write(str(sp_count) + ',' + str(elapsed_time) + '\n')
@@ -498,70 +499,69 @@ class CallbackScale:
 
             if (response.status_code == 201):
                 sp_obj_id = response.text
-                sp_success_cnt +=1
-                #print("CREATED SP " + sepolicy_name + " object-id = " + sp_obj_id)
+                sp_success_cnt += 1
+                # print("CREATED SP " + sepolicy_name + " object-id = " + sp_obj_id)
                 logging.info("CREATED SP " + sepolicy_name + " object-id = " + sp_obj_id)
             else:
-                #print("ERROR: CREATING SP " + sepolicy_name  + " status code = " + str(response.status_code))
-                logging.error("CREATING SP " + sepolicy_name  + " status code = " + str(response.status_code))
-                sp_fail_cnt +=1
+                # print("ERROR: CREATING SP " + sepolicy_name  + " status code = " + str(response.status_code))
+                logging.error("CREATING SP " + sepolicy_name + " status code = " + str(response.status_code))
+                sp_fail_cnt += 1
 
-        print ("SP CREATION : success_count=" + str(sp_success_cnt) + " failure_count="+ str(sp_fail_cnt))
-        print ("TOTAL SP CREATION time is : " + str(total_elapsed_time) + " seconds ...")
-        logging.info("SP CREATION : success_count=" + str(sp_success_cnt) + " failure_count="+ str(sp_fail_cnt))
+        print("SP CREATION : success_count=" + str(sp_success_cnt) + " failure_count=" + str(sp_fail_cnt))
+        print("TOTAL SP CREATION time is : " + str(total_elapsed_time) + " seconds ...")
+        logging.info("SP CREATION : success_count=" + str(sp_success_cnt) + " failure_count=" + str(sp_fail_cnt))
         logging.info("TOTAL SP CREATION time is : " + str(total_elapsed_time) + " seconds ...")
 
         timefile.close()
         logging.debug("EXIT")
         return True
 
-
     def cb_scale_sec_policy_query_and_delete_all(self):
         logging.debug("ENTER")
 
-        #Query all
+        # Query all
         api_path = 'api/2.0/services/policy/securitypolicy/all'
         nsx_url = constants.NSX_URL + api_path
         try:
             response = requests.get(nsx_url, headers=myheaders,
-                                     auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                    auth=(constants.USERNAME, constants.PASSWORD), verify=False)
         except requests.exceptions.ConnectionError as e:
-            print ("Connection error!")
+            print("Connection error!")
 
         jdata = response.json()
         sepolicies = jdata['policies']
 
-        #Delete all
+        # Delete all
         api_path = 'api/2.0/services/policy/securitypolicy/'
         nsx_url = constants.NSX_URL + api_path
 
         for sepolicy in sepolicies:
             sp_name = sepolicy['name']
-            #print(sp_name)
+            # print(sp_name)
             if (sp_name.startswith(constants.SP_NAME_PREFIX)):
                 sp_obj_id = sepolicy['objectId']
-                #print(sp_name + " " + sp_obj_id)
+                # print(sp_name + " " + sp_obj_id)
                 myurl = nsx_url + sp_obj_id.__str__() + '?force=true'
                 try_more = True
                 try_count = 0
                 while (try_more and try_count < constants.NUM_RETRIES):
                     try_more = False
-                    try_count +=1
-                    time.sleep(try_count*constants.WAIT_IN_SEC)
+                    try_count += 1
+                    time.sleep(try_count * constants.WAIT_IN_SEC)
                     try:
                         response = requests.delete(myurl, headers=myheaders,
-                                                 auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                                   auth=(constants.USERNAME, constants.PASSWORD), verify=False)
                     except requests.exceptions.ConnectionError as e:
-                        print ("Connection error!")
+                        print("Connection error!")
                     if (response.status_code == 200 or response.status_code == 204):
-                        #print "DELETED SP " + sp_obj_id
+                        # print "DELETED SP " + sp_obj_id
                         logging.info("DELETED SP " + sp_obj_id)
                     elif (response.status_code == 500):
                         logging.info("RE-TRY DELETING SP " + sp_obj_id)
                         try_more = True
                     else:
-                        #print "ERROR: DELETING SP " + sp_obj_id + " status code = "+ str(response.status_code)
-                        logging.error("DELETING SP " + sp_obj_id + " status code = "+ str(response.status_code))
+                        # print "ERROR: DELETING SP " + sp_obj_id + " status code = "+ str(response.status_code)
+                        logging.error("DELETING SP " + sp_obj_id + " status code = " + str(response.status_code))
 
         logging.debug("EXIT")
 
@@ -570,31 +570,31 @@ class CallbackScale:
     def cb_scale_sec_policy_apply(self):
         logging.debug("ENTER")
 
-        #Query all policies
+        # Query all policies
         api_path = 'api/2.0/services/policy/securitypolicy/all'
         nsx_url = constants.NSX_URL + api_path
         try:
             response = requests.get(nsx_url, headers=myheaders,
-                                     auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                    auth=(constants.USERNAME, constants.PASSWORD), verify=False)
         except requests.exceptions.ConnectionError as e:
-            print ("Connection error!")
+            print("Connection error!")
 
         jdata = response.json()
         sepolicies = jdata['policies']
 
-        #Query and get all security-groups
+        # Query and get all security-groups
         api_path = 'api/2.0/services/securitygroup/scope/globalroot-0'
         nsx_url = constants.NSX_URL + api_path
-        #print(nsx_url)
+        # print(nsx_url)
         try:
             response = requests.get(nsx_url, headers=myheaders,
-                                     auth=(constants.USERNAME,constants.PASSWORD), verify=False)
+                                    auth=(constants.USERNAME, constants.PASSWORD), verify=False)
         except requests.exceptions.ConnectionError as e:
-            print ("Connection error!")
+            print("Connection error!")
 
         segroups = response.json()
 
-        #PUT /api/2.0/services/policy/securitypolicy/{ID}/sgbinding/{securityGroupId}
+        # PUT /api/2.0/services/policy/securitypolicy/{ID}/sgbinding/{securityGroupId}
 
         api_path = 'api/2.0/services/policy/securitypolicy/'
         nsx_url = constants.NSX_URL + api_path
@@ -613,17 +613,17 @@ class CallbackScale:
             sp_obj_id = sp_item['objectId']
             if (not sp_name.startswith(constants.SP_NAME_PREFIX)):
                 continue
-            #print(sg_name, sg_obj_id, sp_name, sp_obj_id)
-            #print("Total sp_count = " + str(sp_count))
+            # print(sg_name, sg_obj_id, sp_name, sp_obj_id)
+            # print("Total sp_count = " + str(sp_count))
 
-            #print(sg_obj_id, sp_obj_id)
-            #Add delay
+            # print(sg_obj_id, sp_obj_id)
+            # Add delay
             if (sp_count >= constants.SG_BINDING_COUNT):
                 break;
             time.sleep(constants.WAIT_IN_SEC)
             sp_count += 1
             myurl = nsx_url + sp_obj_id.__str__() + '/sgbinding/' + sg_obj_id.__str__()
-            #print myurl
+            # print myurl
             try_more = True
             try_count = 0
             while (try_more and try_count < constants.NUM_RETRIES):
@@ -633,24 +633,24 @@ class CallbackScale:
                 start = time.clock()
                 try:
                     response = requests.put(myurl, headers=myheaders,
-                                               auth=(constants.USERNAME, constants.PASSWORD), verify=False)
+                                            auth=(constants.USERNAME, constants.PASSWORD), verify=False)
                 except requests.exceptions.ConnectionError as e:
-                    print ("Connection error!")
+                    print("Connection error!")
                 end = time.clock()
                 elapsed_time = end - start
                 timefile.write(str(sp_count) + ',' + str(elapsed_time) + '\n')
                 total_elapsed_time += elapsed_time
                 if (response.status_code == 200 or response.status_code == 204):
-                    #print("APPLIED SP " + sp_obj_id + " TO " + sg_obj_id)
+                    # print("APPLIED SP " + sp_obj_id + " TO " + sg_obj_id)
                     logging.info("APPLIED SP " + sp_obj_id + " TO " + sg_obj_id)
                 elif (response.status_code == 500):
                     logging.info("RE-TRY APPLING SP " + sp_obj_id + " TO " + sg_obj_id)
                     try_more = True
                 else:
-                    #print("ERROR: APPLYING SP " + sp_obj_id + " status code = " + str(response.status_code))
+                    # print("ERROR: APPLYING SP " + sp_obj_id + " status code = " + str(response.status_code))
                     logging.error("APPLYING SP " + sp_obj_id + " status code = " + str(response.status_code))
         print("TOTAL SP APPLY Count is : " + str(sp_count))
-        print ("TOTAL SP APPLY time is : " + str(total_elapsed_time) + " seconds ...")
+        print("TOTAL SP APPLY time is : " + str(total_elapsed_time) + " seconds ...")
         logging.info("TOTAL SP APPLY time is : " + str(total_elapsed_time) + " seconds ...")
         timefile.close()
         logging.debug("EXIT")
@@ -658,12 +658,12 @@ class CallbackScale:
         return True
 
     def cb_scale_config_setup(self, input_fname, scale_count):
-        print ("Started Callback Scale Setup...")
+        print("Started Callback Scale Setup...")
         logging.debug("ENTER")
 
         ret = self.cb_scale_sec_group_create(input_fname, scale_count)
         if ret != True:
-            print ("ERROR: SE Group Create")
+            print("ERROR: SE Group Create")
         """
         ret = self.cb_scale_sec_policy_create_xml()
         if ret != True:
@@ -679,18 +679,18 @@ class CallbackScale:
         return True
 
     def cb_scale_config_cleanup(self):
-        print ("Started Callback Scale Cleanup...")
+        print("Started Callback Scale Cleanup...")
         logging.debug("ENTER")
 
         ret = self.cb_scale_sec_policy_query_and_delete_all()
         if ret != True:
-            print ("ERROR: SE Policy Delete")
+            print("ERROR: SE Policy Delete")
 
         ret = self.cb_scale_sec_group_query_and_delete_all()
         if ret != True:
-            print ("ERROR: SE Group Delete")
+            print("ERROR: SE Group Delete")
 
-        print ("Completed Callback Scale Cleanup. Done")
+        print("Completed Callback Scale Cleanup. Done")
         logging.debug("EXIT")
 
         return True

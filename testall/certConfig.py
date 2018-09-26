@@ -7,21 +7,26 @@ import time
 import sys
 import contextlib
 import util
+import os
+import multiprocessing
 
 sys.path.insert(0, r'.\CertClient')
+sys.path.insert(0, r'.\CallbackScale362')
 from CertClient import CertClient
+from CallbackScaleUtils import CallbackScale
 
 logger = util.getLogger('certTest')
-user_name = "Tissa"
-cert_name = "netx_6.3"
+
+
+# user_name = "Tissa"
+# cert_name = "netx_6.3"
 
 
 class CertException(Exception):
     pass
 
 
-class CertTestConfig:
-    ## TODO: it should be revised to a Singleton?
+class CertJsonConfig:
     def __init__(self, configFile='config.json'):
         self.configFile = configFile
         with open(self.configFile) as f:
@@ -35,34 +40,34 @@ class CertTestConfig:
         return pp.pformat(self.json)
 
 
-class Resource(object):
-    """
-    _instance = None  # Singleton
-
-    def __new__(cls, testName, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(Resource, cls).__new__(cls, *args, **kwargs)
-        return cls._instance
-    """
-
+class Resource():
     def __init__(self, testName):
+        self.cb = CallbackScale()
         self.cleaner = contextlib.ExitStack()
-        self.cfg = CertTestConfig()
+        self.cfg = CertJsonConfig()
         self.c = CertClient()
         self.testName = testName
 
-    def _IXIA(self, action="STATUS"):
-        logger.info("_IXIA: " + action)
+    #  resource = "IXIA" or "ESX"
+    #  action = "ADD", "REMOVE" or "STATUS"
+    def _resourceAllocDispatcher(self, resource, action="STATUS"):
+        logger.info("_resourceAllocDispatcher {} {}".format(resource, action))
         # return (action, "WAITING")
 
         test_bed_ip = self.c.getipaddress()
-        jobid = self.c.requestIxia(
-            self.cfg.json["IXIA"]["user_name"], action,
-            self.cfg.json["IXIA"]["cert_name"], test_bed_ip)
+        if resource == "IXIA":
+            jobid = self.c.requestIxia(
+                self.cfg.json["Dispatcher"]["user_name"], action,
+                self.cfg.json["Dispatcher"]["cert_name"], test_bed_ip)
+        elif resource == "ESX":
+            jobid = self.c.requestScale(
+                self.cfg.json["Dispatcher"]["user_name"], action,
+                self.cfg.json["Dispatcher"]["cert_name"], test_bed_ip)
+        else:
+            raise CertException("param error: action={}".format(action))
 
         if jobid == 0:
-            raise CertException("IXIA resource allocation job id is 0.  Dispatcher crashed?")
-        time.sleep(10)
+            raise CertException("resource allocation job id is 0.  Dispatcher crashed?")
 
         try:
             resp = self.c.getJob(jobid)
@@ -78,18 +83,17 @@ class Resource(object):
                         # This is a hack, the state would change to 'CANCLED' for unknown reason
                         resp = self.c.getJob(jobid)
                         if resp and 'state' in resp and resp['state'] == 'CANCELED':
-                            raise CertException("IXIA not available for {}".format(action))
+                            raise CertException("{} not available for {}".format(resource, action))
                         print('.', end='', flush=True)
                         time.sleep(30)
 
                 return (action, "WAITING")
             elif (resp and 'state' in resp and resp['state'] == 'CANCELED'):
-                raise CertException("IXIA not available for {}".format(action))
+                raise CertException("{} not available for {}".format(resource, action))
             else:
                 raise CertException("Unknown return status")
-
         except (TypeError, ValueError) as e:
-            raise CertException("IXIA allocation error: ")
+            raise CertException("{} {} error.".format(resource, action))
 
     def _powerIXIA(self, action):
         if action == "ON":
@@ -158,6 +162,27 @@ class Resource(object):
         logger.info(psCmd)
         util.execPSCommand(psCmd)
 
+    def _cbScaleSetup(self):
+        logger.info("Callback Scale Setup")
+        rc = False
+        in_fname = os.getcwd() + "\\CallbackScale362\\" + self.cfg.json["CallbackScaleTest"]["INPUT_PATH"] + \
+                   self.cfg.json["CallbackScaleTest"]["GVM_INPUT_FNAME"]
+        if not os.path.isfile(in_fname):
+            print("WARN : FILE DOES NOT EXISTS " + in_fname)
+            return False
+
+        cb_scale_count = self.cfg.json["CallbackScaleTest"]["SCALE_COUNT_TOTAL"]
+        rc = self.cb.cb_scale_config_setup(in_fname, cb_scale_count)
+        if rc == False:
+            logger.error("Callback Scale Setup error")
+
+    def _cbScaleCleanup(self):
+        logger.info("Callback Scale Cleanup")
+        rc = False
+        rc = self.cb.cb_scale_config_cleanup()
+        if rc == False:
+            logger.error("Callback Scale Cleanup error")
+
     def configureIPAddr(self):
         logger.info("configureIPAddr")
         psCmd = util.CmdTemplate.format(
@@ -199,9 +224,14 @@ class Resource(object):
         logger.info("Un-Configuration")
 
     def deployIxia(self):
-        action, status = self._IXIA("ADD")
+        action, status = self._resourceAllocDispatcher("IXIA", "ADD")
         if action == "ADD" and status == "WAITING":
-            self.cleaner.callback(self._IXIA, "REMOVE")
+            self.cleaner.callback(self._resourceAllocDispatcher, "REMOVE")
+
+    def deployESX(self):
+        action, status = self._resourceAllocDispatcher("ESX", "ADD")
+        if action == "ADD" and status == "WAITING":
+            self.cleaner.callback(self._resourceAllocDispatcher, "REMOVE")
 
     def powerOnIXIA(self):
         self._powerIXIA("ON")
@@ -222,6 +252,111 @@ class Resource(object):
     def addIfToVM(self):
         self._addInterfaceToVM()
         self.cleaner.callback(self._removeInterfaceFromVM)
+
+    def cbScaleSetup(self):
+        cmd = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
+              " -F ./CallbackScale362/GetAllVM_IPAddr.ps1 "
+        util.execPSCommand(cmd)
+        self._cbScaleSetup()
+        self.cleaner.callback(self._cbScaleCleanup)
+
+    def _horizontalPing(self):
+        logger.info("_horizontalPing")
+
+    def horizontalSetup(self):
+        startesx = self.cfg.json["HorizontalScaleTest"]["startesx"]
+        endesx   = self.cfg.json["HorizontalScaleTest"]["endesx"]
+        startvm  = self.cfg.json["HorizontalScaleTest"]["startvm"]
+        endvm    = self.cfg.json["HorizontalScaleTest"]["endvm"]
+        startnas = self.cfg.json["HorizontalScaleTest"]["startnas"]
+        endnas   = self.cfg.json["HorizontalScaleTest"]["endnas"]
+        startcluster = self.cfg.json["HorizontalScaleTest"]["startcluster"]
+        endcluster   = self.cfg.json["HorizontalScaleTest"]["endcluster"]
+
+
+        cmd_pfx = "C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe " \
+              " -F ./scalescripts/"
+
+
+        #cmd = cmd_pfx + "pingHorizontalHosts.ps1"
+        #util.execPSCommand(cmd)
+
+        # Step 2
+        cmd = cmd_pfx + "poweronScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "shutdownScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
+        self.cleaner.callback(util.execPSCommand, cmd)
+        time.sleep(240)
+
+        # Step 3
+        cmd = cmd_pfx + "addScaleHostsIntovCenter.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "removeScaleHostsFromvCenter.ps1 -start {} -end {}".format(startesx, endesx)
+        self.cleaner.callback(util.execPSCommand, cmd)
+
+        # Step 4
+        cmd = cmd_pfx + "registerScaleVMsIntovCenter.ps1 -start {} -end {}".format(startvm, endvm)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "unregisterVMsFromvCenter.ps1 -start {} -end {}".format(startvm, endvm)
+        self.cleaner.callback(util.execPSCommand, cmd)
+        time.sleep(30)
+
+        # Step 5
+        cmd = cmd_pfx + "addScaleHostsToVDS.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "removeScaleHostsFromVDS.ps1 -start {} -end {}".format(startesx, endesx)
+        self.cleaner.callback(util.execPSCommand, cmd)
+        time.sleep(15)
+
+        logger.info("Press ENTER to continue...")
+        input()
+
+        # Step 6
+        """
+        for nas in range(startnas, endnas+1):
+            cmd = cmd_pfx + "freeNASRestClient.ps1 -index {} -action {}".format(nas, 1)
+            util.execPSCommand(cmd)
+            cmd = cmd_pfx + "freeNASRestClient.ps1 -index {} -action {}".format(nas, 2)
+            self.cleaner.callback(util.execPSCommand, cmd)
+        
+
+        # Step 7
+        cmd = cmd_pfx + "storageScanOnScaleHosts.ps1 -start {} -end {}".format(startesx, endesx)
+        util.execPSCommand(cmd)
+        """
+
+        """
+        # Step 12
+        cmd = cmd_pfx + "powerOnLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
+        util.execPSCommand(cmd)
+        cmd = cmd_pfx + "shutdownLinuxVMs.ps1 -start {} -end {}".format(startvm, endvm)
+        self.cleaner.callback(util.execPSCommand, cmd)
+        """
+
+        # Step 14
+        for i in range(startcluster, endcluster+1):
+            cmd = cmd_pfx + "NSXHostPreparationInstallation.ps1 -index {} -method \"POST\" ".format(i)
+            util.execPSCommand(cmd)
+            cmd = cmd_pfx + "NSXHostPreparationInstallation.ps1 -index {} -method \"DELETE\" ".format(i)
+            self.cleaner.callback(util.execPSCommand, cmd)
+            time.sleep(1)
+
+        # Step 15
+        for i in range(startcluster, endcluster + 1):
+            cmd = cmd_pfx + "NSXServiceDeployment.ps1 -index {} -method \"POST\" ".format(i)
+            util.execPSCommand(cmd)
+            cmd = cmd_pfx + "NSXServiceDeployment.ps1 -index {} -method \"DELETE\" ".format(i)
+            self.cleaner.callback(util.execPSCommand, cmd)
+            time.sleep(1)
+
+        # Step 16
+        for i in range(startcluster, endcluster + 1):
+            cmd = cmd_pfx + "NSXServiceDeploymentStatus.ps1 -index {} -servicename \"Guest Introspection\" ".format(i)
+            util.execPSCommand(cmd)
+
+        # Create security group and security policies
+        self.cbScaleSetup()
+
 
     def undeployAll(self):
         logger.info("Resource Undeploy")

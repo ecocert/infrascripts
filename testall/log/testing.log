@@ -1,61 +1,454 @@
-2018-05-23 19:03:12,913 [INFO]: certTestAll.py main():53 >> [<class 'horizontalScaleTest.HorizontalScaleTest'>]
-2018-05-23 19:03:12,914 [INFO]: horizontalScaleTest.py setUpClass():14 >> --------------------------------------------
-2018-05-23 19:03:12,914 [INFO]: horizontalScaleTest.py setUpClass():15 >> set up the fixture for Horizontal Scale Test
-2018-05-23 19:03:12,914 [INFO]: certConfig.py preTestValidation():213 >> PreTestValidation
-2018-05-23 19:03:12,914 [INFO]: certConfig.py configure():220 >> Configuration
-2018-05-23 19:03:12,914 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/pingHorizontalHosts.ps1
-2018-05-23 19:03:12,914 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/poweronScaleHosts.ps1 -start 1 -end 32
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/addScaleHostsIntovCenter.ps1 -start 1 -end 32
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/registerScaleVMsIntovCenter.ps1 -start 1 -end 32
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/addScaleHostsToVDS.ps1 -start 1 -end 32
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/freeNASRestClient.ps1 -index 1
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/freeNASRestClient.ps1 -index 2
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/freeNASRestClient.ps1 -index 3
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/freeNASRestClient.ps1 -index 4
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/storageScanOnScaleHosts.ps1 -start 1 -end 32
-2018-05-23 19:03:12,915 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/powerOnLinuxVMs.ps1 -start 1 -end 32
-2018-05-23 19:03:12,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXHostPreparationInstallation.ps1 -index 1
-2018-05-23 19:03:13,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXHostPreparationInstallation.ps1 -index 2
-2018-05-23 19:03:14,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXHostPreparationInstallation.ps1 -index 3
-2018-05-23 19:03:15,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXHostPreparationInstallation.ps1 -index 4
-2018-05-23 19:03:16,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXServiceDeployment.ps1 -index 1
-2018-05-23 19:03:17,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXServiceDeployment.ps1 -index 2
-2018-05-23 19:03:18,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXServiceDeployment.ps1 -index 3
-2018-05-23 19:03:19,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/NSXServiceDeployment.ps1 -index 4
-2018-05-23 19:03:20,916 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ./CallbackScale362/GetAllVM_IPAddr.ps1 
-2018-05-23 19:03:20,916 [INFO]: certConfig.py _cbScaleSetup():166 >> Callback Scale Setup
-2018-05-23 19:03:21,344 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5001 status code = 400
-2018-05-23 19:03:21,544 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5002 status code = 400
-2018-05-23 19:03:21,739 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5003 status code = 400
-2018-05-23 19:03:21,946 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5004 status code = 400
-2018-05-23 19:03:22,154 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5005 status code = 400
-2018-05-23 19:03:22,364 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5006 status code = 400
-2018-05-23 19:03:22,593 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5007 status code = 400
-2018-05-23 19:03:22,809 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5008 status code = 400
-2018-05-23 19:03:23,012 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5009 status code = 400
-2018-05-23 19:03:23,248 [ERROR]: CallbackScaleUtils.py cb_scale_sec_group_create():86 >> CREATING SG Security_Group_5010 status code = 400
-2018-05-23 19:03:23,249 [INFO]: CallbackScaleUtils.py cb_scale_sec_group_create():90 >> SG CREATION : success_count=0 failure_count=10
-2018-05-23 19:03:23,249 [INFO]: horizontalScaleTest.py testConnectivy():33 >> testConnectivity
-2018-05-23 19:03:23,249 [INFO]: horizontalScaleTest.py tearDownClass():28 >> tear down the fixture for Horizontal Scale Test
-2018-05-23 19:03:23,249 [INFO]: certConfig.py undeployAll():349 >> Resource Undeploy
-2018-05-23 19:03:23,250 [INFO]: certConfig.py _cbScaleCleanup():180 >> Callback Scale Cleanup
-2018-05-23 19:03:23,532 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXServiceDeployment.ps1 -index 4
-2018-05-23 19:03:23,532 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXServiceDeployment.ps1 -index 3
-2018-05-23 19:03:23,532 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXServiceDeployment.ps1 -index 2
-2018-05-23 19:03:23,532 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXServiceDeployment.ps1 -index 1
-2018-05-23 19:03:23,532 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXHostPreparationInstallation.ps1 -index 4
-2018-05-23 19:03:23,532 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXHostPreparationInstallation.ps1 -index 3
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXHostPreparationInstallation.ps1 -index 2
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/Un-NSXHostPreparationInstallation.ps1 -index 1
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/shutdownLinuxVMs.ps1 -start 1 -end 32
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/reverse-freeNASRestClient.ps1 -index 4
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/reverse-freeNASRestClient.ps1 -index 3
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/reverse-freeNASRestClient.ps1 -index 2
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/reverse-freeNASRestClient.ps1 -index 1
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/removeScaleHostsFromVDS.ps1 -start 1 -end 32
-2018-05-23 19:03:23,533 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/unregisterVMsFromvCenter.ps1 -start 1 -end 32
-2018-05-23 19:03:23,534 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/removeScaleHostsFromvCenter.ps1 -start 1 -end 32
-2018-05-23 19:03:23,534 [INFO]: util.py execPSCommand():17 >> C:/WINDOWS/system32/WindowsPowerShell/v1.0/powershell.exe  -F ../scalescripts/shutdownScaleHosts.ps1 -start 1 -end 32
-2018-05-23 19:03:23,534 [INFO]: certConfig.py unconfigure():224 >> Un-Configuration
-2018-05-23 19:03:23,534 [INFO]: certConfig.py postTestValidation():217 >> postTestValidation
-2018-05-23 19:03:23,534 [INFO]: certConfig.py saveLog():353 >> Save Log file
+2018-05-08 18:51:25,367 [INFO]: certTestAll.py main():51 >> [<class 'verticalScaleTest.VerticalScaleTest'>]
+2018-05-08 18:51:25,369 [INFO]: verticalScaleTest.py setUpClass():17 >> ------------------------------------------
+2018-05-08 18:51:25,369 [INFO]: verticalScaleTest.py setUpClass():18 >> set up the fixture for Vertical Scale Test
+2018-05-08 18:51:25,369 [INFO]: certConfig.py preTestValidation():188 >> PreTestValidation
+2018-05-08 18:51:25,369 [INFO]: certConfig.py configure():195 >> Configuration
+2018-05-08 18:51:25,370 [INFO]: certConfig.py _Infrastructure():109 >> SETUP Infrastructure
+2018-05-08 18:51:25,370 [INFO]: certConfig.py _Infrastructure():118 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\testall\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; prepareInfra -perfClusterName "PerfCluster"; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-05-08 18:52:03,203 [WARNING]: util.py execPSCommand():24 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+ Added Cluster[PerfCluster] to vCenter
+WARNING: The 'State' property of VMHost type is deprecated. Use the 'ConnectionState' property 
+instead.
+WARNING: PowerCLI scripts should not use the 'Client' property. The property will be removed in a 
+future release.
+WARNING: PowerCLI scripts should not use the 'DatastoreIdList' property of VMHost type. The 
+property will be removed in a future release.
+
+State                 : Connected
+ConnectionState       : Connected
+PowerState            : PoweredOn
+VMSwapfileDatastoreId : 
+VMSwapfilePolicy      : Inherit
+ParentId              : ClusterComputeResource-domain-c8901
+IsStandalone          : False
+Manufacturer          : VMware, Inc.
+Model                 : VMware Virtual Platform
+NumCpu                : 16
+CpuTotalMhz           : 43200
+CpuUsageMhz           : 0
+LicenseKey            : 4N20N-QYN9Q-L8F8T-0RAU4-0TN05
+MemoryTotalMB         : 131071.42578125
+MemoryTotalGB         : 127.999439239501953125
+MemoryUsageMB         : 0
+MemoryUsageGB         : 0
+ProcessorType         : Intel(R) Xeon(R) CPU E5-2680 0 @ 2.70GHz
+HyperthreadingActive  : False
+TimeZone              : UTC
+Version               : 6.5.0
+Build                 : 5310538
+Parent                : PerfCluster
+VMSwapfileDatastore   : 
+StorageInfo           : HostStorageSystem-storageSystem-8903
+NetworkInfo           : localhost:corp.local
+DiagnosticPartition   : 
+FirewallDefaultPolicy : VMHostFirewallDefaultPolicy:HostSystem-host-8903
+ApiVersion            : 6.5
+MaxEVCMode            : intel-sandybridge
+Name                  : esx-perf.corp.local
+CustomFields          : {[AutoDeploy.MachineIdentity, ]}
+ExtensionData         : VMware.Vim.HostSystem
+Id                    : HostSystem-host-8903
+Uid                   : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VMHost=HostSyste
+                        m-host-8903/
+Client                : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+DatastoreIdList       : {Datastore-datastore-14, Datastore-datastore-8904, Datastore-datastore-16}
+
+ Added esx-perf.corp.local to vCenter
+
+LinkDiscoveryProtocol          : CDP
+LinkDiscoveryProtocolOperation : Listen
+VlanConfiguration              : 
+Name                           : VDS_Performance
+ExtensionData                  : VMware.Vim.VmwareDistributedVirtualSwitch
+NumPorts                       : 0
+Key                            : 50 33 8b 48 e7 b3 42 9a-4e 59 50 55 24 64 2e b6
+Mtu                            : 9000
+Notes                          : 
+Datacenter                     : Cert-DC
+NumUplinkPorts                 : 4
+ContactName                    : 
+ContactDetails                 : 
+Version                        : 6.5.0
+Vendor                         : VMware, Inc.
+Folder                         : network
+MaxPorts                       : 2147483647
+Id                             : VmwareDistributedVirtualSwitch-dvs-8908
+Uid                            : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Distrib
+                                 utedSwitch=VmwareDistributedVirtualSwitch-dvs-8908/
+Client                         : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+
+WARNING: PowerCLI scripts should not use the 'VirtualSwitch' property of VmwareVDPortgroup type. 
+The property will be removed in a future release.
+
+VlanConfiguration : 
+Name              : VDS_Performance_pg
+ExtensionData     : VMware.Vim.DistributedVirtualPortgroup
+Key               : dvportgroup-8910
+Notes             : 
+Datacenter        : Cert-DC
+PortBinding       : Static
+NumPorts          : 12
+VDSwitch          : VDS_Performance
+IsUplink          : False
+Id                : DistributedVirtualPortgroup-dvportgroup-8910
+Uid               : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/DistributedPortgroup
+                    =DistributedVirtualPortgroup-dvportgroup-8910/
+Client            : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+VirtualSwitch     : VDS_Performance
+
+Added PG VDS_Performance_pg in to VDS VDS_Performance
+ Added esx-perf.corp.local to vDS: VDS_Performance
+
+LinkDiscoveryProtocol          : CDP
+LinkDiscoveryProtocolOperation : Listen
+VlanConfiguration              : 
+Name                           : VDS_vertical_scale
+ExtensionData                  : VMware.Vim.VmwareDistributedVirtualSwitch
+NumPorts                       : 0
+Key                            : 50 33 29 67 fd c4 94 f7-19 68 1c 49 b1 c2 9d 9d
+Mtu                            : 8128
+Notes                          : 
+Datacenter                     : Cert-DC
+NumUplinkPorts                 : 1
+ContactName                    : 
+ContactDetails                 : 
+Version                        : 6.5.0
+Vendor                         : VMware, Inc.
+Folder                         : network
+MaxPorts                       : 2147483647
+Id                             : VmwareDistributedVirtualSwitch-dvs-8911
+Uid                            : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Distrib
+                                 utedSwitch=VmwareDistributedVirtualSwitch-dvs-8911/
+Client                         : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+
+
+VlanConfiguration : 
+Name              : VDS_vertical_scale_pg
+ExtensionData     : VMware.Vim.DistributedVirtualPortgroup
+Key               : dvportgroup-8913
+Notes             : 
+Datacenter        : Cert-DC
+PortBinding       : Static
+NumPorts          : 128
+VDSwitch          : VDS_vertical_scale
+IsUplink          : False
+Id                : DistributedVirtualPortgroup-dvportgroup-8913
+Uid               : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/DistributedPortgroup
+                    =DistributedVirtualPortgroup-dvportgroup-8913/
+Client            : VMware.VimAutomation.Vds.Impl.V1.VDClientImpl
+VirtualSwitch     : VDS_vertical_scale
+
+Added PG VDS_vertical_scale_pg in to VDS VDS_vertical_scale
+ Added esx-perf.corp.local to vDS: VDS_vertical_scale
+ Added vmnic1 on esx-perf.corp.local to vDS: VDS_vertical_scale
+WARNING:  The 'ScsiLun' property of VMHostStorageInfo type is deprecated. Use 'Get-ScsiLun' cmdlet 
+instead.
+
+VMHost               : esx-perf.corp.local
+FileSystemVolumeInfo : {VM-DataStore, cert-data-store, datastore1, ...}
+SoftwareIScsiEnabled : True
+ScsiLun              : {naa.6000c299c9757ee5d36649f27a242ab9, 
+                       naa.6589cfc000000dd302458ac6dc730a36, mpx.vmhba1:C0:T0:L0, 
+                       naa.6589cfc000000cfd9bc58d680c24402e...}
+Id                   : HostStorageSystem-storageSystem-8903
+VMHostId             : HostSystem-host-8903
+Uid                  : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VMHost=HostSystem
+                       -host-8903/VMHostStorage=HostStorageSystem-storageSystem-8903/
+ExtensionData        : VMware.Vim.HostStorageSystem
+Name                 : 
+Client               : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+Storage Scan for esx-perf.corp.local complete
+Found datastore cert-data-store
+Found datastore datastore1
+Found datastore VM-DataStore
+Found datastore cert-data-store
+Found datastore datastore1
+Data store validation passed on esx-perf.corp.local 
+Performance and Vertical State Infrastructure preperation DONE
+Check messages for errors or warnings
+
+
+
+2018-05-08 18:52:03,208 [INFO]: certConfig.py _VM():122 >> _VM: ADD
+2018-05-08 18:52:03,208 [INFO]: certConfig.py _VM():135 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\testall\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; prepareVerticalScale -start 1 -end 3; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-05-08 18:53:11,151 [WARNING]: util.py execPSCommand():24 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+added VM [VM-DataStore] Linux-VM1/Linux-VM1.vmx to host esx-perf.corp.local
+added VM [VM-DataStore] Linux-VM2/Linux-VM2.vmx to host esx-perf.corp.local
+added VM [VM-DataStore] Linux-VM3/Linux-VM3.vmx to host esx-perf.corp.local
+start Sleeping 60 seconds
+WARNING: Specifying a distributed port group name as network name is no longer supported. Use the 
+-Portgroup parameter.
+WARNING: PowerCLI scripts should not use the 'Client' property. The property will be removed in a 
+future release.
+
+ServerId        : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/
+State           : Running
+IsCancelable    : False
+PercentComplete : 0
+StartTime       : 5/8/2018 6:52:26 PM
+FinishTime      : 
+ObjectId        : VirtualMachine-vm-8914
+Result          : 
+Description     : Reconfigure virtual machine
+ExtensionData   : VMware.Vim.Task
+Id              : Task-task-54283
+Name            : ReconfigVM_Task
+Uid             : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Task=Task-task-54283/
+Client          : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+CmdletTaskInfo  : VMware.VimAutomation.ViCore.Impl.V1.Task.VirtualDeviceSetterTaskInfoImpl
+
+
+ServerId        : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/
+State           : Running
+IsCancelable    : False
+PercentComplete : 0
+StartTime       : 5/8/2018 6:52:27 PM
+FinishTime      : 
+ObjectId        : VirtualMachine-vm-8915
+Result          : 
+Description     : Reconfigure virtual machine
+ExtensionData   : VMware.Vim.Task
+Id              : Task-task-54284
+Name            : ReconfigVM_Task
+Uid             : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Task=Task-task-54284/
+Client          : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+CmdletTaskInfo  : VMware.VimAutomation.ViCore.Impl.V1.Task.VirtualDeviceSetterTaskInfoImpl
+
+
+ServerId        : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/
+State           : Running
+IsCancelable    : False
+PercentComplete : 0
+StartTime       : 5/8/2018 6:52:27 PM
+FinishTime      : 
+ObjectId        : VirtualMachine-vm-8916
+Result          : 
+Description     : Reconfigure virtual machine
+ExtensionData   : VMware.Vim.Task
+Id              : Task-task-54285
+Name            : ReconfigVM_Task
+Uid             : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/Task=Task-task-54285/
+Client          : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+CmdletTaskInfo  : VMware.VimAutomation.ViCore.Impl.V1.Task.VirtualDeviceSetterTaskInfoImpl
+
+
+
+
+2018-05-08 18:53:11,151 [INFO]: certConfig.py _addInterfaceToVM():139 >> addInterfaceToVM
+2018-05-08 18:53:11,152 [INFO]: certConfig.py _addInterfaceToVM():147 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\testall\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; AddInterfacesToLinuxVM -start 1 -end 3 -numOfInf 2 VDS_vertical_scale_pg; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-05-08 18:53:28,440 [WARNING]: util.py execPSCommand():24 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+WARNING: Parameter 'VM' is obsolete. Passing multiple values to this parameter is obsolete.
+WARNING: PowerCLI scripts should not use the 'Client' property. The property will be removed in a 
+future release.
+
+MacAddress       : 00:50:56:b3:2d:dd
+WakeOnLanEnabled : False
+NetworkName      : VDS_vertical_scale_pg
+Type             : Vmxnet3
+ParentId         : VirtualMachine-vm-8914
+Parent           : Linux-VM1
+Uid              : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VirtualMachine=Virtua
+                   lMachine-vm-8914/NetworkAdapter=4001/
+ConnectionState  : NotConnected, NoGuestControl, StartConnected
+ExtensionData    : VMware.Vim.VirtualVmxnet3
+Id               : VirtualMachine-vm-8914/4001
+Name             : Network adapter 2
+Client           : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+WARNING: Parameter 'VM' is obsolete. Passing multiple values to this parameter is obsolete.
+
+MacAddress       : 00:50:56:b3:8c:77
+WakeOnLanEnabled : False
+NetworkName      : VDS_vertical_scale_pg
+Type             : Vmxnet3
+ParentId         : VirtualMachine-vm-8914
+Parent           : Linux-VM1
+Uid              : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VirtualMachine=Virtua
+                   lMachine-vm-8914/NetworkAdapter=4002/
+ConnectionState  : NotConnected, NoGuestControl, StartConnected
+ExtensionData    : VMware.Vim.VirtualVmxnet3
+Id               : VirtualMachine-vm-8914/4002
+Name             : Network adapter 3
+Client           : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+WARNING: Parameter 'VM' is obsolete. Passing multiple values to this parameter is obsolete.
+
+MacAddress       : 00:50:56:b3:3f:c1
+WakeOnLanEnabled : False
+NetworkName      : VDS_vertical_scale_pg
+Type             : Vmxnet3
+ParentId         : VirtualMachine-vm-8915
+Parent           : Linux-VM2
+Uid              : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VirtualMachine=Virtua
+                   lMachine-vm-8915/NetworkAdapter=4001/
+ConnectionState  : NotConnected, NoGuestControl, StartConnected
+ExtensionData    : VMware.Vim.VirtualVmxnet3
+Id               : VirtualMachine-vm-8915/4001
+Name             : Network adapter 2
+Client           : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+WARNING: Parameter 'VM' is obsolete. Passing multiple values to this parameter is obsolete.
+
+MacAddress       : 00:50:56:b3:dc:2a
+WakeOnLanEnabled : False
+NetworkName      : VDS_vertical_scale_pg
+Type             : Vmxnet3
+ParentId         : VirtualMachine-vm-8915
+Parent           : Linux-VM2
+Uid              : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VirtualMachine=Virtua
+                   lMachine-vm-8915/NetworkAdapter=4002/
+ConnectionState  : NotConnected, NoGuestControl, StartConnected
+ExtensionData    : VMware.Vim.VirtualVmxnet3
+Id               : VirtualMachine-vm-8915/4002
+Name             : Network adapter 3
+Client           : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+WARNING: Parameter 'VM' is obsolete. Passing multiple values to this parameter is obsolete.
+
+MacAddress       : 00:50:56:b3:13:7d
+WakeOnLanEnabled : False
+NetworkName      : VDS_vertical_scale_pg
+Type             : Vmxnet3
+ParentId         : VirtualMachine-vm-8916
+Parent           : Linux-VM3
+Uid              : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VirtualMachine=Virtua
+                   lMachine-vm-8916/NetworkAdapter=4001/
+ConnectionState  : NotConnected, NoGuestControl, StartConnected
+ExtensionData    : VMware.Vim.VirtualVmxnet3
+Id               : VirtualMachine-vm-8916/4001
+Name             : Network adapter 2
+Client           : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+WARNING: Parameter 'VM' is obsolete. Passing multiple values to this parameter is obsolete.
+
+MacAddress       : 00:50:56:b3:62:6c
+WakeOnLanEnabled : False
+NetworkName      : VDS_vertical_scale_pg
+Type             : Vmxnet3
+ParentId         : VirtualMachine-vm-8916
+Parent           : Linux-VM3
+Uid              : /VIServer=corp.local\administrator@vcsa-02a.corp.local:443/VirtualMachine=Virtua
+                   lMachine-vm-8916/NetworkAdapter=4002/
+ConnectionState  : NotConnected, NoGuestControl, StartConnected
+ExtensionData    : VMware.Vim.VirtualVmxnet3
+Id               : VirtualMachine-vm-8916/4002
+Name             : Network adapter 3
+Client           : VMware.VimAutomation.ViCore.Impl.V1.VimClient
+
+
+
+
+2018-05-08 18:53:28,444 [INFO]: certConfig.py _powerVM():171 >> _powerVM: ON
+2018-05-08 18:53:28,444 [INFO]: certConfig.py _powerVM():184 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\testall\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; powerOnLinuxVM -start 1 -end 3; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-05-08 18:54:36,527 [WARNING]: util.py execPSCommand():24 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+
+Client                  : 
+CmdletTaskInfo          : 
+ExtensionData           : 
+Id                      : a0ec4989-8169-47cd-bbe0-f51fbc2175de
+IsCancelable            : False
+Result                  : 
+Name                    : 
+Description             : 
+State                   : Running
+PercentComplete         : 0
+StartTime               : 5/8/2018 6:53:34 PM
+FinishTime              : 
+ObjectId                : 
+Uid                     : /Local=/ClientSideTask=a0ec4989-8169-47cd-bbe0-f51fbc2175de/
+NonTerminatingErrorList : {}
+TerminatingError        : 
+
+ PoweredOn Linux-VM1
+
+Client                  : 
+CmdletTaskInfo          : 
+ExtensionData           : 
+Id                      : e3c84495-baa4-4aec-bfbb-5582f8cc97db
+IsCancelable            : False
+Result                  : 
+Name                    : 
+Description             : 
+State                   : Running
+PercentComplete         : 0
+StartTime               : 5/8/2018 6:53:35 PM
+FinishTime              : 
+ObjectId                : 
+Uid                     : /Local=/ClientSideTask=e3c84495-baa4-4aec-bfbb-5582f8cc97db/
+NonTerminatingErrorList : {}
+TerminatingError        : 
+
+ PoweredOn Linux-VM2
+
+Client                  : 
+CmdletTaskInfo          : 
+ExtensionData           : 
+Id                      : 0e7beb5d-a720-4b9b-a645-4c30e9af8a9b
+IsCancelable            : False
+Result                  : 
+Name                    : 
+Description             : 
+State                   : Running
+PercentComplete         : 0
+StartTime               : 5/8/2018 6:53:35 PM
+FinishTime              : 
+ObjectId                : 
+Uid                     : /Local=/ClientSideTask=0e7beb5d-a720-4b9b-a645-4c30e9af8a9b/
+NonTerminatingErrorList : {}
+TerminatingError        : 
+
+ PoweredOn Linux-VM3
+Start sleeping 60 seconds
+
+
+
+2018-05-08 18:54:36,527 [INFO]: certConfig.py configureIPAddr():162 >> configureIPAddr
+2018-05-08 18:54:36,527 [INFO]: certConfig.py configureIPAddr():167 >> C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe ". F:\scriptRepo\infrascripts\testall\perf_vert_scale.ps1; connectToVC -vc 'vcsa-02a.corp.local' -username 'administrator@corp.local' -password 'VMware1!'; connectAndAddIP -start 1 -end 3; disconnectFromVC -vc  'vcsa-02a.corp.local' " 
+2018-05-08 18:55:49,908 [WARNING]: util.py execPSCommand():24 >> PowerShell command output: 
+Name                           Port  User                          
+----                           ----  ----                          
+vcsa-02a.corp.local            443   CORP.LOCAL\Administrator      
+WARNING: Host key is not being verified since Force switch is used.
+Sucessfully Established connection to 172.16.11.1
+ens160 Primary Interface found
+ens192 Interface found
+0
+ens224 Interface found
+1
+True
+Configured IP addresses for host 172.16.11.1
+WARNING: Host key is not being verified since Force switch is used.
+Sucessfully Established connection to 172.16.10.2
+ens160 Primary Interface found
+ens192 Interface found
+0
+ens224 Interface found
+1
+True
+Configured IP addresses for host 172.16.10.2
+WARNING: Host key is not being verified since Force switch is used.
+Sucessfully Established connection to 172.16.10.3
+ens160 Primary Interface found
+ens192 Interface found
+0
+ens224 Interface found
+1
+True
+Configured IP addresses for host 172.16.10.3
+
+
+
+2018-05-08 18:55:49,909 [INFO]: verticalScaleTest.py setUpClass():28 >> Setup for Vertical Scale Test is ready. Press ENTER to continue...

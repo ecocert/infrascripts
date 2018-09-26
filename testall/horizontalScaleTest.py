@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import unittest
 import util
+import subprocess
 from certConfig import Resource
+from certConfig import CertTestConfig
 
 logger = util.getLogger('certTest')
 
@@ -16,10 +18,6 @@ class HorizontalScaleTest(unittest.TestCase):
         try:
             cls.res.preTestValidation()
             cls.res.configure()
-            #cls.res.deployESX()
-            cls.res.horizontalSetup()
-            logger.info("Press ENTER to continue...")
-            input()
         except:
             cls.res.cleaner.pop_all().close()
             cls.res.saveLog()
@@ -31,12 +29,11 @@ class HorizontalScaleTest(unittest.TestCase):
         cls.res.undeployAll()
         cls.res.saveLog()
 
-    def testConnectivy(self):
-        logger.info("testConnectivity")
+    def testCase1(self):
         self.assertTrue(True, "assertTrue")
 
     def testCase2(self):
-        self.assertTrue(True, "assertFalse")
+        self.assertTrue(False, "assertFalse")
 
     def testCase3(self):
         self.assertTrue(True, "assertTrue")

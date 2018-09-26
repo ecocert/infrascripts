@@ -16,8 +16,6 @@ import io
 import logging
 myheaders={'content-type':'application/json', 'accept':'application/json'}
 
-requests.packages.urllib3.disable_warnings()
-
 class CallbackScale:
 
     def __init__(self):
@@ -664,7 +662,7 @@ class CallbackScale:
         ret = self.cb_scale_sec_group_create(input_fname, scale_count)
         if ret != True:
             print ("ERROR: SE Group Create")
-        """
+
         ret = self.cb_scale_sec_policy_create_xml()
         if ret != True:
             print ("ERROR: SE Policy Create")
@@ -672,7 +670,7 @@ class CallbackScale:
         ret = self.cb_scale_sec_policy_apply()
         if ret != True:
             print ("ERROR: SE Policy Apply")
-        """
+
         print("Completed Callback Scale Setup. Done")
         logging.debug("EXIT")
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import signal
 import time
-import unittest
-from performanceTest import PerformanceTest
-from verticalScaleTest import VerticalScaleTest
-from horizontalScaleTest import HorizontalScaleTest
-from callbackScaleTest import CallbackScaleTest
+from performanceTest import *
+from verticalScaleTest import *
+from horizontalScaleTest import *
+from callbackScaleTest import *
 from certConfig import *
 from util import *
 
@@ -15,7 +14,7 @@ logger = util.getLogger('certTest')
 def keyboardInterruptHandler(signalnum, frame):
     "Handle Ctrl+C/SIGINT signal "
     logger.info("keyboardInterruptHandler")
-    Resource.undeployAll()
+    ## Resource.undeploy()
     raise KeyboardInterrupt
 
 
@@ -45,6 +44,7 @@ def buildTestList():
 def main():
     # Add CTRL+C handler.  It is experiential feature
     signal.signal(signal.SIGINT, keyboardInterruptHandler)
+    util.preProcessScript()
 
     testList = buildTestList()
     testSuite = unittest.TestSuite()

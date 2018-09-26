@@ -1,6 +1,5 @@
 VMware vApp Certification Automation
 
-
 How to run:
 
     1.  Make a directory and clone the repo @ https://github.com/ecocert/infrascripts.git

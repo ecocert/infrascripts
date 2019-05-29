@@ -39,19 +39,19 @@ if( !($clusters -like "ScaleCluster4") )
     switch ($number)
      {
 
-        {1..64 -contains $_}
+        {1..50 -contains $_}
         {
           "ScaleCluster1";break;
         }
-        {65..128 -contains $_}
+        {51..100 -contains $_}
         {
           "ScaleCluster2";break;
         }
-        {129..192 -contains $_}
+        {101..150 -contains $_}
         {
           "ScaleCluster3";break;
         }
-        {193..256 -contains $_}
+        {151..200 -contains $_}
         {
           "ScaleCluster4";break;
         }
@@ -71,7 +71,8 @@ Start-Sleep -Seconds $waittime;
 
 For ( $num=$start;$num -le $end;$num++) {
  
- Set-VMHost -VMHost esx-scale-$num.corp.local -LicenseKey 4N20N-QYN9Q-L8F8T-0RAU4-0TN05 -State Connected
+ Set-VMHost -VMHost esx-scale-$num.corp.local -LicenseKey NH684-VY5D6-W8X8T-0V3HM-1WYM0 -State Connected
+ 
  Write-Host -ForegroundColor GREEN "Setting License done to host esx-scale-$num"  
  
 }  

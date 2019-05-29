@@ -7,7 +7,7 @@ Add-PSSnapin vmware.vimautomation.core
 $FinalWaitTime = "300"
 
 
-For ( $num=1;$num -le 32;$num++) {
+For ( $num=1;$num -le 25;$num++) {
     connect-viserver -server esx-horizontal-$num.corp.local -User root -Password VMware1!
     connect-viserver -server esx-horizontal-$num-1.corp.local -User root -Password VMware1!
 } 
@@ -27,7 +27,7 @@ Start-VM -VM  $vms  -Confirm:$False
 
 Write "`n $(Get-Date) Please wait for $FinalWaitTime more Seconds for started VMs to stabilize.After that add them into vCenter"
 
-For ( $num=1;$num -le 32;$num++) {
+For ( $num=1;$num -le 25;$num++) {
     Disconnect-VIServer -server esx-horizontal-$num.corp.local -confirm:$false
     Disconnect-VIServer -server esx-horizontal-$num-1.corp.local -confirm:$false
 } 

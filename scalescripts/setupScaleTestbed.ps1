@@ -44,7 +44,7 @@ do
            } '2' {
                 
                 'You chose option #2'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -57,7 +57,7 @@ do
            } '3' {
                 
                 'You chose option #3'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -69,7 +69,7 @@ do
            } '4' {
                 
                 'You chose option #4'
-                write-Host "There are 1..256 Linux VMs"
+                write-Host "There are 1..200 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
                 $time = Get-Date
@@ -81,7 +81,7 @@ do
            }'5' {
                 
                 'You chose option #5'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -117,7 +117,7 @@ do
            }'7' {
                 
                 'You chose option #7'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -130,7 +130,7 @@ do
            } '8' {
                 
                 'You chose option #8'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -142,7 +142,7 @@ do
            }'9' {
                 
                 'You chose option #9'
-                write-Host "There are 1..256 Linux VMs"
+                write-Host "There are 1..200 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
                 $time = Get-Date
@@ -154,7 +154,7 @@ do
            } '10' {
                 
                 'You chose option #10'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -166,7 +166,7 @@ do
            } '11' {
                 
                 'You chose option #11'
-                write-Host "There are 1..256 esx scale hosts"
+                write-Host "There are 1..200 esx scale hosts"
                 $start = read-host "Please enter the start esx scale host number"
                 $end = read-host "Please enter the end esx scale host number"
                 $time = Get-Date
@@ -178,7 +178,7 @@ do
            } '12' {
                 
                 'You chose option #12'
-                write-Host "There are 1..256 Linux VMs"
+                write-Host "There are 1..200 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
                 $time = Get-Date
@@ -190,7 +190,7 @@ do
            } '13' {
                 
                 'You chose option #13'
-                write-Host "There are 1..256 Linux VMs"
+                write-Host "There are 1..200 Linux VMs"
                 $start = read-host "Please enter the start Linux VM number"
                 $end = read-host "Please enter the end Linux VM number"
                 $time = Get-Date

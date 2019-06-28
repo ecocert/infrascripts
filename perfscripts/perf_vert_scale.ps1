@@ -393,10 +393,10 @@ Function prepareInfra([string] $perfClusterName) {
 
         $dataCenter = 'Cert-DC'
     # add cluster
-        addClusterToVC $dataCenter $perfClusterName
+        #addClusterToVC $dataCenter $perfClusterName
 
     # add esx-perf to vCenter
-        addHostToVC 'esx-perf.corp.local' $perfClusterName 'root' 'VMware1!' '4N20N-QYN9Q-L8F8T-0RAU4-0TN05'    
+        addHostToVC 'esx-perf.corp.local' $perfClusterName 'root' 'VMware1!' 'NH684-VY5D6-W8X8T-0V3HM-1WYM0'    
 
     #
     # Create VDS for Performance and PG
